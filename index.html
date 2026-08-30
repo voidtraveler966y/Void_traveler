@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Traveler | Uzay İletişim Ağı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00f3ff;
+            --bg-color: #050510;
+            --card-bg: rgba(0, 24, 40, 0.7);
+            --text-glow: 0 0 10px var(--primary-color);
+        }
+        .theme-epic2 { --primary-color: #00f3ff; --bg-color: #050510; --card-bg: rgba(0, 24, 40, 0.7); }
+        .theme-60parsecs { --primary-color: #ff00ea; --bg-color: #100215; --card-bg: rgba(40, 0, 40, 0.7); }
+        .theme-60seconds { --primary-color: #39ff14; --bg-color: #051005; --card-bg: rgba(0, 40, 10, 0.7); }
+        .theme-terraria { --primary-color: #2eb82e; --bg-color: #051505; --card-bg: rgba(10, 40, 10, 0.7); }
+        .theme-rustylake { --primary-color: #e07a5f; --bg-color: #120907; --card-bg: rgba(45, 20, 15, 0.7); }
+        .theme-thepastwithin { --primary-color: #4da6ff; --bg-color: #050a12; --card-bg: rgba(10, 25, 45, 0.7); }
+        .theme-servantoflake { --primary-color: #00d2d3; --bg-color: #040f12; --card-bg: rgba(0, 30, 35, 0.7); }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-color);
+            color: #fff;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+            min-height: 100vh;
+        }
+
+        #space-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            z-index: -1; pointer-events: none;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        header { text-align: center; margin: 1rem 0 2rem; }
+        header h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--primary-color);
+            text-shadow: var(--text-glow); letter-spacing: 5px; text-transform: uppercase;
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+        header p { font-size: 1.2rem; color: #aaa; margin-top: 0.5rem; letter-spacing: 3px; }
+
+        .header-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .yt-button, .notify-btn {
+            padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #fff;
+            text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease;
+            border-radius: 4px; cursor: pointer;
+        }
+        .yt-button { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+        .yt-button:hover { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 25px #ff0000; transform: translateY(-2px); }
+        .notify-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+        .notify-btn:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: translateY(-2px); }
+
+        .main-nav { display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 1rem; }
+        .main-nav button { background: none; border: none; color: #888; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; transition: all 0.3s ease; }
+        .main-nav button:hover, .main-nav button.active { color: var(--primary-color); text-shadow: var(--text-glow); }
+
+        .page-content { display: none; animation: fadeIn 0.4s ease forwards; }
+        .page-content.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title { text-align: center; font-family: 'Orbitron', sans-serif; font-size: 2rem; color: #fff; margin-bottom: 2rem; letter-spacing: 4px; text-transform: uppercase; }
+        .section-title span { color: var(--primary-color); transition: color 0.5s ease; }
+
+        /* KATEGORİ GRUPLAMA STİLLERİ */
+        .nav-wrapper { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3rem; }
+        .nav-group { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+        .group-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+        .rusty-group {
+            background: rgba(45, 20, 15, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px dashed rgba(224, 122, 95, 0.4);
+        }
+        .rusty-group .group-title { color: #e07a5f; }
+
+        .category-nav { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .category-nav button { font-family: 'Orbitron', sans-serif; background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 0.8rem 1.5rem; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; }
+        .category-nav button:hover, .category-nav button.active { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 15px var(--primary-color); }
+        .rusty-group button { color: #e07a5f; border-color: #e07a5f; }
+        .rusty-group button:hover, .rusty-group button.active { background: #e07a5f; color: #120907; box-shadow: 0 0 15px #e07a5f; }
+
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+        .video-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, border-color 0.5s ease, box-shadow 0.5s ease; }
+        .video-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .thumbnail-wrapper img { width: 100%; display: block; border-bottom: 2px solid var(--primary-color); transition: border-color 0.5s ease; }
+        .video-info { padding: 1rem; text-align: center; }
+        .video-info h3 { font-size: 1.1rem; margin-bottom: 1rem; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6rem; }
+        .watch-btn { display: inline-block; text-decoration: none; background: var(--primary-color); color: var(--bg-color); padding: 0.5rem 1.5rem; font-weight: bold; border-radius: 4px; transition: opacity 0.3s, background-color 0.5s ease; }
+        .watch-btn:hover { opacity: 0.8; }
+
+        .loading, .error { grid-column: 1 / -1; text-align: center; font-size: 1.5rem; color: var(--primary-color); font-family: 'Orbitron', sans-serif; margin-top: 2rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        .mode-container { background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; padding: 3rem; text-align: center; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); }
+        .mode-container p { font-size: 1.2rem; color: #ccc; line-height: 1.6; }
+
+        #notification-toast { position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--primary-color); color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 20px var(--primary-color); font-family: 'Orbitron', sans-serif; display: none; z-index: 1000; animation: slideIn 0.5s ease; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body class="theme-epic2">
+
+    <canvas id="space-canvas"></canvas>
+    <div class="scanline"></div>
+    <div id="notification-toast"></div>
+
+    <div class="container">
+        <header>
+            <h1>Void Traveler</h1>
+            <p>Galaktik Veri Arşivi</p>
+            <div class="header-buttons">
+                <a href="https://www.youtube.com/@void_traveler966" target="_blank" class="yt-button">Ana Gemiye Dön</a>
+                <button onclick="requestNotificationPermission()" class="notify-btn" id="notify-btn">🔔 Bildirimleri Aç</button>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <button onclick="switchPage('page-records', this)" class="active">İletişim Kayıtları</button>
+            <button onclick="switchPage('page-mode', this)">Oyun Modum</button>
+        </nav>
+
+        <div id="page-records" class="page-content active-page">
+            <div class="nav-wrapper">
+                <div class="nav-group">
+                    <span class="group-title">❖ ANA SİNYALLER</span>
+                    <div class="category-nav">
+                        <button onclick="setTheme('epic2', this)" class="active">Epic 2</button>
+                        <button onclick="setTheme('60parsecs', this)">60 Parsecs!</button>
+                        <button onclick="setTheme('60seconds', this)">60 Seconds!</button>
+                        <button onclick="setTheme('terraria', this)">Terraria</button>
+                    </div>
+                </div>
+
+                <div class="nav-group rusty-group">
+                    <span class="group-title">👁️ RUSTY LAKE SERİSİ</span>
+                    <div class="category-nav">
+                        <button onclick="setTheme('rustylake', this)">Rusty Lake Hotel</button>
+                        <button onclick="setTheme('thepastwithin', this)">The Past Within</button>
+                        <button onclick="setTheme('servantoflake', this)">Servant of the Lake</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-grid" id="video-grid"></div>
+        </div>
+
+        <div id="page-mode" class="page-content">
+            <h2 class="section-title">Oyun <span>Modum</span></h2>
+            <div class="mode-container">
+                <p>Modüller aktif... Buraya oyun tarzın, sistem kuralların veya kişisel uzay günlüğün eklenecek.</p>
+                <br>
+                <p style="color: var(--primary-color); font-family: 'Orbitron', sans-serif;">(Sistem Hazır - Veri Bekleniyor)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const playlistMap = {
+            'epic2': 'PLLKvg0yS22Fw',
+            '60parsecs': 'PLhj5t0p7f5slHhAsdhFAWNFbSz9J0tXeu',
+            '60seconds': 'PLhj5t0p7f5snYLm1YY6dyDZCkjqQv7IWe',
+            'terraria': 'PLhj5t0p7f5snehYw293m9Wu6VIpQcxQ3U',
+            'rustylake': 'PLCCDy4OSo2VM',
+            'thepastwithin': 'PLHIc0z9uihUo',
+            'servantoflake': 'PLY41Z_00gFuc'
+        };
+
+        function switchPage(pageId, btnElement) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
+            document.querySelectorAll('.main-nav button').forEach(b => b.classList.toggle('active', b === btnElement));
+        }
+
+        function setTheme(game, buttonElement) {
+            document.body.className = `theme-${game}`;
+            if (buttonElement) {
+                document.querySelectorAll('.category-nav button').forEach(b => b.classList.toggle('active', b === buttonElement));
+            }
+            if (playlistMap[game]) fetchPlaylistVideos(playlistMap[game]);
+        }
+
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) return showToast("Tarayıcınız bildirim özelliğini desteklemiyor.");
+            if (Notification.permission === "denied") return showToast("İzin engellendi! Adres çubuğundaki 🔒 kilit simgesine tıklayıp bildirimlere izin verin.");
+
+            Notification.requestPermission().then(permission => {
+                updateNotificationButtonState(permission);
+                showToast(permission === "granted" ? "Sinyal İzni Alındı! Yeni yayınlarda bildirim gönderilecek." : "Bildirim reddedildi. Tekrar açmak için kilit simgesini kullanın.");
+            });
+        }
+
+        function updateNotificationButtonState(permission) {
+            const btn = document.getElementById('notify-btn');
+            if (!btn) return;
+            const states = {
+                granted: { text: '✓ Bildirimler Aktif', color: '#39ff14' },
+                denied: { text: '✕ İzin Engellendi', color: '#ff0055' }
+            };
+            const st = states[permission] || { text: '🔔 Bildirimleri Aç', color: 'var(--primary-color)' };
+            btn.innerText = st.text;
+            btn.style.borderColor = st.color;
+            btn.style.color = st.color;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('notification-toast');
+            toast.innerText = message;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 4000);
+        }
+
+        function checkForNewVideo(latestVideo, playlistId) {
+            const lastSeenKey = `last_video_${playlistId}`;
+            const lastSeenVideoId = localStorage.getItem(lastSeenKey);
+            const currentVideoId = latestVideo.link.split('v=')[1];
+
+            if (lastSeenVideoId && lastSeenVideoId !== currentVideoId) {
+                showToast(`YENİ VİDEO: ${latestVideo.title}`);
+                if (Notification.permission === "granted") {
+                    new Notification("🚀 YENİ SİNYAL YAYINLANDI!", {
+                        body: latestVideo.title,
+                        icon: `https://img.youtube.com/vi/${currentVideoId}/hqdefault.jpg`
+                    });
+                }
+            }
+            localStorage.setItem(lastSeenKey, currentVideoId);
+        }
+
+        async function fetchPlaylistVideos(playlistId) {
+            const container = document.getElementById('video-grid');
+            container.innerHTML = '<div class="loading">Sinyal alınıyor...</div>';
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`)}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.status === 'ok' && data.items.length > 0) {
+                    checkForNewVideo(data.items[0], playlistId);
+                    container.innerHTML = data.items.map(item => {
+                        const videoId = item.link.split('v=')[1];
+                        return `
+                            <div class="video-card">
+                                <div class="thumbnail-wrapper">
+                                    <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${item.title}">
+                                </div>
+                                <div class="video-info">
+                                    <h3>${item.title}</h3>
+                                    <a href="${item.link}" target="_blank" class="watch-btn">İZLE</a>
+                                </div>
+                            </div>`;
+                    }).join('');
+                } else {
+                    container.innerHTML = '<div class="error">Arşivde veri bulunamadı.</div>';
+                }
+            } catch {
+                container.innerHTML = '<div class="error">Sinyal hatası! Bağlantı koptu.</div>';
+            }
+        }
+
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = Array.from({ length: 150 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.1
+            }));
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        if ("Notification" in window) updateNotificationButtonState(Notification.permission);
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animateStars();
+        fetchPlaylistVideos(playlistMap['epic2']);
+    </script>
+</body>
+</html>
