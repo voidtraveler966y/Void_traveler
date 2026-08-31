@@ -10,23 +10,15 @@
 
     <style>
         :root { --primary-color: #00f3ff; --bg-color: #050510; --card-bg: rgba(0, 24, 40, 0.7); --text-glow: 0 0 10px var(--primary-color); }
-        .theme-epic2 { --primary-color: #00f3ff; --bg-color: #050510; --card-bg: rgba(0, 24, 40, 0.7); }
-        .theme-60parsecs { --primary-color: #ff00ea; --bg-color: #100215; --card-bg: rgba(40, 0, 40, 0.7); }
-        .theme-60seconds { --primary-color: #39ff14; --bg-color: #051005; --card-bg: rgba(0, 40, 10, 0.7); }
-        .theme-terraria { --primary-color: #2eb82e; --bg-color: #051505; --card-bg: rgba(10, 40, 10, 0.7); }
-        .theme-amongus { --primary-color: #ff2a2a; --bg-color: #150303; --card-bg: rgba(45, 10, 10, 0.7); }
-        .theme-rustylake { --primary-color: #e07a5f; --bg-color: #120907; --card-bg: rgba(45, 20, 15, 0.7); }
-        .theme-thepastwithin { --primary-color: #4da6ff; --bg-color: #050a12; --card-bg: rgba(10, 25, 45, 0.7); }
-        .theme-servantoflake { --primary-color: #00d2d3; --bg-color: #040f12; --card-bg: rgba(0, 30, 35, 0.7); }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Rajdhani', sans-serif; background-color: var(--bg-color); color: #fff; overflow-x: hidden; transition: background-color 0.5s ease; min-height: 100vh; }
+        
         #space-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
         .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 3px 100%; z-index: -1; pointer-events: none; }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
         header { text-align: center; margin: 1rem 0 2rem; }
-        header h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--primary-color); text-shadow: var(--text-glow); letter-spacing: 5px; text-transform: uppercase; transition: all 0.5s ease; }
+        header h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--primary-color); text-shadow: var(--text-glow); letter-spacing: 5px; text-transform: uppercase; }
         header p { font-size: 1.2rem; color: #aaa; margin-top: 0.5rem; letter-spacing: 3px; }
 
         .header-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
@@ -36,9 +28,9 @@
         .notify-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
         .notify-btn:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: translateY(-2px); }
         
-        /* OAuth Buton & Profil Stili */
         .auth-btn { background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
         .auth-btn:hover { background: #ffd700; color: #000; box-shadow: 0 0 20px #ffd700; transform: translateY(-2px); }
+        
         #user-profile { display: none; align-items: center; justify-content: center; gap: 15px; margin-top: 1.5rem; padding: 10px 20px; background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; box-shadow: var(--text-glow); }
         #user-profile img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color); }
         #user-profile .user-info-text { text-align: left; font-family: 'Orbitron', sans-serif; }
@@ -54,38 +46,40 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .section-title { text-align: center; font-family: 'Orbitron', sans-serif; font-size: 2rem; color: #fff; margin-bottom: 2rem; letter-spacing: 4px; text-transform: uppercase; }
-        .section-title span { color: var(--primary-color); transition: color 0.5s ease; }
+        .section-title span { color: var(--primary-color); }
 
-        .nav-wrapper { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3rem; }
-        .nav-group { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
-        .group-title { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--primary-color); letter-spacing: 2px; opacity: 0.85; text-transform: uppercase; }
-        .rusty-group { background: rgba(45, 20, 15, 0.3); padding: 1rem; border-radius: 8px; border: 1px dashed rgba(224, 122, 95, 0.4); }
-        .rusty-group .group-title { color: #e07a5f; }
-
-        .category-nav { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-        .category-nav button { font-family: 'Orbitron', sans-serif; background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 0.8rem 1.5rem; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; }
+        .category-nav { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+        .category-nav button { font-family: 'Orbitron', sans-serif; background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 0.8rem 1.5rem; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; border-radius: 4px; }
         .category-nav button:hover, .category-nav button.active { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 15px var(--primary-color); }
-        .rusty-group button { color: #e07a5f; border-color: #e07a5f; }
-        .rusty-group button:hover, .rusty-group button.active { background: #e07a5f; color: #120907; box-shadow: 0 0 15px #e07a5f; }
 
         .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-        .video-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, border-color 0.5s ease; }
+        .video-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, border-color 0.5s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .video-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .thumbnail-wrapper img { width: 100%; display: block; border-bottom: 2px solid var(--primary-color); transition: border-color 0.5s ease; }
-        .video-info { padding: 1rem; text-align: center; }
-        .video-info h3 { font-size: 1.1rem; margin-bottom: 1rem; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6rem; }
-        .watch-btn { display: inline-block; text-decoration: none; background: var(--primary-color); color: var(--bg-color); padding: 0.5rem 1.5rem; font-weight: bold; border-radius: 4px; transition: opacity 0.3s; }
-        .watch-btn:hover { opacity: 0.8; }
+        .thumbnail-wrapper img { width: 100%; display: block; border-bottom: 2px solid var(--primary-color); }
+        
+        .video-info { padding: 1rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .video-info h3 { font-size: 1rem; margin-bottom: 0.8rem; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6rem; }
+        
+        /* İzlenme & Beğeni Metrik Stili */
+        .video-metrics { display: flex; justify-content: center; gap: 1rem; font-size: 0.85rem; color: #aaa; margin-bottom: 1rem; font-family: 'Orbitron', sans-serif; }
+        .video-metrics span { display: flex; align-items: center; gap: 4px; }
 
-        .loading, .error { grid-column: 1 / -1; text-align: center; font-size: 1.5rem; color: var(--primary-color); font-family: 'Orbitron', sans-serif; margin-top: 2rem; text-transform: uppercase; letter-spacing: 2px; }
+        /* Kart Buton Grubu */
+        .card-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+        .watch-btn, .like-btn { padding: 0.5rem 1rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; transition: all 0.3s; }
+        .watch-btn { background: var(--primary-color); color: var(--bg-color); }
+        .watch-btn:hover { opacity: 0.85; }
+        .like-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: #fff; }
+        .like-btn:hover { background: var(--primary-color); color: #000; }
+        .like-btn.liked { background: #39ff14; border-color: #39ff14; color: #000; cursor: default; }
 
-        .mode-container { background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; padding: 3rem; text-align: center; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); }
-        .mode-container p { font-size: 1.2rem; color: #ccc; line-height: 1.6; }
+        .loading, .error { grid-column: 1 / -1; text-align: center; font-size: 1.3rem; color: var(--primary-color); font-family: 'Orbitron', sans-serif; margin-top: 2rem; letter-spacing: 2px; }
+        .mode-container { background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; padding: 3rem; text-align: center; }
 
         #notification-toast { position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--primary-color); color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 20px var(--primary-color); font-family: 'Orbitron', sans-serif; display: none; z-index: 1000; }
     </style>
 </head>
-<body class="theme-epic2">
+<body>
 
     <canvas id="space-canvas"></canvas>
     <div class="scanline"></div>
@@ -100,8 +94,6 @@
                 <button onclick="requestNotificationPermission()" class="notify-btn" id="notify-btn">🔔 Bildirimleri Aç</button>
                 <button onclick="handleAuthClick()" class="auth-btn" id="auth-btn">🛸 YouTube Bağlan</button>
             </div>
-
-            <!-- Giriş yapıldığında kullanıcının bilgileri burada görünecek -->
             <div id="user-profile"></div>
         </header>
 
@@ -111,28 +103,12 @@
         </nav>
 
         <div id="page-records" class="page-content active-page">
-            <div class="nav-wrapper">
-                <div class="nav-group">
-                    <span class="group-title">❖ ANA SİNYALLER</span>
-                    <div class="category-nav">
-                        <button onclick="setTheme('epic2', this)" class="active">Epic 2</button>
-                        <button onclick="setTheme('60parsecs', this)">60 Parsecs!</button>
-                        <button onclick="setTheme('60seconds', this)">60 Seconds!</button>
-                        <button onclick="setTheme('terraria', this)">Terraria</button>
-                        <button onclick="setTheme('amongus', this)">Among Us</button>
-                    </div>
-                </div>
-
-                <div class="nav-group rusty-group">
-                    <span class="group-title">👁️ RUSTY LAKE SERİSİ</span>
-                    <div class="category-nav">
-                        <button onclick="setTheme('rustylake', this)">Rusty Lake Hotel</button>
-                        <button onclick="setTheme('thepastwithin', this)">The Past Within</button>
-                        <button onclick="setTheme('servantoflake', this)">Servant of the Lake</button>
-                    </div>
-                </div>
+            <!-- Otomatik Oluşturulan Oynatma Listesi Butonları -->
+            <div class="category-nav" id="category-nav">
+                <div class="loading">Oynatma Listeleri Yükleniyor...</div>
             </div>
 
+            <!-- Video Kartları Izgarası -->
             <div class="video-grid" id="video-grid"></div>
         </div>
 
@@ -147,24 +123,23 @@
     </div>
 
     <script>
-        // OAuth 2.0 Ayarları
+        // API VE OAUTH YAPILANDIRMASI
         const CLIENT_ID = '477152702497-2j98r43u0gbsiapndv4iisq6e9ldh5rv.apps.googleusercontent.com';
-        const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+        const API_KEY = 'AIzaSyB3ZPLI9O-LvKB7LMqMgPdxqz8-79qLyMs';
+        const CHANNEL_ID = 'UCLZ6rdlFePsR8_vqxY48XRw';
+        const SCOPES = 'https://www.googleapis.com/auth/youtube.force-ssl'; // Yazma/Beğenme yetkisi
+
         let tokenClient;
         let accessToken = null;
+        let currentPlaylistId = null;
 
-        const playlistMap = {
-            'epic2': 'PLLKvg0yS22Fw',
-            '60parsecs': 'PLhj5t0p7f5slHhAsdhFAWNFbSz9J0tXeu',
-            '60seconds': 'PLhj5t0p7f5snYLm1YY6dyDZCkjqQv7IWe',
-            'terraria': 'PLhj5t0p7f5snehYw293m9Wu6VIpQcxQ3U',
-            'amongus': 'PLMY4rj2ePE2E',
-            'rustylake': 'PLCCDy4OSo2VM',
-            'thepastwithin': 'PLHIc0z9uihUo',
-            'servantoflake': 'PLY41Z_00gFuc'
+        // Sayı Biçimlendirici (Örn: 14500 -> 14,5 B)
+        const formatNumber = num => {
+            if (!num) return '0';
+            return new Intl.NumberFormat('tr-TR', { notation: 'compact', maximumFractionDigits: 1 }).format(num);
         };
 
-        // OAuth İstemcisini Başlatma
+        // 1. OAUTH VE PROFiL YÖNETİMİ
         function initOAuth() {
             if (typeof google !== 'undefined' && google.accounts) {
                 tokenClient = google.accounts.oauth2.initTokenClient({
@@ -173,8 +148,9 @@
                     callback: (tokenResponse) => {
                         if (tokenResponse && tokenResponse.access_token) {
                             accessToken = tokenResponse.access_token;
-                            showToast("Bağlantı Başarılı!");
+                            showToast("YouTube Bağlantısı Başarılı!");
                             fetchUserProfile();
+                            if (currentPlaylistId) fetchPlaylistVideos(currentPlaylistId); // Beğen butonlarını aktif etmek için yenile
                         }
                     },
                 });
@@ -192,10 +168,7 @@
 
         function fetchUserProfile() {
             fetch('https://www.googleapis.com/youtube/v3/channels?mine=true&part=snippet,statistics', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Accept': 'application/json'
-                }
+                headers: { 'Authorization': `Bearer ${accessToken}` }
             })
             .then(res => res.json())
             .then(data => {
@@ -207,7 +180,7 @@
                         <img src="${ch.snippet.thumbnails.default.url}" alt="Profil">
                         <div class="user-info-text">
                             <h4>${ch.snippet.title}</h4>
-                            <p>Abone: ${ch.statistics.subscriberCount}</p>
+                            <p>Abone: ${formatNumber(ch.statistics.subscriberCount)}</p>
                         </div>
                     `;
                     document.getElementById('auth-btn').innerText = "✓ Bağlandı";
@@ -216,15 +189,140 @@
             .catch(err => console.error("Profil çekme hatası:", err));
         }
 
+        // 2. OTOMATİK OYNATMA LİSTELERİNİ ÇEKME & BUTON OLUŞTURMA
+        async function fetchPlaylists() {
+            const navContainer = document.getElementById('category-nav');
+            try {
+                const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
+                const data = await res.json();
+
+                if (data.items && data.items.length > 0) {
+                    navContainer.innerHTML = data.items.map((pl, index) => `
+                        <button onclick="selectPlaylist('${pl.id}', this)" class="${index === 0 ? 'active' : ''}">
+                            ${pl.snippet.title}
+                        </button>
+                    `).join('');
+
+                    // İlk oynatma listesini otomatik yükle
+                    selectPlaylist(data.items[0].id, navContainer.querySelector('button'));
+                } else {
+                    navContainer.innerHTML = '<div class="error">Oynatma listesi bulunamadı.</div>';
+                }
+            } catch (err) {
+                console.error("Playlist çekme hatası:", err);
+                navContainer.innerHTML = '<div class="error">Listeler yüklenemedi! API Key/Kanal ID kontrol edin.</div>';
+            }
+        }
+
+        function selectPlaylist(playlistId, btn) {
+            currentPlaylistId = playlistId;
+            document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            fetchPlaylistVideos(playlistId);
+        }
+
+        // 3. VİDEOLARI VE İSTATİSTİKLERİ ÇEKME
+        async function fetchPlaylistVideos(playlistId) {
+            const gridContainer = document.getElementById('video-grid');
+            gridContainer.innerHTML = '<div class="loading">Sinyal alınıyor...</div>';
+
+            try {
+                // A) Oynatma listesindeki videoları alma
+                const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=20&key=${API_KEY}`);
+                const data = await res.json();
+
+                if (!data.items || data.items.length === 0) {
+                    gridContainer.innerHTML = '<div class="error">Bu listede video yok.</div>';
+                    return;
+                }
+
+                // B) Videoların ID'lerini toplama ve detaylı istatistiklerini (izlenme/beğeni) çekme
+                const videoIds = data.items.map(item => item.contentDetails.videoId);
+                const statsMap = await fetchVideoStats(videoIds);
+
+                // C) Kartları çizdirme
+                gridContainer.innerHTML = data.items.map(item => {
+                    const vId = item.contentDetails.videoId;
+                    const stats = statsMap[vId] || { viewCount: 0, likeCount: 0 };
+                    
+                    return `
+                        <div class="video-card">
+                            <div class="thumbnail-wrapper">
+                                <img src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.snippet.title}">
+                            </div>
+                            <div class="video-info">
+                                <h3>${item.snippet.title}</h3>
+                                
+                                <div class="video-metrics">
+                                    <span>👁️ ${formatNumber(stats.viewCount)}</span>
+                                    <span>👍 ${formatNumber(stats.likeCount)}</span>
+                                </div>
+
+                                <div class="card-actions">
+                                    <a href="https://www.youtube.com/watch?v=${vId}" target="_blank" class="watch-btn">İZLE</a>
+                                    ${accessToken ? `
+                                        <button onclick="likeVideo('${vId}', this)" class="like-btn">👍 Beğen</button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error("Video çekme hatası:", err);
+                gridContainer.innerHTML = '<div class="error">Sinyal hatası oluştu!</div>';
+            }
+        }
+
+        async function fetchVideoStats(videoIds) {
+            try {
+                const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds.join(',')}&key=${API_KEY}`);
+                const data = await res.json();
+                return data.items.reduce((acc, item) => {
+                    acc[item.id] = item.statistics;
+                    return acc;
+                }, {});
+            } catch (err) {
+                console.error("İstatistik hatası:", err);
+                return {};
+            }
+        }
+
+        // 4. SİTEDEN BEĞENİ ATMA (POST INSTEAD OF GET)
+        async function likeVideo(videoId, btnElement) {
+            if (!accessToken) {
+                showToast("Lütfen önce YouTube hesabınızla giriş yapın!");
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://www.googleapis.com/youtube/v3/videos/rate?id=${videoId}&rating=like`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (res.ok || res.status === 204) {
+                    btnElement.classList.add('liked');
+                    btnElement.innerHTML = '✓ Beğenildi';
+                    btnElement.disabled = true;
+                    showToast('Video YouTube hesabınızda beğenildi!');
+                } else {
+                    showToast('Beğeni işlemi başarısız oldu.');
+                }
+            } catch (err) {
+                console.error('Beğeni hatası:', err);
+                showToast('Hata oluştu.');
+            }
+        }
+
+        // 5. YARDIMCI SİSTEM FONKSİYONLARI
         const switchPage = (pageId, btn) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
             document.querySelectorAll('.main-nav button').forEach(b => b.classList.toggle('active', b === btn));
-        };
-
-        const setTheme = (game, btn) => {
-            document.body.className = `theme-${game}`;
-            if (btn) document.querySelectorAll('.category-nav button').forEach(b => b.classList.toggle('active', b === btn));
-            if (playlistMap[game]) fetchPlaylistVideos(playlistMap[game]);
         };
 
         const showToast = msg => {
@@ -251,34 +349,7 @@
             });
         };
 
-        const checkForNewVideo = (video, id) => {
-            const key = `last_video_${id}`, current = video.link.split('v=')[1];
-            if (localStorage.getItem(key) && localStorage.getItem(key) !== current) {
-                showToast(`YENİ VİDEO: ${video.title}`);
-                if (Notification.permission === "granted") new Notification("🚀 YENİ SİNYAL!", { body: video.title, icon: `https://img.youtube.com/vi/${current}/hqdefault.jpg` });
-            }
-            localStorage.setItem(key, current);
-        };
-
-        async function fetchPlaylistVideos(playlistId) {
-            const container = document.getElementById('video-grid');
-            container.innerHTML = '<div class="loading">Sinyal alınıyor...</div>';
-            try {
-                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`)}`);
-                const data = await res.json();
-                if (data.status === 'ok' && data.items.length) {
-                    checkForNewVideo(data.items[0], playlistId);
-                    container.innerHTML = data.items.map(item => {
-                        const vId = item.link.split('v=')[1];
-                        return `<div class="video-card">
-                            <div class="thumbnail-wrapper"><img src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.title}"></div>
-                            <div class="video-info"><h3>${item.title}</h3><a href="${item.link}" target="_blank" class="watch-btn">İZLE</a></div>
-                        </div>`;
-                    }).join('');
-                } else container.innerHTML = '<div class="error">Arşivde veri bulunamadı.</div>';
-            } catch { container.innerHTML = '<div class="error">Sinyal hatası!</div>'; }
-        }
-
+        // Yıldız Arka Plan Animasyonu
         const canvas = document.getElementById('space-canvas'), ctx = canvas.getContext('2d');
         let stars = [];
         const resizeCanvas = () => {
@@ -292,13 +363,14 @@
             requestAnimationFrame(animateStars);
         };
 
+        // YÜKLEME
         window.onload = () => {
             initOAuth();
             if ("Notification" in window) updateNotificationButtonState(Notification.permission);
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas(); 
             animateStars(); 
-            fetchPlaylistVideos(playlistMap['epic2']);
+            fetchPlaylists(); // Kanal playlistlerini ve videoları yükle
         };
     </script>
 </body>
