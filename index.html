@@ -382,24 +382,49 @@
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
-            // 4. ÜCRETSİZ GÖRSEL API: Buton ismine özel dinamik arka plan ve yumuşak geçiş
+            // Dinamik Arka Planı localStorage önbellek destekli olarak güncelle
             updateDynamicBackground(title);
 
             fetchPlaylistVideos(playlistId, false);
         }
 
-        // 3. DİNAMİK GÖRSEL API & YUMUŞAK ARKA PLAN GEÇİŞİ
+        // 3. POLLINATIONS AI & LOCALSTORAGE ÖNBELLEKLEME MEKANİZMASI
+        function getOrGenerateAIBg(title) {
+            const cacheKey = `vt_bg_${title}`;
+            
+            // 1. Önceden localStorage'a kaydedilmiş mi kontrol et
+            try {
+                const cachedUrl = localStorage.getItem(cacheKey);
+                if (cachedUrl) {
+                    return cachedUrl;
+                }
+            } catch (e) {
+                console.warn("localStorage okuma hatası:", e);
+            }
+
+            // 2. Yoksa Pollinations AI için yeni URL oluştur ve kaydet
+            const queryPrompt = encodeURIComponent(`${title} epic landscape dark aesthetic digital art HD wallpaper`);
+            const aiImageUrl = `https://image.pollinations.ai/prompt/${queryPrompt}?width=1920&height=1080&nologo=true`;
+
+            try {
+                localStorage.setItem(cacheKey, aiImageUrl);
+            } catch (e) {
+                console.warn("localStorage yazma hatası (bellek dolu olabilir):", e);
+            }
+
+            return aiImageUrl;
+        }
+
         function updateDynamicBackground(title) {
             const bgOverlay = document.getElementById('bg-overlay');
             
             // Mevcut resmi hafif karartarak yumuşak geçişi başlat
             bgOverlay.style.opacity = '0.3';
 
-            // Pollinations AI & Unsplash Fallback sorgusu oluştur (Buton adı + epic landscape)
-            const queryPrompt = encodeURIComponent(`${title} epic landscape dark aesthetic digital art HD wallpaper`);
-            const aiImageUrl = `https://image.pollinations.ai/prompt/${queryPrompt}?width=1920&height=1080&nologo=true`;
+            // Görsel URL'sini önbellekten al veya oluştur
+            const aiImageUrl = getOrGenerateAIBg(title);
 
-            // Görseli arka planda yükle (Preload), tamamen inince yumuşakça göster
+            // Görseli arka planda önceden yükle (Preload), tamamen inince göster
             const imgLoader = new Image();
             imgLoader.src = aiImageUrl;
 
@@ -409,7 +434,7 @@
             };
 
             imgLoader.onerror = () => {
-                // Herhangi bir ağ hatasında yedek Unsplash teması göster
+                // Ağ veya yükleme hatasında yedek Unsplash teması göster
                 const fallbackUrl = `https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920`;
                 bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${fallbackUrl}')`;
                 bgOverlay.style.opacity = '1';
@@ -653,7 +678,7 @@
         window.onload = () => {
             initOAuth();
             if ("Notification" in window) updateNotificationButtonState(Notification.permission);
-            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('resize', resizeCanvas, { passive: true });
             resizeCanvas(); 
             animateStars(); 
             fetchPlaylists();
