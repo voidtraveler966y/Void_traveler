@@ -21,7 +21,25 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Rajdhani', sans-serif; background-color: var(--bg-color); color: #fff; overflow-x: hidden; transition: background-color 0.5s ease; min-height: 100vh; }
         
-        #space-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        /* Arka Plan Katmanları */
+        #space-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
+        
+        /* Dinamik API Arka Planı ve Yumuşak Geçiş Katmanı */
+        #bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out, filter 0.8s ease-in-out;
+            pointer-events: none;
+        }
+
         .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 3px 100%; z-index: -1; pointer-events: none; }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
@@ -65,9 +83,11 @@
         .category-nav { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
         .category-nav button { font-family: 'Orbitron', sans-serif; background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 0.7rem 1.4rem; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; border-radius: 4px; }
         .category-nav button:hover, .category-nav button.active { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 15px var(--primary-color); }
+        .category-nav button.btn-tumu { border-color: var(--accent-gold); color: var(--accent-gold); }
+        .category-nav button.btn-tumu:hover, .category-nav button.btn-tumu.active { background: var(--accent-gold); color: #000; box-shadow: 0 0 15px var(--accent-gold); }
 
         .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-        .video-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, border-color 0.5s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .video-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, border-color 0.5s ease; display: flex; flex-direction: column; justify-content: space-between; backdrop-filter: blur(5px); }
         .video-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .thumbnail-wrapper { position: relative; }
         .thumbnail-wrapper img { width: 100%; display: block; border-bottom: 2px solid var(--primary-color); }
@@ -96,7 +116,7 @@
         .load-more-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 20px var(--primary-color); }
 
         .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .hud-card { background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; padding: 1.8rem; position: relative; overflow: hidden; transition: transform 0.3s ease; }
+        .hud-card { background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; padding: 1.8rem; position: relative; overflow: hidden; transition: transform 0.3s ease; backdrop-filter: blur(5px); }
         .hud-card:hover { transform: translateY(-3px); }
         .hud-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary-color); box-shadow: var(--text-glow); }
         .hud-card h3 { font-family: 'Orbitron', sans-serif; color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
@@ -122,6 +142,7 @@
 <body>
 
     <canvas id="space-canvas"></canvas>
+    <div id="bg-overlay"></div>
     <div class="scanline"></div>
     <div id="notification-toast"></div>
 
@@ -224,6 +245,8 @@
         const CLIENT_ID = '477152702497-2j98r43u0gbsiapndv4iisq6e9ldh5rv.apps.googleusercontent.com';
         const API_KEY = 'AIzaSyB3ZPLI9O-LvKB7LMqMgPdxqz8-79qLyMs';
         const CHANNEL_ID = 'UCLZ6rdlFePsR8_vqxY48XRw';
+        // Tüm kanaldaki videoları otomatik getiren yüklemeler oynatma listesi ID'si (UCL -> UUL)
+        const UPLOADS_PLAYLIST_ID = 'UULZ6rdlFePsR8_vqxY48XRw';
         const SCOPES = 'https://www.googleapis.com/auth/youtube.force-ssl';
 
         let tokenClient;
@@ -297,40 +320,103 @@
             .catch(err => console.error("Profil çekme hatası:", err));
         }
 
-        // 2. OYNATMA LİSTELERİNİ ÇEKME
+        // 2. OYNATMA LİSTELERİNİ ÇEKME & "TÜMÜ" BUTONU
         async function fetchPlaylists() {
             const navContainer = document.getElementById('category-nav');
             try {
                 const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
                 const data = await res.json();
 
+                // En başa her zaman sabit "TÜMÜ" butonunu ekle
+                let buttonsHTML = `
+                    <button onclick="selectTumu(this)" class="btn-tumu active">
+                        🌌 TÜMÜ
+                    </button>
+                `;
+
                 if (data.items && data.items.length > 0) {
-                    navContainer.innerHTML = data.items.map((pl, index) => `
-                        <button onclick="selectPlaylist('${pl.id}', this)" class="${index === 0 ? 'active' : ''}">
+                    buttonsHTML += data.items.map(pl => `
+                        <button onclick="selectPlaylist('${pl.id}', '${sanitizeHTML(pl.snippet.title)}', this)">
                             ${sanitizeHTML(pl.snippet.title)}
                         </button>
                     `).join('');
-
-                    selectPlaylist(data.items[0].id, navContainer.querySelector('button'));
-                } else {
-                    navContainer.innerHTML = '<div class="error">Oynatma listesi bulunamadı.</div>';
                 }
+
+                navContainer.innerHTML = buttonsHTML;
+                
+                // Varsayılan olarak "TÜMÜ" seçili başlat
+                selectTumu(navContainer.querySelector('.btn-tumu'));
+
             } catch (err) {
                 console.error("Playlist çekme hatası:", err);
-                navContainer.innerHTML = '<div class="error">Listeler yüklenemedi! İnternet veya API Key kısıtlamanızı kontrol edin.</div>';
+                navContainer.innerHTML = `
+                    <button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>
+                    <div class="error" style="width:100%;">Listeler çekilemedi ama Tüm Videolar modu aktif.</div>
+                `;
+                selectTumu(document.querySelector('.btn-tumu'));
             }
         }
 
-        function selectPlaylist(playlistId, btn) {
+        // "TÜMÜ" BUTONUNA BASILDIĞINDA
+        function selectTumu(btn) {
+            currentPlaylistId = UPLOADS_PLAYLIST_ID;
+            nextPageToken = null;
+            loadedVideosData = [];
+            
+            document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            // Arka planı yumuşakça varsayılan yıldızlı uzay canvas'ına sıfırla
+            const bgOverlay = document.getElementById('bg-overlay');
+            bgOverlay.style.opacity = '0';
+
+            fetchPlaylistVideos(currentPlaylistId, false);
+        }
+
+        // KATEGORİ BUTONLARINA BASILDIĞINDA
+        function selectPlaylist(playlistId, title, btn) {
             currentPlaylistId = playlistId;
             nextPageToken = null;
             loadedVideosData = [];
+
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
+
+            // 4. ÜCRETSİZ GÖRSEL API: Buton ismine özel dinamik arka plan ve yumuşak geçiş
+            updateDynamicBackground(title);
+
             fetchPlaylistVideos(playlistId, false);
         }
 
-        // 3. VİDEOLARI VE İSTATİSTİKLERİ ÇEKME
+        // 3. DİNAMİK GÖRSEL API & YUMUŞAK ARKA PLAN GEÇİŞİ
+        function updateDynamicBackground(title) {
+            const bgOverlay = document.getElementById('bg-overlay');
+            
+            // Mevcut resmi hafif karartarak yumuşak geçişi başlat
+            bgOverlay.style.opacity = '0.3';
+
+            // Pollinations AI & Unsplash Fallback sorgusu oluştur (Buton adı + epic landscape)
+            const queryPrompt = encodeURIComponent(`${title} epic landscape dark aesthetic digital art HD wallpaper`);
+            const aiImageUrl = `https://image.pollinations.ai/prompt/${queryPrompt}?width=1920&height=1080&nologo=true`;
+
+            // Görseli arka planda yükle (Preload), tamamen inince yumuşakça göster
+            const imgLoader = new Image();
+            imgLoader.src = aiImageUrl;
+
+            imgLoader.onload = () => {
+                bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${aiImageUrl}')`;
+                bgOverlay.style.opacity = '1';
+            };
+
+            imgLoader.onerror = () => {
+                // Herhangi bir ağ hatasında yedek Unsplash teması göster
+                const fallbackUrl = `https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920`;
+                bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${fallbackUrl}')`;
+                bgOverlay.style.opacity = '1';
+            };
+        }
+
+        // 4. VİDEOLARI VE İSTATİSTİKLERİ ÇEKME
         async function fetchPlaylistVideos(playlistId, isLoadMore = false) {
             const gridContainer = document.getElementById('video-grid');
             const loadMoreBtnContainer = document.getElementById('load-more-container');
@@ -347,7 +433,7 @@
                 const data = await res.json();
 
                 if (!data.items || data.items.length === 0) {
-                    if (!isLoadMore) gridContainer.innerHTML = '<div class="error">Bu listede video bulunamadı.</div>';
+                    if (!isLoadMore) gridContainer.innerHTML = '<div class="error">Bu kategoride video bulunamadı.</div>';
                     loadMoreBtnContainer.style.display = 'none';
                     return;
                 }
@@ -399,7 +485,7 @@
             }
         }
 
-        // 4. EKRANA VİDEO KARTLARINI ÇİZDİRME & ARAMA/SIRALAMA
+        // 5. EKRANA VİDEO KARTLARINI ÇİZDİRME & ARAMA/SIRALAMA
         function renderVideoGrid(videos) {
             const gridContainer = document.getElementById('video-grid');
             if (videos.length === 0) {
@@ -461,7 +547,7 @@
             renderVideoGrid(filtered);
         }
 
-        // 5. VIDEO MODAL POP-UP YÖNETİMİ
+        // 6. VIDEO MODAL POP-UP YÖNETİMİ
         function openVideoModal(videoId, title) {
             const modal = document.getElementById('video-modal');
             const iframe = document.getElementById('modal-iframe');
@@ -485,12 +571,11 @@
             }
         }
 
-        // ESC tuşuyla modal kapatma
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeVideoModal();
         });
 
-        // 6. BEĞENİ GÖNDERME (POST API)
+        // 7. BEĞENİ GÖNDERME (POST API)
         async function likeVideo(videoId, btnElement) {
             if (!accessToken) {
                 showToast("Lütfen önce YouTube hesabınızla giriş yapın!");
@@ -520,7 +605,7 @@
             }
         }
 
-        // 7. SİSTEM & YARDIMCI FONKSİYONLAR
+        // 8. SİSTEM & YARDIMCI FONKSİYONLAR
         const switchPage = (pageId, btn) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
             document.querySelectorAll('.main-nav button').forEach(b => b.classList.toggle('active', b === btn));
@@ -564,7 +649,7 @@
             requestAnimationFrame(animateStars);
         };
 
-        // YÜKLEME
+        // İLK YÜKLEME
         window.onload = () => {
             initOAuth();
             if ("Notification" in window) updateNotificationButtonState(Notification.permission);
@@ -576,3 +661,4 @@
     </script>
 </body>
 </html>
+
