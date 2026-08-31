@@ -245,7 +245,6 @@
         const CLIENT_ID = '477152702497-2j98r43u0gbsiapndv4iisq6e9ldh5rv.apps.googleusercontent.com';
         const API_KEY = 'AIzaSyB3ZPLI9O-LvKB7LMqMgPdxqz8-79qLyMs';
         const CHANNEL_ID = 'UCLZ6rdlFePsR8_vqxY48XRw';
-        // Tüm kanaldaki videoları otomatik getiren yüklemeler oynatma listesi ID'si (UCL -> UUL)
         const UPLOADS_PLAYLIST_ID = 'UULZ6rdlFePsR8_vqxY48XRw';
         const SCOPES = 'https://www.googleapis.com/auth/youtube.force-ssl';
 
@@ -327,7 +326,6 @@
                 const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
                 const data = await res.json();
 
-                // En başa her zaman sabit "TÜMÜ" butonunu ekle
                 let buttonsHTML = `
                     <button onclick="selectTumu(this)" class="btn-tumu active">
                         🌌 TÜMÜ
@@ -343,8 +341,6 @@
                 }
 
                 navContainer.innerHTML = buttonsHTML;
-                
-                // Varsayılan olarak "TÜMÜ" seçili başlat
                 selectTumu(navContainer.querySelector('.btn-tumu'));
 
             } catch (err) {
@@ -357,7 +353,6 @@
             }
         }
 
-        // "TÜMÜ" BUTONUNA BASILDIĞINDA
         function selectTumu(btn) {
             currentPlaylistId = UPLOADS_PLAYLIST_ID;
             nextPageToken = null;
@@ -366,14 +361,12 @@
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
-            // Arka planı yumuşakça varsayılan yıldızlı uzay canvas'ına sıfırla
             const bgOverlay = document.getElementById('bg-overlay');
             bgOverlay.style.opacity = '0';
 
             fetchPlaylistVideos(currentPlaylistId, false);
         }
 
-        // KATEGORİ BUTONLARINA BASILDIĞINDA
         function selectPlaylist(playlistId, title, btn) {
             currentPlaylistId = playlistId;
             nextPageToken = null;
@@ -382,15 +375,61 @@
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
-            // Dinamik Arka Planı localStorage önbellek destekli olarak güncelle
+            // Dinamik Arka Planı Oyun Temasına Göre LocalStorage Destekli Güncelle
             updateDynamicBackground(title);
 
             fetchPlaylistVideos(playlistId, false);
         }
 
-        // 3. POLLINATIONS AI & LOCALSTORAGE ÖNBELLEKLEME MEKANİZMASI
+        // =========================================================================
+        // 3. YENİDEN YAPILANDIRILMIŞ 2. KISIM: OYUN TEMASINA ÖZEL AI & LOCALSTORAGE
+        // =========================================================================
+
+        // Tanımlı Özel Oyun Prompt Haritası
+        const GAME_THEME_MAP = {
+            'epic 2': 'vibrant green plains and lush rolling hills, majestic mountains background, colorful pencils, crayons and art supplies scattered around, whimsical drawing game landscape, 4k detailed digital art',
+            'epic': 'vibrant green plains and lush rolling hills, majestic mountains background, colorful pencils and art supplies scattered, whimsical drawing game landscape, 4k detailed',
+            'terraria': 'terraria pixel art style biome landscape, lush green grass, floating islands, underground cavern entrance, magical 16-bit video game environment',
+            'minecraft': 'blocky green plains, voxel mountains, beautiful cubic landscape, minecraft survival world wallpaper, 4k digital art',
+            'rusty lake': 'dark surreal misterious lake background, rusty lake style gothic illustration, eerie atmosphere, vintage drawing art',
+            '60 parsecs': 'retro-futuristic atomic age space shelter interior, 1960s sci-fi survival game environment, cartoon dark humor art style',
+            '60 seconds': 'atomic fallout shelter, emergency supplies, underground survival bunker, cartoon dark humor art style',
+            'inscryption': 'dark sinister wooden cabin table, eerie glowing cards, creepy forest shadows, inscryption video game aesthetic',
+            'clash royale': 'fantasy battle arena, medieval castle towers, elixir potion, vibrant cartoon battleground landscape',
+            'pokemon': 'lush anime adventure landscape, tall grass field, scenic mountains, vibrant pokeball adventure world aesthetic'
+        };
+
+        // Akıllı Başlık Analizcisi (Yeni ve Bilinmeyen Tuşlar İçin Özel Prompt Hazırlayıcı)
+        function buildGamePrompt(title) {
+            const lower = title.toLowerCase().trim();
+
+            // 1. Sözlükte bilinen bir oyun adı var mı kontrol et
+            for (const [key, prompt] of Object.entries(GAME_THEME_MAP)) {
+                if (lower.includes(key)) {
+                    return prompt;
+                }
+            }
+
+            // 2. Yeni gelen bir tuş ise başlığı temizleyip tam o oyunun atmosferine özel prompt üret
+            const cleanedTitle = title
+                .replace(/(bölüm|part|gameplay|oynanış|türkçe|sezon|season|\d+)/gi, '')
+                .trim();
+
+            return `${cleanedTitle} video game world concept art, iconic atmospheric location landscape, vibrant environment, detailed digital wallpaper, cinematic lighting, 4k quality`;
+        }
+
+        // Sabit Seed Üretici (Aynı kategoriye her tıklamada aynı görselin üretilmesini sağlar)
+        function stringToSeed(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return Math.abs(hash);
+        }
+
+        // LocalStorage Kontrollü Görsel Üretme ve Çağırma
         function getOrGenerateAIBg(title) {
-            const cacheKey = `vt_bg_${title}`;
+            const cacheKey = `vt_bg_${title.toLowerCase().trim()}`;
             
             // 1. Önceden localStorage'a kaydedilmiş mi kontrol et
             try {
@@ -402,14 +441,19 @@
                 console.warn("localStorage okuma hatası:", e);
             }
 
-            // 2. Yoksa Pollinations AI için yeni URL oluştur ve kaydet
-            const queryPrompt = encodeURIComponent(`${title} epic landscape dark aesthetic digital art HD wallpaper`);
-            const aiImageUrl = `https://image.pollinations.ai/prompt/${queryPrompt}?width=1920&height=1080&nologo=true`;
+            // 2. Yoksa Oyun Temasına Özel Akıllı Prompt Oluştur
+            const promptText = buildGamePrompt(title);
+            const encodedPrompt = encodeURIComponent(promptText);
+            const seed = stringToSeed(title);
+            
+            // Pollinations AI URL (Sabit Seed İle)
+            const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1080&nologo=true&seed=${seed}`;
 
+            // LocalStorage Belleğine Kaydet
             try {
                 localStorage.setItem(cacheKey, aiImageUrl);
             } catch (e) {
-                console.warn("localStorage yazma hatası (bellek dolu olabilir):", e);
+                console.warn("localStorage yazma hatası:", e);
             }
 
             return aiImageUrl;
@@ -418,28 +462,29 @@
         function updateDynamicBackground(title) {
             const bgOverlay = document.getElementById('bg-overlay');
             
-            // Mevcut resmi hafif karartarak yumuşak geçişi başlat
-            bgOverlay.style.opacity = '0.3';
+            // Yumuşak geçiş başlat
+            bgOverlay.style.opacity = '0.2';
 
-            // Görsel URL'sini önbellekten al veya oluştur
             const aiImageUrl = getOrGenerateAIBg(title);
 
-            // Görseli arka planda önceden yükle (Preload), tamamen inince göster
             const imgLoader = new Image();
             imgLoader.src = aiImageUrl;
 
             imgLoader.onload = () => {
+                // Ön plandaki metinlerin net okunabilmesi için karartma filtresi uygula
                 bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${aiImageUrl}')`;
                 bgOverlay.style.opacity = '1';
             };
 
             imgLoader.onerror = () => {
-                // Ağ veya yükleme hatasında yedek Unsplash teması göster
-                const fallbackUrl = `https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920`;
+                // Yükleme hatasında tematik yedek görsel göster
+                const fallbackUrl = `https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920`;
                 bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${fallbackUrl}')`;
                 bgOverlay.style.opacity = '1';
             };
         }
+
+        // =========================================================================
 
         // 4. VİDEOLARI VE İSTATİSTİKLERİ ÇEKME
         async function fetchPlaylistVideos(playlistId, isLoadMore = false) {
