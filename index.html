@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Void Traveler | Uzay İletişim Ağı</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google OAuth 2.0 Kütüphanesi -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <style>
         :root { --primary-color: #00f3ff; --bg-color: #050510; --card-bg: rgba(0, 24, 40, 0.7); --text-glow: 0 0 10px var(--primary-color); }
         .theme-epic2 { --primary-color: #00f3ff; --bg-color: #050510; --card-bg: rgba(0, 24, 40, 0.7); }
@@ -27,11 +30,20 @@
         header p { font-size: 1.2rem; color: #aaa; margin-top: 0.5rem; letter-spacing: 3px; }
 
         .header-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
-        .yt-button, .notify-btn { padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; border-radius: 4px; cursor: pointer; }
+        .yt-button, .notify-btn, .auth-btn { padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; border-radius: 4px; cursor: pointer; }
         .yt-button { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
         .yt-button:hover { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 25px #ff0000; transform: translateY(-2px); }
         .notify-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
         .notify-btn:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: translateY(-2px); }
+        
+        /* OAuth Buton & Profil Stili */
+        .auth-btn { background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        .auth-btn:hover { background: #ffd700; color: #000; box-shadow: 0 0 20px #ffd700; transform: translateY(-2px); }
+        #user-profile { display: none; align-items: center; justify-content: center; gap: 15px; margin-top: 1.5rem; padding: 10px 20px; background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; box-shadow: var(--text-glow); }
+        #user-profile img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color); }
+        #user-profile .user-info-text { text-align: left; font-family: 'Orbitron', sans-serif; }
+        #user-profile h4 { font-size: 1rem; color: #fff; }
+        #user-profile p { font-size: 0.8rem; color: var(--primary-color); }
 
         .main-nav { display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 1rem; }
         .main-nav button { background: none; border: none; color: #888; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; transition: all 0.3s ease; }
@@ -86,7 +98,11 @@
             <div class="header-buttons">
                 <a href="https://www.youtube.com/@void_traveler966" target="_blank" class="yt-button">Ana Gemiye Dön</a>
                 <button onclick="requestNotificationPermission()" class="notify-btn" id="notify-btn">🔔 Bildirimleri Aç</button>
+                <button onclick="handleAuthClick()" class="auth-btn" id="auth-btn">🛸 YouTube Bağlan</button>
             </div>
+
+            <!-- Giriş yapıldığında kullanıcının bilgileri burada görünecek -->
+            <div id="user-profile"></div>
         </header>
 
         <nav class="main-nav">
@@ -131,6 +147,12 @@
     </div>
 
     <script>
+        // OAuth 2.0 Ayarları
+        const CLIENT_ID = '477152702497-2j98r43u0gbsiapndv4iisq6e9ldh5rv.apps.googleusercontent.com';
+        const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly';
+        let tokenClient;
+        let accessToken = null;
+
         const playlistMap = {
             'epic2': 'PLLKvg0yS22Fw',
             '60parsecs': 'PLhj5t0p7f5slHhAsdhFAWNFbSz9J0tXeu',
@@ -141,6 +163,58 @@
             'thepastwithin': 'PLHIc0z9uihUo',
             'servantoflake': 'PLY41Z_00gFuc'
         };
+
+        // OAuth İstemcisini Başlatma
+        function initOAuth() {
+            if (typeof google !== 'undefined' && google.accounts) {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES,
+                    callback: (tokenResponse) => {
+                        if (tokenResponse && tokenResponse.access_token) {
+                            accessToken = tokenResponse.access_token;
+                            showToast("Bağlantı Başarılı!");
+                            fetchUserProfile();
+                        }
+                    },
+                });
+            }
+        }
+
+        function handleAuthClick() {
+            if (!tokenClient) initOAuth();
+            if (tokenClient) {
+                tokenClient.requestAccessToken();
+            } else {
+                showToast("OAuth kütüphanesi yükleniyor, lütfen tekrar deneyin.");
+            }
+        }
+
+        function fetchUserProfile() {
+            fetch('https://www.googleapis.com/youtube/v3/channels?mine=true&part=snippet,statistics', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.items && data.items.length > 0) {
+                    const ch = data.items[0];
+                    const profileDiv = document.getElementById('user-profile');
+                    profileDiv.style.display = 'flex';
+                    profileDiv.innerHTML = `
+                        <img src="${ch.snippet.thumbnails.default.url}" alt="Profil">
+                        <div class="user-info-text">
+                            <h4>${ch.snippet.title}</h4>
+                            <p>Abone: ${ch.statistics.subscriberCount}</p>
+                        </div>
+                    `;
+                    document.getElementById('auth-btn').innerText = "✓ Bağlandı";
+                }
+            })
+            .catch(err => console.error("Profil çekme hatası:", err));
+        }
 
         const switchPage = (pageId, btn) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
@@ -218,10 +292,14 @@
             requestAnimationFrame(animateStars);
         };
 
-        if ("Notification" in window) updateNotificationButtonState(Notification.permission);
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas(); animateStars(); fetchPlaylistVideos(playlistMap['epic2']);
+        window.onload = () => {
+            initOAuth();
+            if ("Notification" in window) updateNotificationButtonState(Notification.permission);
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas(); 
+            animateStars(); 
+            fetchPlaylistVideos(playlistMap['epic2']);
+        };
     </script>
 </body>
 </html>
-
