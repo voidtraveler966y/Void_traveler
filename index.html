@@ -214,7 +214,7 @@
                         <div class="update-item">
                             <div class="update-date">EYLÜL 2026</div>
                             <div class="update-title">Yapay Zekâ Arka Plan & UI Modernizasyonu</div>
-                            <div class="update-desc">Kategorilere özel dinamik Pollinations AI arka plan görselleri entegre edildi. Oyun kayıt ekranı modernize edildi.</div>
+                            <div class="update-desc">Kategorilere özel dinamik kapak görselleri entegre edildi. Oyun kayıt ekranı modernize edildi.</div>
                         </div>
                         <div class="update-item">
                             <div class="update-date">AĞUSTOS 2026</div>
@@ -245,6 +245,7 @@
         const SCOPES = 'https://www.googleapis.com/auth/youtube.force-ssl';
 
         let tokenClient, accessToken, currentPlaylistId, nextPageToken, loadedVideosData = [], searchTimeout;
+        let playlistsMap = {}; // Oynatma listesi bilgilerini saklayan harita
 
         const formatNumber = num => num ? new Intl.NumberFormat('tr-TR', { notation: 'compact', maximumFractionDigits: 1 }).format(num) : '0';
 
@@ -307,8 +308,20 @@
                 let buttonsHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>`;
 
                 if (data.items?.length > 0) {
+                    playlistsMap = {};
+                    data.items.forEach(pl => {
+                        const thumbs = pl.snippet?.thumbnails;
+                        // Kalite sırasına göre en iyi kapak görselini belirle
+                        const thumbUrl = thumbs?.maxres?.url || thumbs?.standard?.url || thumbs?.high?.url || thumbs?.medium?.url || thumbs?.default?.url || '';
+                        
+                        playlistsMap[pl.id] = {
+                            title: pl.snippet.title,
+                            thumbUrl: thumbUrl
+                        };
+                    });
+
                     buttonsHTML += data.items.map(pl => `
-                        <button onclick="selectPlaylist('${pl.id}', '${sanitizeHTML(pl.snippet.title)}', this)">
+                        <button onclick="selectPlaylist('${pl.id}', this)">
                             ${sanitizeHTML(pl.snippet.title)}
                         </button>
                     `).join('');
@@ -328,11 +341,12 @@
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             btn?.classList.add('active');
 
+            // TÜMÜ butonunda varsayılan uzay teması aktif kalır
             document.getElementById('bg-overlay').style.opacity = '0';
             fetchPlaylistVideos(currentPlaylistId, false);
         }
 
-        function selectPlaylist(playlistId, title, btn) {
+        function selectPlaylist(playlistId, btn) {
             currentPlaylistId = playlistId;
             nextPageToken = null;
             loadedVideosData = [];
@@ -340,11 +354,15 @@
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             btn?.classList.add('active');
 
-            updateDynamicBackground(title);
+            const playlistInfo = playlistsMap[playlistId];
+            const title = playlistInfo?.title || '';
+            const thumbUrl = playlistInfo?.thumbUrl || '';
+
+            updateDynamicBackground(title, thumbUrl);
             fetchPlaylistVideos(playlistId, false);
         }
 
-        // AI Arka Plan
+        // AI / Fallback Arka Plan Görselleri
         const GAME_THEMES = {
             'epic': 'vibrant green plains, rolling hills, colorful art supplies scattered, drawing game landscape',
             'terraria': 'terraria pixel art biome landscape, floating islands, underground cavern',
@@ -358,6 +376,7 @@
         };
 
         function getOrGenerateAIBg(title) {
+            if (!title) return '';
             const key = title.toLowerCase().trim();
             const cacheKey = `vt_bg_${key}`;
             const cached = localStorage.getItem(cacheKey);
@@ -374,19 +393,34 @@
             return url;
         }
 
-        function updateDynamicBackground(title) {
+        function updateDynamicBackground(title, playlistThumbUrl) {
             const bgOverlay = document.getElementById('bg-overlay');
-            const aiImageUrl = getOrGenerateAIBg(title);
+            
+            // Öncelik: Oynatma Listesinin Kapak Fotoğrafı -> Yoksa AI / Varsayılan Görsel
+            let targetImageUrl = playlistThumbUrl || getOrGenerateAIBg(title);
+
+            if (!targetImageUrl) {
+                bgOverlay.style.opacity = '0';
+                return;
+            }
+
             const imgLoader = new Image();
-            imgLoader.src = aiImageUrl;
+            imgLoader.src = targetImageUrl;
 
             imgLoader.onload = () => {
-                bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${aiImageUrl}')`;
+                bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${targetImageUrl}')`;
                 bgOverlay.style.opacity = '1';
             };
+
             imgLoader.onerror = () => {
-                bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920')`;
-                bgOverlay.style.opacity = '1';
+                // Kapak görseli yüklenemezse yedek görsele düş
+                const fallbackUrl = getOrGenerateAIBg(title);
+                if (fallbackUrl && fallbackUrl !== targetImageUrl) {
+                    bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${fallbackUrl}')`;
+                    bgOverlay.style.opacity = '1';
+                } else {
+                    bgOverlay.style.opacity = '0';
+                }
             };
         }
 
@@ -594,3 +628,4 @@
     </script>
 </body>
 </html>
+
