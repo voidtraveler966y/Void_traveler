@@ -79,7 +79,7 @@
         .thumbnail-wrapper { position: relative; }
         .thumbnail-wrapper img { width: 100%; display: block; border-bottom: 2px solid var(--primary-color); }
         .play-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; cursor: pointer; }
-        .thumbnail-wrapper:hover .play-overlay { opacity: 1; }
+        .thumbnail-wrapper:hover .play-overlay, .play-overlay:focus-visible { opacity: 1; }
         .play-icon { width: 50px; height: 50px; background: var(--primary-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #000; font-size: 1.5rem; box-shadow: 0 0 20px var(--primary-color); }
 
         .video-info { padding: 1rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -128,6 +128,18 @@
         .video-player-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         .loading, .error { grid-column: 1 / -1; text-align: center; font-size: 1.3rem; color: var(--primary-color); font-family: 'Orbitron', sans-serif; margin-top: 2rem; letter-spacing: 2px; }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            header h1 { font-size: 2rem; letter-spacing: 2px; }
+            header p { font-size: 1rem; letter-spacing: 2px; }
+            .main-nav { gap: 1rem; }
+            .main-nav button { font-size: 0.95rem; }
+            .section-title { font-size: 1.4rem; }
+            .mode-grid { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
         #notification-toast { position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--primary-color); color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 20px var(--primary-color); font-family: 'Orbitron', sans-serif; display: none; z-index: 3000; }
     </style>
 </head>
@@ -201,6 +213,12 @@
         <!-- 2. Oyun Modum -->
         <div id="page-mode" class="page-content">
             <h2 class="section-title">Oyun <span>Modum</span></h2>
+            <div class="mode-grid">
+                <div class="hud-card">
+                    <h3>🎮 Hazırlanıyor</h3>
+                    <p class="hud-text">Bu bölüm yakında güncellenecek. Oyun modu bilgileri burada yer alacak.</p>
+                </div>
+            </div>
         </div>
 
         <!-- 3. Son Güncelleme -->
@@ -246,6 +264,7 @@
 
         let tokenClient, accessToken, currentPlaylistId, nextPageToken, loadedVideosData = [], searchTimeout;
         let playlistsMap = {}; // Oynatma listesi bilgilerini saklayan harita
+        let requestCounter = 0, toastTimer;
 
         const formatNumber = num => num ? new Intl.NumberFormat('tr-TR', { notation: 'compact', maximumFractionDigits: 1 }).format(num) : '0';
 
@@ -264,7 +283,7 @@
                             accessToken = res.access_token;
                             showToast("YouTube Bağlantısı Başarılı!");
                             fetchUserProfile();
-                            if (currentPlaylistId) fetchPlaylistVideos(currentPlaylistId, false);
+                            handleSearchAndSort(); // Beğen butonlarını göstermek için yalnızca yeniden çiz
                         }
                     },
                 });
@@ -294,8 +313,10 @@
                         </div>
                     `;
                     document.getElementById('auth-btn').innerText = "✓ Bağlandı";
+                } else {
+                    document.getElementById('auth-btn').innerText = "✓ Bağlandı";
                 }
-            } catch (err) {}
+            } catch (err) { showToast("Profil bilgisi alınamadı."); }
         }
 
         // Oynatma Listeleri
@@ -333,10 +354,16 @@
             selectTumu(document.querySelector('.btn-tumu'));
         }
 
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('sort-select').value = 'default';
+        }
+
         function selectTumu(btn) {
             currentPlaylistId = UPLOADS_PLAYLIST_ID;
             nextPageToken = null;
             loadedVideosData = [];
+            resetFilters();
             
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             btn?.classList.add('active');
@@ -350,6 +377,7 @@
             currentPlaylistId = playlistId;
             nextPageToken = null;
             loadedVideosData = [];
+            resetFilters();
 
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             btn?.classList.add('active');
@@ -430,6 +458,7 @@
             const loadMoreBtn = document.getElementById('load-more-container');
             
             if (!isLoadMore) gridContainer.innerHTML = '<div class="loading">Sinyal alınıyor...</div>';
+            const requestId = ++requestCounter; // Hızlı kategori değişiminde eski yanıtları yok saymak için
 
             try {
                 let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=20&key=${API_KEY}`;
@@ -437,6 +466,7 @@
 
                 const res = await fetch(url);
                 const data = await res.json();
+                if (requestId !== requestCounter) return;
 
                 if (!data.items?.length) {
                     if (!isLoadMore) gridContainer.innerHTML = '<div class="error">Video bulunamadı.</div>';
@@ -449,6 +479,7 @@
 
                 const videoIds = data.items.map(item => item.contentDetails.videoId);
                 const statsMap = await fetchVideoStats(videoIds);
+                if (requestId !== requestCounter) return;
 
                 const newVideos = data.items.map(item => {
                     const vId = item.contentDetails.videoId;
@@ -463,8 +494,9 @@
                 });
 
                 loadedVideosData = isLoadMore ? [...loadedVideosData, ...newVideos] : newVideos;
-                renderVideoGrid(loadedVideosData);
+                handleSearchAndSort(); // Arama ve sıralama korunarak çiz
             } catch (err) {
+                if (requestId !== requestCounter) return;
                 if (!isLoadMore) gridContainer.innerHTML = '<div class="error">Sinyal hatası oluştu!</div>';
             }
         }
@@ -477,7 +509,7 @@
             try {
                 const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds.join(',')}&key=${API_KEY}`);
                 const data = await res.json();
-                return (data.items || []).reduce((acc, item) => ({ ...acc, [item.id]: item.statistics }), {});
+                return Object.fromEntries((data.items || []).map(item => [item.id, item.statistics]));
             } catch (err) { return {}; }
         }
 
@@ -494,7 +526,7 @@
                 <div class="video-card">
                     <div class="thumbnail-wrapper">
                         <img src="${v.thumbnail}" alt="${safeTitle}" loading="lazy">
-                        <div class="play-overlay" onclick="openVideoModal('${v.id}', '${safeTitle}')">
+                        <div class="play-overlay" data-action="play" data-id="${v.id}" role="button" tabindex="0" aria-label="Oynat: ${safeTitle}">
                             <div class="play-icon">▶</div>
                         </div>
                     </div>
@@ -505,13 +537,23 @@
                             <span>👍 ${formatNumber(v.likeCount)}</span>
                         </div>
                         <div class="card-actions">
-                            <button onclick="openVideoModal('${v.id}', '${safeTitle}')" class="watch-btn">▶ İZLE</button>
+                            <button data-action="play" data-id="${v.id}" class="watch-btn">▶ İZLE</button>
                             <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" class="external-btn" title="YouTube'da Aç">↗</a>
-                            ${accessToken ? `<button onclick="likeVideo('${v.id}', this)" class="like-btn">👍 Beğen</button>` : ''}
+                            ${accessToken ? `<button data-action="like" data-id="${v.id}" class="like-btn">👍 Beğen</button>` : ''}
                         </div>
                     </div>
                 </div>`;
             }).join('');
+        }
+
+        // Kart butonları için tek bir tıklama dinleyicisi (başlıkta ' olsa da çalışır)
+        function handleGridAction(e) {
+            const el = e.target.closest('[data-action]');
+            if (!el) return;
+            const video = loadedVideosData.find(x => x.id === el.dataset.id);
+            if (!video) return;
+            if (el.dataset.action === 'play') openVideoModal(video.id, video.title);
+            else if (el.dataset.action === 'like' && !el.disabled) likeVideo(video.id, el);
         }
 
         function debouncedSearch() {
@@ -564,6 +606,13 @@
                     btn.innerHTML = '✓ Beğenildi';
                     btn.disabled = true;
                     showToast('Video beğenildi!');
+                } else if (res.status === 401) {
+                    accessToken = null;
+                    showToast('Oturum süresi doldu, lütfen yeniden bağlanın.');
+                    document.getElementById('auth-btn').innerText = "🛸 YouTube Bağlan";
+                    handleSearchAndSort();
+                } else {
+                    showToast('Beğeni gönderilemedi.');
                 }
             } catch (err) { showToast('Hata oluştu.'); }
         }
@@ -578,7 +627,8 @@
             const toast = document.getElementById('notification-toast');
             toast.innerText = msg;
             toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.style.display = 'none', 3000);
         };
 
         const updateNotificationButtonState = perm => {
@@ -619,6 +669,11 @@
 
         window.onload = () => {
             initOAuth();
+            const grid = document.getElementById('video-grid');
+            grid.addEventListener('click', handleGridAction);
+            grid.addEventListener('keydown', e => {
+                if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.play-overlay')) { e.preventDefault(); handleGridAction(e); }
+            });
             if ("Notification" in window) updateNotificationButtonState(Notification.permission);
             window.addEventListener('resize', resizeCanvas, { passive: true });
             resizeCanvas(); 
@@ -628,4 +683,3 @@
     </script>
 </body>
 </html>
-
