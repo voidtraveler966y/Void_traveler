@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinyal Kayboldu | Void Traveler</title>
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#050510">
+    <link rel="icon" type="image/svg+xml" href="https://voidtraveler966y.github.io/Void_traveler/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #00f3ff; --secondary-color: #ff0055; --accent-gold: #ffd700; --bg-color: #050510; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Rajdhani', sans-serif; background: var(--bg-color); color: #fff; min-height: 100vh; display: grid; place-items: center; overflow: hidden; text-align: center; padding: 1.5rem; }
+        #space-canvas { position: fixed; inset: 0; z-index: -2; }
+        .scanline { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; }
+        .ufo { font-size: 4.5rem; display: inline-block; animation: drift 6s ease-in-out infinite; filter: drop-shadow(0 0 18px var(--primary-color)); }
+        @keyframes drift { 0%, 100% { transform: translate(-20px, 0) rotate(-8deg); } 50% { transform: translate(20px, -14px) rotate(8deg); } }
+        .code { font-family: 'Orbitron', sans-serif; font-size: clamp(4rem, 18vw, 9rem); font-weight: 700; color: var(--secondary-color); text-shadow: 0 0 25px var(--secondary-color); letter-spacing: 8px; line-height: 1; margin: 0.5rem 0; animation: glitch 3s infinite; }
+        @keyframes glitch { 0%, 92%, 100% { transform: none; opacity: 1; } 93% { transform: translateX(-4px) skewX(8deg); opacity: .8; } 95% { transform: translateX(4px) skewX(-8deg); } 97% { opacity: .6; } }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: clamp(1.3rem, 5vw, 2rem); color: var(--primary-color); text-shadow: 0 0 10px var(--primary-color); letter-spacing: 4px; text-transform: uppercase; }
+        p { color: #aaa; font-size: 1.15rem; margin: 1rem auto 2rem; max-width: 460px; line-height: 1.5; }
+        .coords { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 2rem; word-break: break-all; }
+        .btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; border-radius: 4px; transition: all 0.3s ease; }
+        .btn-home { color: var(--bg-color); background: var(--primary-color); box-shadow: 0 0 15px var(--primary-color); }
+        .btn-home:hover { box-shadow: 0 0 30px var(--primary-color); transform: translateY(-2px); }
+        .btn-yt { color: #fff; border: 1px solid #ff0000; background: rgba(255, 0, 0, 0.1); }
+        .btn-yt:hover { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 20px #ff0000; transform: translateY(-2px); }
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+    </style>
+</head>
+<body>
+    <canvas id="space-canvas"></canvas>
+    <div class="scanline"></div>
+
+    <main>
+        <div class="ufo" aria-hidden="true">🛸</div>
+        <div class="code" lang="en">404</div>
+        <h1>Sinyal Kayboldu</h1>
+        <p>Aradığın koordinatlar galaktik haritada bulunamadı. Bu sektör ya hiç var olmadı ya da bir kara deliğe çekildi.</p>
+        <div class="coords" id="coords"></div>
+        <div class="btns">
+            <a class="btn btn-home" href="https://voidtraveler966y.github.io/Void_traveler/">🚀 Ana Gemiye Dön</a>
+            <a class="btn btn-yt" href="https://www.youtube.com/@void_traveler966" target="_blank" rel="noopener">YouTube Kanalı</a>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('coords').textContent = 'KAYIP KOORDİNAT: ' + decodeURIComponent(location.pathname);
+
+        const canvas = document.getElementById('space-canvas'), ctx = canvas.getContext('2d');
+        const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let stars = [];
+        const resize = () => {
+            canvas.width = innerWidth; canvas.height = innerHeight;
+            stars = Array.from({ length: 140 }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 + 0.1 }));
+            if (still) draw();
+        };
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); });
+        };
+        const loop = () => {
+            draw();
+            stars.forEach(s => { s.y += s.speed; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; } });
+            requestAnimationFrame(loop);
+        };
+        addEventListener('resize', resize, { passive: true });
+        resize();
+        if (!still) loop();
+    </script>
+</body>
+</html>

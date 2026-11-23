@@ -8,6 +8,37 @@
     <meta name="theme-color" content="#050510">
     <link rel="canonical" href="https://voidtraveler966y.github.io/Void_traveler/">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Void Traveler">
+
+    <!-- Arama motorları için yapılandırılmış veri -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "name": "Void Traveler",
+                "alternateName": "Void Traveler Galaktik Veri Arşivi",
+                "url": "https://voidtraveler966y.github.io/Void_traveler/",
+                "inLanguage": "tr-TR"
+            },
+            {
+                "@type": "Person",
+                "name": "Void Traveler",
+                "url": "https://voidtraveler966y.github.io/Void_traveler/",
+                "sameAs": [
+                    "https://www.youtube.com/@void_traveler966",
+                    "https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder",
+                    "https://voidtraveler966y.github.io/mcbotwebsite/",
+                    "https://github.com/voidtraveler966y"
+                ]
+            }
+        ]
+    }
+    </script>
 
     <!-- Link önizlemesi (WhatsApp, Discord, X, Facebook...) -->
     <meta property="og:type" content="website">
@@ -70,6 +101,25 @@
         .search-box { flex: 1; min-width: 250px; display: flex; align-items: center; background: rgba(5, 5, 16, 0.8); border: 1px solid var(--primary-color); border-radius: 4px; padding: 0.4rem 0.8rem; }
         .search-box input { width: 100%; background: transparent; border: none; outline: none; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; padding: 4px; }
         .search-box input::placeholder { color: #666; }
+        .sort-box { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .random-btn { background: rgba(255, 0, 85, 0.12); border: 1px solid var(--secondary-color); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; padding: 0.6rem 1rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+        .random-btn:hover { background: var(--secondary-color); box-shadow: 0 0 15px var(--secondary-color); }
+        .random-btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; background: transparent; }
+
+        .main-nav .nav-link { color: #888; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; }
+        .main-nav .nav-link:hover { color: var(--secondary-color); text-shadow: 0 0 10px var(--secondary-color); }
+
+        .channel-stats { display: flex; justify-content: center; gap: 0.8rem; margin: 1.5rem auto 0; flex-wrap: wrap; }
+        .channel-stats .stat { min-width: 140px; background: var(--card-bg); border: 1px solid rgba(0, 243, 255, 0.35); border-radius: 6px; padding: 0.6rem 1rem; display: flex; flex-direction: column; align-items: center; backdrop-filter: blur(5px); position: relative; overflow: hidden; }
+        .channel-stats .stat::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary-color), transparent); }
+        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--primary-color); text-shadow: var(--text-glow); }
+        .stat-label { font-size: 0.8rem; color: #aaa; letter-spacing: 2px; text-transform: uppercase; }
+
+        .thumb-badge { position: absolute; font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 700; padding: 3px 7px; border-radius: 3px; pointer-events: none; }
+        .duration-badge { right: 8px; bottom: 10px; background: rgba(0, 0, 0, 0.85); color: #fff; }
+        .shorts-badge { left: 8px; top: 8px; background: var(--secondary-color); color: #fff; box-shadow: 0 0 10px var(--secondary-color); letter-spacing: 1px; }
+        .live-badge { right: 8px; bottom: 10px; background: #e00; color: #fff; }
+
         .sort-box select { background: rgba(5, 5, 16, 0.9); color: var(--primary-color); border: 1px solid var(--primary-color); padding: 0.6rem 1rem; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; border-radius: 4px; outline: none; cursor: pointer; }
 
         .category-nav { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
@@ -186,7 +236,14 @@
 
             .filter-bar { padding: 0.7rem; }
             .search-box { min-width: 0; flex-basis: 100%; }
-            .sort-box, .sort-box select { width: 100%; }
+            .sort-box { width: 100%; }
+            .sort-box select { flex: 1 1 45%; min-width: 0; }
+            .random-btn { flex: 1 1 100%; }
+            .main-nav .nav-link { font-size: 0.85rem; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; }
+            .channel-stats { gap: 0.5rem; margin-top: 1.2rem; }
+            .channel-stats .stat { min-width: 0; flex: 1; padding: 0.5rem 0.3rem; }
+            .stat-value { font-size: 1.05rem; }
+            .stat-label { font-size: 0.65rem; letter-spacing: 1px; }
             .video-grid { grid-template-columns: 1fr; gap: 1.2rem; }
             .section-title { font-size: 1.3rem; letter-spacing: 2px; }
             .mode-grid { grid-template-columns: 1fr; gap: 1.2rem; }
@@ -195,11 +252,71 @@
             .modal-backdrop { padding: 0.5rem; }
             .modal-header h4 { font-size: 0.9rem; }
             .share-label { display: none; }
+            .header-buttons a { padding: 0.7rem 1.2rem; font-size: 0.78rem; letter-spacing: 1px; }
+            .modal-footer { padding: 0.6rem; }
+            .modal-nav-btn { padding: 0.5rem 0.7rem; font-size: 0.72rem; }
+            .modal-mid { gap: 0.6rem; font-size: 0.72rem; order: 3; width: 100%; }
+            .footer-links { gap: 1rem; }
             #notification-toast { left: 1rem; right: 1rem; bottom: 1rem; text-align: center; font-size: 0.85rem; }
         }
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
         }
+        /* Rozet yığını, izlendi, yeni */
+        .badge-stack { position: absolute; left: 8px; top: 8px; display: flex; gap: 5px; pointer-events: none; }
+        .badge-stack .thumb-badge { position: static; }
+        .new-badge { background: var(--accent-gold); color: #000; box-shadow: 0 0 10px var(--accent-gold); letter-spacing: 1px; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 50% { box-shadow: 0 0 2px var(--accent-gold); } }
+        .watched-badge { left: 8px; bottom: 10px; background: rgba(57, 255, 20, 0.9); color: #000; }
+        .video-card.watched .thumbnail-wrapper img { filter: brightness(0.6) saturate(0.7); }
+
+        /* Favori */
+        .fav-btn { background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.6); color: var(--accent-gold); padding: 0.5rem 0.7rem; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; line-height: 1; }
+        .fav-btn:hover { background: rgba(255, 215, 0, 0.25); }
+        .fav-btn.on { background: var(--accent-gold); color: #000; box-shadow: 0 0 10px var(--accent-gold); }
+        .category-nav button.btn-favs { border-color: var(--accent-gold); color: var(--accent-gold); }
+        .category-nav button.btn-favs:hover, .category-nav button.btn-favs.active { background: var(--accent-gold); color: #000; box-shadow: 0 0 15px var(--accent-gold); }
+
+        /* Video penceresi alt çubuğu */
+        .modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.8rem 1rem; background: rgba(0, 243, 255, 0.06); border-top: 1px solid rgba(0, 243, 255, 0.4); flex-wrap: wrap; }
+        .modal-nav-btn { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; padding: 0.5rem 0.9rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+        .modal-nav-btn:hover:not(:disabled) { background: var(--primary-color); color: #000; }
+        .modal-nav-btn:disabled { opacity: 0.3; cursor: default; }
+        .modal-mid { display: flex; align-items: center; gap: 1rem; color: #aaa; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; flex-wrap: wrap; justify-content: center; }
+        .autoplay-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+        .autoplay-toggle input { accent-color: var(--primary-color); width: 16px; height: 16px; cursor: pointer; }
+
+        /* Abone ol */
+        .sub-button { padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; border-radius: 4px; background: #ff0000; border: 1px solid #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); transition: all 0.3s ease; }
+        .sub-button:hover { box-shadow: 0 0 30px #ff0000; transform: translateY(-2px); }
+
+        /* Alt bilgi */
+        .site-footer { margin-top: 4rem; padding: 2rem 0 1rem; border-top: 1px solid rgba(255, 255, 255, 0.15); text-align: center; color: #777; font-size: 0.95rem; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .footer-links a, .footer-links button { color: #aaa; text-decoration: none; background: none; border: none; font: inherit; cursor: pointer; transition: color 0.3s; }
+        .footer-links a:hover, .footer-links button:hover { color: var(--primary-color); }
+        #install-btn { display: none; color: var(--accent-gold); }
+        kbd { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; background: rgba(0, 243, 255, 0.12); border: 1px solid rgba(0, 243, 255, 0.5); border-bottom-width: 3px; border-radius: 4px; padding: 2px 7px; color: #fff; }
+
+        /* Kısayol yardımı */
+        .help-panel { position: fixed; inset: 0; z-index: 2500; display: none; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); padding: 1rem; }
+        .help-panel.open { display: flex; }
+        .help-box { background: #050510; border: 2px solid var(--primary-color); border-radius: 10px; box-shadow: 0 0 30px var(--primary-color); padding: 1.8rem; max-width: 420px; width: 100%; }
+        .help-box h3 { font-family: 'Orbitron', sans-serif; color: var(--primary-color); margin-bottom: 1.2rem; }
+        .help-box table { width: 100%; border-collapse: collapse; }
+        .help-box td { padding: 0.45rem 0; color: #ccc; }
+        .help-box td:first-child { width: 45%; }
+        .help-box .hint { margin-top: 1.2rem; color: #777; font-size: 0.85rem; }
+
+        /* Gizli sürpriz */
+        .ufo-flyby { position: fixed; top: 18%; left: -120px; font-size: 4rem; z-index: 2600; pointer-events: none; filter: drop-shadow(0 0 20px var(--primary-color)); animation: ufo 4.5s cubic-bezier(.45,.05,.55,.95) forwards; }
+        @keyframes ufo { 0% { transform: translate(0, 0) rotate(-10deg); } 30% { transform: translate(40vw, 12vh) rotate(8deg); } 60% { transform: translate(65vw, -4vh) rotate(-8deg); } 100% { transform: translate(calc(100vw + 240px), 6vh) rotate(10deg); } }
+
+        /* Ziyaretçi defteri */
+        .guestbook-card { max-width: 900px; margin: 0 auto; }
+        #giscus-container { margin-top: 1.5rem; min-height: 120px; }
+        .gb-soon { text-align: center; padding: 2rem 1rem; color: #aaa; border: 1px dashed rgba(0, 243, 255, 0.4); border-radius: 8px; }
+
         #notification-toast { position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--primary-color); color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 20px var(--primary-color); font-family: 'Orbitron', sans-serif; display: none; z-index: 3000; }
     </style>
 </head>
@@ -223,15 +340,49 @@
             <div class="video-player-container">
                 <iframe id="modal-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
+            <div class="modal-footer">
+                <button class="modal-nav-btn" id="prev-btn" onclick="playAdjacent(-1)" title="Önceki video (←)">⏮ Önceki</button>
+                <div class="modal-mid">
+                    <span id="modal-pos"></span>
+                    <label class="autoplay-toggle" title="Video bitince sıradakine otomatik geç">
+                        <input type="checkbox" id="autoplay-toggle" onchange="saveAutoplay()"> Otomatik sonraki
+                    </label>
+                    <button class="fav-btn" id="modal-fav-btn" onclick="toggleFavorite(currentVideoId)" title="Favorilere ekle (F)">☆</button>
+                </div>
+                <button class="modal-nav-btn" id="next-btn" onclick="playAdjacent(1)" title="Sonraki video (→)">Sonraki ⏭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Klavye kısayolları -->
+    <div class="help-panel" id="help-panel" onclick="if (event.target === this) toggleHelp(false)">
+        <div class="help-box" role="dialog" aria-label="Klavye kısayolları">
+            <h3>⌨️ Kontrol Paneli</h3>
+            <table>
+                <tr><td><kbd>/</kbd></td><td>Arşivde ara</td></tr>
+                <tr><td><kbd>R</kbd></td><td>Rastgele videoya ışınlan</td></tr>
+                <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Önceki / sonraki video</td></tr>
+                <tr><td><kbd>F</kbd></td><td>Açık videoyu favorilere ekle</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Pencereyi kapat</td></tr>
+                <tr><td><kbd>?</kbd></td><td>Bu paneli aç / kapat</td></tr>
+            </table>
+            <p class="hint">Bu sitede gizli bir sinyal var. Bulabilecek misin? 🛸</p>
         </div>
     </div>
 
     <div class="container">
         <header>
-            <h1 lang="en">Void Traveler</h1>
+            <h1 lang="en" id="site-title">Void Traveler</h1>
             <p>Galaktik Veri Arşivi</p>
             <div class="header-buttons">
+                <a href="https://www.youtube.com/channel/UCLZ6rdlFePsR8_vqxY48XRw?sub_confirmation=1" target="_blank" rel="noopener" class="sub-button" onclick="trackEvent('abone-ol', 'Abone Ol düğmesi')">🔔 Abone Ol</a>
                 <a href="https://www.youtube.com/@void_traveler966" target="_blank" class="yt-button" rel="noopener">Ana Gemiye Dön</a>
+            </div>
+            <!-- Kanal istatistikleri (otomatik) -->
+            <div class="channel-stats" id="channel-stats" aria-label="Kanal istatistikleri">
+                <div class="stat"><span class="stat-value" id="stat-subs">—</span><span class="stat-label">Abone</span></div>
+                <div class="stat"><span class="stat-value" id="stat-views">—</span><span class="stat-label">Toplam İzlenme</span></div>
+                <div class="stat"><span class="stat-value" id="stat-videos">—</span><span class="stat-label">Video</span></div>
             </div>
         </header>
 
@@ -239,8 +390,9 @@
         <nav class="main-nav">
             <button onclick="switchPage('page-records', this)" class="active">İletişim Kayıtları</button>
             <button onclick="switchPage('page-mode', this)">Oyun Modum</button>
-            <button onclick="switchPage('page-mcbot', this)">MC Bot</button>
+            <a href="https://voidtraveler966y.github.io/mcbotwebsite/" target="_blank" rel="noopener" class="nav-link" title="MC Bot sitesine git">MC Bot ↗</a>
             <button onclick="switchPage('page-updates', this)">Son Güncelleme</button>
+            <button onclick="switchPage('page-guestbook', this)">Ziyaretçi Defteri</button>
         </nav>
 
         <!-- 1. İletişim Kayıtları -->
@@ -258,12 +410,18 @@
                     <input type="text" id="search-input" placeholder="Arşivde video ara..." oninput="debouncedSearch()">
                 </div>
                 <div class="sort-box">
-                    <select id="sort-select" onchange="handleSearchAndSort()">
+                    <select id="type-select" onchange="handleSearchAndSort()" aria-label="Video türü">
+                        <option value="all">Tüm Videolar</option>
+                        <option value="long">Shorts'ları Gizle</option>
+                        <option value="shorts">Sadece Shorts</option>
+                    </select>
+                    <select id="sort-select" onchange="handleSearchAndSort()" aria-label="Sıralama">
                         <option value="default">Varsayılan Sıralama</option>
                         <option value="views">En Çok İzlenenler</option>
                         <option value="likes">En Çok Beğenilenler</option>
                         <option value="title">A-Z Başlık</option>
                     </select>
+                    <button class="random-btn" onclick="teleportRandom()" title="Arşivden rastgele bir video aç">🎲 Işınlan</button>
                 </div>
             </div>
 
@@ -324,29 +482,7 @@
             </div>
         </div>
 
-        <!-- 3. MC Bot (içerik daha sonra doldurulacak) -->
-        <div id="page-mcbot" class="page-content">
-            <h2 class="section-title">MC <span>Bot</span></h2>
-            <div class="mode-grid">
-                <div class="hud-card">
-                    <h3>🤖 MC Bot</h3>
-                    <p class="hud-text">
-                        <!-- Bot tanıtım metni buraya -->
-                        Bu bölüm yakında güncellenecek.
-                    </p>
-                </div>
-
-                <div class="hud-card">
-                    <h3>🛠️ Nasıl Kullanılır?</h3>
-                    <p class="hud-text">
-                        <!-- Kurulum / kullanım adımları buraya -->
-                        Yakında...
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Son Güncelleme -->
+        <!-- 3. Son Güncelleme -->
         <div id="page-updates" class="page-content">
             <h2 class="section-title">Son <span>Güncelleme</span> & Sistem Durumu</h2>
             
@@ -384,6 +520,26 @@
                 </div>
             </div>
         </div>
+        <!-- 4. Ziyaretçi Defteri -->
+        <div id="page-guestbook" class="page-content">
+            <h2 class="section-title">Ziyaretçi <span>Defteri</span></h2>
+            <div class="hud-card guestbook-card">
+                <h3>💬 Galaktik Mesaj Panosu</h3>
+                <p class="hud-text">Bir video önerin mi var, hangi oyunu oynamamı istersin, ya da sadece selam mı vermek istiyorsun? Mesajını buraya bırak!</p>
+                <div id="giscus-container"></div>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <div class="footer-links">
+                <a href="https://www.youtube.com/@void_traveler966" target="_blank" rel="noopener">▶ YouTube</a>
+                <a href="https://voidtraveler966y.github.io/mcbotwebsite/" target="_blank" rel="noopener">🤖 MC Bot</a>
+                <a href="https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder" target="_blank" rel="noopener">🧱 ColoredBlocks</a>
+                <button onclick="toggleHelp(true)">⌨️ Kısayollar <kbd>?</kbd></button>
+                <button id="install-btn" onclick="installApp()">📲 Uygulamayı Yükle</button>
+            </div>
+            <p>© <span id="year">2026</span> Void Traveler · Galaktik Veri Arşivi</p>
+        </footer>
     </div>
 
     <script>
@@ -392,13 +548,27 @@
         const UPLOADS_PLAYLIST_ID = 'UULZ6rdlFePsR8_vqxY48XRw';
         const PAGE_SIZE = 20;          // Ekranda her seferinde gösterilecek video sayısı
         const MAX_API_PAGES = 20;      // Bir listeden en fazla 20 x 50 = 1000 video çekilir
+        const SHORTS_PLAYLIST_ID = 'UUSH' + CHANNEL_ID.slice(2); // YouTube'un kanala ait otomatik "Shorts" listesi
+
+        // Ziyaretçi sayacı (GoatCounter). goatcounter.com'da açtığınız hesabın kodunu yazın, ör: 'voidtraveler'
+        // Boş bırakılırsa sayaç çalışmaz.
+        const GOATCOUNTER_CODE = 'voidtraveler';
 
         // Kendi API'miz (Cloudflare Worker) — yayınlandıktan sonra adresi buraya yapıştırın.
         // Örnek: 'https://coloredblocks-api.KULLANICIADI.workers.dev/coloredblocks'
         // Boş bırakılırsa Oyun Modum kartında sabit bilgiler görünür.
         const MOD_API_URL = '';
 
+        // Ziyaretçi defteri (giscus). giscus.app adresinden alınan değerleri yazın; boşsa "yakında" mesajı görünür.
+        const GISCUS = {
+            repo: 'voidtraveler966y/Void_traveler',
+            repoId: 'R_kgDOUIqSrw',
+            category: 'General',
+            categoryId: 'DIC_kwDOUIqSr84DLztA'
+        };
+
         let currentPlaylistId, loadedVideosData = [], filteredVideos = [], visibleCount = PAGE_SIZE, searchTimeout;
+        let currentVideoId = null, playQueue = [], playIndex = -1;
         let playlistsMap = {}; // Oynatma listesi bilgilerini saklayan harita
         let requestCounter = 0, toastTimer;
 
@@ -429,7 +599,8 @@
         // Oynatma Listeleri
         async function fetchPlaylists() {
             const navContainer = document.getElementById('category-nav');
-            let buttonsHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>`;
+            let buttonsHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>
+                <button onclick="selectFavorites(this)" class="btn-favs" id="favs-btn">⭐ FAVORİLERİM <span id="favs-count"></span></button>`;
             try {
                 const data = await ytFetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
 
@@ -453,15 +624,18 @@
             }
             navContainer.innerHTML = buttonsHTML;
 
+            updateFavCount();
             const { list } = readHash();
             const listBtn = list && playlistsMap[list] ? navContainer.querySelector(`[data-playlist="${CSS.escape(list)}"]`) : null;
-            if (listBtn) selectPlaylist(list, listBtn);
+            if (list === 'favs') selectFavorites(document.getElementById('favs-btn'));
+            else if (listBtn) selectPlaylist(list, listBtn);
             else selectTumu(document.querySelector('.btn-tumu'));
         }
 
         function resetFilters() {
             document.getElementById('search-input').value = '';
             document.getElementById('sort-select').value = 'default';
+            document.getElementById('type-select').value = 'all';
         }
 
         function setActiveCategory(btn) {
@@ -594,9 +768,13 @@
                         thumbnail: t.maxres?.url || t.high?.url || t.medium?.url || `https://img.youtube.com/vi/${vId}/hqdefault.jpg`,
                         viewCount: parseInt(stats.viewCount || 0),
                         likeCount: parseInt(stats.likeCount || 0),
-                        publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
+                        publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt,
+                        duration: stats.duration || 0,
+                        live: stats.live || null
                     };
                 });
+                await markShorts(loadedVideosData);
+                if (requestId !== requestCounter) return;
 
                 handleSearchAndSort();
             } catch (err) {
@@ -611,8 +789,12 @@
             const result = {};
             for (let i = 0; i < videoIds.length; i += 50) {
                 try {
-                    const data = await ytFetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds.slice(i, i + 50).join(',')}&key=${API_KEY}`);
-                    (data.items || []).forEach(item => result[item.id] = item.statistics);
+                    const data = await ytFetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails,snippet&fields=items(id,statistics(viewCount,likeCount),contentDetails(duration),snippet(liveBroadcastContent))&id=${videoIds.slice(i, i + 50).join(',')}&key=${API_KEY}`);
+                    (data.items || []).forEach(item => result[item.id] = {
+                        ...item.statistics,
+                        duration: parseDuration(item.contentDetails?.duration),
+                        live: item.snippet?.liveBroadcastContent && item.snippet.liveBroadcastContent !== 'none' ? item.snippet.liveBroadcastContent : null
+                    });
                 } catch (err) { /* istatistik alınamazsa sayılar 0 görünür */ }
             }
             return result;
@@ -628,7 +810,9 @@
             const loadMoreBtn = document.getElementById('load-more-container');
 
             if (!filteredVideos.length) {
-                gridContainer.innerHTML = '<div class="error">Aranan kriterde video bulunamadı.</div>';
+                gridContainer.innerHTML = currentPlaylistId === FAVS_ID && !loadedVideosData.length
+                    ? '<div class="error">Henüz favori yok. Kartlardaki ☆ düğmesiyle ekleyebilirsin.</div>'
+                    : '<div class="error">Aranan kriterde video bulunamadı.</div>';
                 loadMoreBtn.style.display = 'none';
                 return;
             }
@@ -636,9 +820,10 @@
             gridContainer.innerHTML = filteredVideos.slice(0, visibleCount).map(v => {
                 const safeTitle = sanitizeHTML(v.title);
                 return `
-                <div class="video-card">
+                <div class="video-card${isWatched(v.id) ? ' watched' : ''}" data-card="${v.id}">
                     <div class="thumbnail-wrapper">
                         <img src="${v.thumbnail}" alt="${safeTitle}" loading="lazy">
+                        ${badgesHTML(v)}
                         <div class="play-overlay" data-action="play" data-id="${v.id}" role="button" tabindex="0" aria-label="Oynat: ${safeTitle}">
                             <div class="play-icon">▶</div>
                         </div>
@@ -651,6 +836,7 @@
                         </div>
                         <div class="card-actions">
                             <button data-action="play" data-id="${v.id}" class="watch-btn">▶ İZLE</button>
+                            <button data-action="fav" data-id="${v.id}" class="fav-btn${isFavorite(v.id) ? ' on' : ''}" title="Favorilere ekle / çıkar" aria-label="Favori">${isFavorite(v.id) ? '★' : '☆'}</button>
                             <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" class="external-btn" title="YouTube'da Aç">↗</a>
                         </div>
                     </div>
@@ -665,7 +851,9 @@
             const el = e.target.closest('[data-action]');
             if (!el) return;
             const video = loadedVideosData.find(x => x.id === el.dataset.id);
-            if (video && el.dataset.action === 'play') openVideoModal(video.id, video.title);
+            if (!video) return;
+            if (el.dataset.action === 'play') openVideoModal(video.id, video.title, filteredVideos);
+            else if (el.dataset.action === 'fav') toggleFavorite(video.id, video);
         }
 
         function debouncedSearch() {
@@ -677,7 +865,11 @@
             const query = document.getElementById('search-input').value.toLocaleLowerCase('tr-TR').trim();
             const sortBy = document.getElementById('sort-select').value;
 
-            filteredVideos = loadedVideosData.filter(v => v.title.toLocaleLowerCase('tr-TR').includes(query));
+            const type = document.getElementById('type-select').value;
+            filteredVideos = loadedVideosData.filter(v =>
+                v.title.toLocaleLowerCase('tr-TR').includes(query) &&
+                (type === 'all' || (type === 'shorts' ? v.isShort : !v.isShort)));
+            updateRandomButton();
 
             if (sortBy === 'views') filteredVideos.sort((a, b) => b.viewCount - a.viewCount);
             else if (sortBy === 'likes') filteredVideos.sort((a, b) => b.likeCount - a.likeCount);
@@ -688,32 +880,304 @@
         }
 
         // Modal
-        function openVideoModal(videoId, title) {
+        // queue: önceki/sonraki için kullanılacak liste (verilmezse ekrandaki liste)
+        function openVideoModal(videoId, title, queue) {
             if (!VIDEO_ID_RE.test(videoId)) return;
+            const list = queue || filteredVideos;
+            const i = list.findIndex(v => v.id === videoId);
+            if (i >= 0) { playQueue = list.slice(); playIndex = i; }
+            else { playQueue = []; playIndex = -1; }
+
+            currentVideoId = videoId;
             document.getElementById('modal-video-title').innerText = title || 'Sinyal Bağlantısı';
-            document.getElementById('modal-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
             document.getElementById('video-modal').style.display = 'flex';
+            playInModal(videoId);
             writeHash({ video: videoId });
+            markWatched(videoId);
+            updateModalControls();
+            trackEvent(`video/${videoId}`, title);
         }
 
         function closeVideoModal() {
             const modal = document.getElementById('video-modal');
             if (modal.style.display !== 'flex') return;
-            document.getElementById('modal-iframe').src = '';
+            stopModalPlayer();
             modal.style.display = 'none';
+            currentVideoId = null;
             writeHash({ video: null });
+        }
+
+        function playAdjacent(step) {
+            const j = playIndex + step;
+            if (playIndex < 0 || j < 0 || j >= playQueue.length) return;
+            const v = playQueue[j];
+            openVideoModal(v.id, v.title, playQueue);
+        }
+
+        function updateModalControls() {
+            const has = playIndex >= 0;
+            document.getElementById('prev-btn').disabled = !has || playIndex === 0;
+            document.getElementById('next-btn').disabled = !has || playIndex === playQueue.length - 1;
+            document.getElementById('modal-pos').textContent = has ? `${playIndex + 1} / ${playQueue.length}` : '';
+            const fav = document.getElementById('modal-fav-btn');
+            const on = isFavorite(currentVideoId);
+            fav.classList.toggle('on', on);
+            fav.textContent = on ? '★' : '☆';
+        }
+
+        // ---- YouTube oynatıcı: video bitince sonrakine geçebilmek için IFrame API ----
+        let ytApiPromise = null, ytPlayer = null, ytReady = false;
+
+        function loadYouTubeApi() {
+            if (window.YT?.Player) return Promise.resolve();
+            if (!ytApiPromise) {
+                ytApiPromise = new Promise(resolve => {
+                    const prev = window.onYouTubeIframeAPIReady;
+                    window.onYouTubeIframeAPIReady = () => { prev?.(); resolve(); };
+                    const sc = document.createElement('script');
+                    sc.src = 'https://www.youtube.com/iframe_api';
+                    sc.onerror = () => resolve();
+                    document.head.appendChild(sc);
+                    setTimeout(resolve, 8000);
+                });
+            }
+            return ytApiPromise;
+        }
+
+        function playInModal(videoId) {
+            if (ytPlayer && ytReady) {
+                try { ytPlayer.loadVideoById(videoId); return; } catch (e) {}
+            }
+            const iframe = document.getElementById('modal-iframe');
+            const origin = location.origin && location.origin !== 'null' ? `&origin=${encodeURIComponent(location.origin)}` : '';
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&enablejsapi=1${origin}`;
+            loadYouTubeApi().then(() => {
+                if (ytPlayer || !window.YT?.Player || !iframe.src) return;
+                try {
+                    ytPlayer = new YT.Player('modal-iframe', {
+                        events: {
+                            onReady: () => { ytReady = true; },
+                            onStateChange: e => {
+                                if (e.data === YT.PlayerState.ENDED && document.getElementById('autoplay-toggle').checked) playAdjacent(1);
+                            }
+                        }
+                    });
+                } catch (e) { ytPlayer = null; }
+            });
+        }
+
+        function stopModalPlayer() {
+            if (ytPlayer && ytReady) {
+                try { ytPlayer.stopVideo(); return; } catch (e) {}
+            }
+            document.getElementById('modal-iframe').src = '';
+            ytPlayer = null; ytReady = false;
+        }
+
+        function saveAutoplay() {
+            try { localStorage.setItem('vt_autoplay', document.getElementById('autoplay-toggle').checked ? '1' : '0'); } catch (e) {}
+        }
+
+        // ---- İzlendi ve Favoriler (ziyaretçinin kendi tarayıcısında saklanır) ----
+        const store = {
+            get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch (e) { return fallback; } },
+            set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+        };
+        let watchedSet = new Set(store.get('vt_watched', []));
+        let favorites = store.get('vt_favs', []);
+        const FAVS_ID = '__favs';
+
+        const isWatched = id => watchedSet.has(id);
+        const isFavorite = id => favorites.some(f => f.id === id);
+
+        function markWatched(id) {
+            if (watchedSet.has(id)) return;
+            watchedSet.add(id);
+            store.set('vt_watched', [...watchedSet].slice(-1000));
+            document.querySelectorAll(`[data-card="${id}"]`).forEach(card => {
+                card.classList.add('watched');
+                const wrap = card.querySelector('.thumbnail-wrapper');
+                if (wrap && !wrap.querySelector('.watched-badge')) wrap.insertAdjacentHTML('beforeend', '<span class="thumb-badge watched-badge">✓ İZLENDİ</span>');
+            });
+        }
+
+        function findVideo(id) {
+            return loadedVideosData.find(v => v.id === id) || playQueue.find(v => v.id === id) || (latestVideo?.id === id ? latestVideo : null);
+        }
+
+        function toggleFavorite(id, video) {
+            if (!id) return;
+            if (isFavorite(id)) {
+                favorites = favorites.filter(f => f.id !== id);
+                showToast('Favorilerden çıkarıldı.');
+            } else {
+                const v = video || findVideo(id);
+                if (!v) return;
+                const { title, thumbnail, viewCount, likeCount, publishedAt, duration, live, isShort } = v;
+                favorites.unshift({ id, title, thumbnail, viewCount, likeCount, publishedAt, duration, live, isShort });
+                showToast('⭐ Favorilere eklendi!');
+                trackEvent(`favori/${id}`, title);
+            }
+            store.set('vt_favs', favorites);
+            updateFavCount();
+            document.querySelectorAll(`[data-action="fav"][data-id="${id}"]`).forEach(b => {
+                const on = isFavorite(id);
+                b.classList.toggle('on', on); b.textContent = on ? '★' : '☆';
+            });
+            if (currentVideoId === id) updateModalControls();
+            if (currentPlaylistId === FAVS_ID) { loadedVideosData = favorites.slice(); handleSearchAndSort(); }
+        }
+
+        function updateFavCount() {
+            const el = document.getElementById('favs-count');
+            if (el) el.textContent = favorites.length ? `(${favorites.length})` : '';
+        }
+
+        function selectFavorites(btn) {
+            requestCounter++; // devam eden liste yüklemelerini iptal et
+            currentPlaylistId = FAVS_ID;
+            resetFilters();
+            setActiveCategory(btn);
+            document.getElementById('bg-overlay').style.opacity = '0';
+            writeHash({ list: 'favs' });
+            loadedVideosData = favorites.slice();
+            handleSearchAndSort();
         }
 
         function handleBackdropClick(e) {
             if (e.target.id === 'video-modal') closeVideoModal();
         }
 
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideoModal(); });
+        // ---- Klavye kısayolları ----
+        function toggleHelp(show) {
+            const panel = document.getElementById('help-panel');
+            panel.classList.toggle('open', show ?? !panel.classList.contains('open'));
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (document.getElementById('help-panel').classList.contains('open')) return toggleHelp(false);
+                return closeVideoModal();
+            }
+            const typing = e.target.closest?.('input, textarea, select, [contenteditable="true"]');
+            if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+            const modalOpen = document.getElementById('video-modal').style.display === 'flex';
+            const k = e.key.toLowerCase();
+
+            if (modalOpen && e.key === 'ArrowLeft') { e.preventDefault(); playAdjacent(-1); }
+            else if (modalOpen && e.key === 'ArrowRight') { e.preventDefault(); playAdjacent(1); }
+            else if (modalOpen && k === 'f') toggleFavorite(currentVideoId);
+            else if (e.key === '?') toggleHelp();
+            else if (e.key === '/' && !modalOpen) {
+                e.preventDefault();
+                switchPage('page-records', document.querySelector('.main-nav button'));
+                document.getElementById('search-input').focus();
+            }
+            else if (k === 'r' && !modalOpen) teleportRandom();
+        });
+
+        // ---- Gizli sürpriz: Konami kodu ya da başlığa 7 kez dokunma ----
+        const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+        let konamiPos = 0, titleTaps = 0, titleTapTimer, meteors = [], eggCooldown = false;
+
+        document.addEventListener('keydown', e => {
+            const k = e.key.toLowerCase();
+            konamiPos = k === KONAMI[konamiPos] ? konamiPos + 1 : (k === KONAMI[0] ? 1 : 0);
+            if (konamiPos === KONAMI.length) { konamiPos = 0; launchEasterEgg(); }
+        });
+
+        function onTitleTap() {
+            titleTaps++;
+            clearTimeout(titleTapTimer);
+            titleTapTimer = setTimeout(() => titleTaps = 0, 1500);
+            if (titleTaps >= 7) { titleTaps = 0; launchEasterEgg(); }
+        }
+
+        function launchEasterEgg() {
+            if (eggCooldown) return;
+            eggCooldown = true;
+            setTimeout(() => eggCooldown = false, 6000);
+            showToast('🛸 Gizli sinyal yakalandı! Meteor yağmuru başlıyor...');
+            trackEvent('gizli-sinyal', 'Easter egg bulundu');
+            if (reduceMotion) return;
+            for (let i = 0; i < 70; i++) {
+                meteors.push({
+                    x: Math.random() * canvas.width * 1.2, y: -Math.random() * canvas.height * 1.5,
+                    len: 60 + Math.random() * 120, speed: 7 + Math.random() * 9, w: 1 + Math.random() * 2
+                });
+            }
+            const ufo = document.createElement('div');
+            ufo.className = 'ufo-flyby'; ufo.textContent = '🛸';
+            document.body.appendChild(ufo);
+            setTimeout(() => ufo.remove(), 4800);
+        }
+
+        function drawMeteors() {
+            if (!meteors.length) return;
+            meteors.forEach(m => {
+                const g = ctx.createLinearGradient(m.x, m.y, m.x + m.len * 0.6, m.y - m.len);
+                g.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+                g.addColorStop(0.3, 'rgba(0, 243, 255, 0.6)');
+                g.addColorStop(1, 'rgba(0, 243, 255, 0)');
+                ctx.strokeStyle = g; ctx.lineWidth = m.w;
+                ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x + m.len * 0.6, m.y - m.len); ctx.stroke();
+                m.x -= m.speed * 0.6; m.y += m.speed;
+            });
+            meteors = meteors.filter(m => m.y - m.len < canvas.height && m.x + m.len > 0);
+        }
+
+        // ---- Ziyaretçi defteri (giscus, GitHub Discussions) ----
+        let giscusLoaded = false;
+        function loadGiscus() {
+            if (giscusLoaded) return;
+            giscusLoaded = true;
+            const box = document.getElementById('giscus-container');
+            if (!GISCUS.repoId || !GISCUS.categoryId) {
+                box.innerHTML = '<div class="gb-soon">📡 Mesaj panosu çok yakında açılıyor. O zamana kadar yorumlarını YouTube videolarına bırakabilirsin!</div>';
+                return;
+            }
+            const sc = document.createElement('script');
+            sc.src = 'https://giscus.app/client.js';
+            sc.async = true;
+            sc.crossOrigin = 'anonymous';
+            Object.entries({
+                'data-repo': GISCUS.repo, 'data-repo-id': GISCUS.repoId,
+                'data-category': GISCUS.category, 'data-category-id': GISCUS.categoryId,
+                'data-mapping': 'specific', 'data-term': 'Ziyaretçi Defteri',
+                'data-strict': '1', 'data-reactions-enabled': '1', 'data-emit-metadata': '0',
+                'data-input-position': 'top', 'data-theme': 'transparent_dark', 'data-lang': 'tr', 'data-loading': 'lazy'
+            }).forEach(([k, v]) => sc.setAttribute(k, v));
+            box.appendChild(sc);
+        }
+
+        // ---- Uygulama olarak yükleme (PWA) ----
+        let installPrompt = null;
+        window.addEventListener('beforeinstallprompt', e => {
+            e.preventDefault();
+            installPrompt = e;
+            document.getElementById('install-btn').style.display = 'inline';
+        });
+
+        async function installApp() {
+            if (!installPrompt) return;
+            installPrompt.prompt();
+            const choice = await installPrompt.userChoice.catch(() => null);
+            if (choice?.outcome === 'accepted') trackEvent('uygulama-yuklendi', 'PWA yüklendi');
+            installPrompt = null;
+            document.getElementById('install-btn').style.display = 'none';
+        }
+
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator && location.protocol === 'https:') {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            }
+        }
 
         // Genel Arayüz Mantığı
         const switchPage = (pageId, btn) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
             document.querySelectorAll('.main-nav button').forEach(b => b.classList.toggle('active', b === btn));
+            if (pageId === 'page-guestbook') loadGiscus();
         };
 
         const showToast = msg => {
@@ -723,6 +1187,111 @@
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.style.display = 'none', 3000);
         };
+
+        // ---- Süre, Shorts ve canlı yayın rozetleri ----
+        function parseDuration(iso) {
+            const m = /^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(iso || '');
+            return m ? ((+m[1] || 0) * 86400 + (+m[2] || 0) * 3600 + (+m[3] || 0) * 60 + (+m[4] || 0)) : 0;
+        }
+
+        function formatDuration(sec) {
+            const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+            return h ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        const NEW_DAYS = 7;
+        const isNew = v => v.publishedAt && (Date.now() - new Date(v.publishedAt)) < NEW_DAYS * 86400000;
+
+        function badgesHTML(v) {
+            const top = (isNew(v) ? '<span class="thumb-badge new-badge">YENİ!</span>' : '') + (v.isShort ? '<span class="thumb-badge shorts-badge">SHORTS</span>' : '');
+            let html = top ? `<div class="badge-stack">${top}</div>` : '';
+            if (isWatched(v.id)) html += '<span class="thumb-badge watched-badge">✓ İZLENDİ</span>';
+            if (v.live === 'live') html += '<span class="thumb-badge live-badge">● CANLI</span>';
+            else if (v.live === 'upcoming') html += '<span class="thumb-badge live-badge">YAKINDA</span>';
+            else if (v.duration) html += `<span class="thumb-badge duration-badge">${formatDuration(v.duration)}</span>`;
+            return html;
+        }
+
+        // Kanalın Shorts listesi bir kez çekilir; alınamazsa 60 sn ve altı videolar Shorts sayılır
+        let shortsIdsPromise = null;
+        function getShortsIds() {
+            if (!shortsIdsPromise) {
+                shortsIdsPromise = (async () => {
+                    const ids = new Set();
+                    let pageToken = null, pages = 0;
+                    do {
+                        let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&fields=nextPageToken,items(contentDetails(videoId))&playlistId=${SHORTS_PLAYLIST_ID}&maxResults=50&key=${API_KEY}`;
+                        if (pageToken) url += `&pageToken=${pageToken}`;
+                        const data = await ytFetch(url);
+                        (data.items || []).forEach(it => ids.add(it.contentDetails.videoId));
+                        pageToken = data.nextPageToken || null;
+                        pages++;
+                    } while (pageToken && pages < MAX_API_PAGES);
+                    return ids;
+                })().catch(err => String(err.message).includes('playlistNotFound') ? new Set() : null);
+            }
+            return shortsIdsPromise;
+        }
+
+        async function markShorts(videos) {
+            const ids = await getShortsIds();
+            videos.forEach(v => v.isShort = ids ? ids.has(v.id) : (v.duration > 0 && v.duration <= 60));
+        }
+
+        // ---- Işınlan: rastgele video ----
+        function updateRandomButton() {
+            const btn = document.querySelector('.random-btn');
+            if (btn) btn.disabled = !filteredVideos.length;
+        }
+
+        function teleportRandom() {
+            if (!filteredVideos.length) return;
+            const current = readHash().video;
+            const pool = filteredVideos.length > 1 ? filteredVideos.filter(v => v.id !== current) : filteredVideos;
+            const v = pool[Math.floor(Math.random() * pool.length)];
+            showToast('🌀 Rastgele koordinatlara ışınlanılıyor...');
+            openVideoModal(v.id, v.title, filteredVideos);
+        }
+
+        // ---- Kanal istatistikleri ----
+        async function fetchChannelStats() {
+            try {
+                const data = await ytFetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`);
+                const st = data.items?.[0]?.statistics;
+                if (!st) return;
+                const subsBox = document.getElementById('stat-subs');
+                if (st.hiddenSubscriberCount) subsBox.closest('.stat').style.display = 'none';
+                else countUp(subsBox, +st.subscriberCount);
+                countUp(document.getElementById('stat-views'), +st.viewCount);
+                countUp(document.getElementById('stat-videos'), +st.videoCount);
+            } catch (err) { document.getElementById('channel-stats').style.display = 'none'; }
+        }
+
+        function countUp(el, target) {
+            const fmt = n => n >= 10000 ? formatNumber(n) : new Intl.NumberFormat('tr-TR').format(n);
+            if (reduceMotion || !target) { el.textContent = fmt(target); return; }
+            const start = performance.now(), dur = 1200;
+            const step = now => {
+                const t = Math.min((now - start) / dur, 1), eased = 1 - Math.pow(1 - t, 3);
+                el.textContent = fmt(Math.round(target * eased));
+                if (t < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+
+        // ---- Ziyaretçi sayacı (GoatCounter, çerezsiz) ----
+        function initAnalytics() {
+            if (!GOATCOUNTER_CODE) return;
+            const sc = document.createElement('script');
+            sc.async = true;
+            sc.src = 'https://gc.zgo.at/count.js';
+            sc.dataset.goatcounter = `https://${GOATCOUNTER_CODE}.goatcounter.com/count`;
+            document.head.appendChild(sc);
+        }
+
+        function trackEvent(path, title) {
+            try { window.goatcounter?.count?.({ path, title: title || path, event: true }); } catch (e) {}
+        }
 
         // ---- Paylaşılabilir linkler: #video=ID ve #list=ID ----
         const VIDEO_ID_RE = /^[A-Za-z0-9_-]{11}$/;
@@ -768,6 +1337,7 @@
         }
 
         // ---- Son Video: kanaldaki en yeni yükleme ----
+        let latestVideo = null;
         async function fetchLatestVideo() {
             try {
                 const data = await ytFetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=5&key=${API_KEY}`);
@@ -776,14 +1346,19 @@
                 items.sort((a, b) => new Date(b.contentDetails.videoPublishedAt || b.snippet.publishedAt) - new Date(a.contentDetails.videoPublishedAt || a.snippet.publishedAt));
                 const item = items[0], vId = item.contentDetails.videoId, t = item.snippet.thumbnails;
                 const stats = (await fetchVideoStats([vId]))[vId] || {};
-                renderLatestVideo({
+                const latest = {
                     id: vId,
                     title: item.snippet.title,
                     thumbnail: t.maxres?.url || t.standard?.url || t.high?.url || `https://img.youtube.com/vi/${vId}/hqdefault.jpg`,
                     viewCount: parseInt(stats.viewCount || 0),
                     likeCount: parseInt(stats.likeCount || 0),
-                    publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
-                });
+                    publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt,
+                    duration: stats.duration || 0,
+                    live: stats.live || null
+                };
+                await markShorts([latest]);
+                latestVideo = latest;
+                renderLatestVideo(latest);
             } catch (err) { /* Son video alınamazsa alan gizli kalır */ }
         }
 
@@ -794,6 +1369,7 @@
             box.innerHTML = `
                 <div class="latest-thumb" data-latest-play role="button" tabindex="0" aria-label="Oynat: ${safeTitle}">
                     <img src="${v.thumbnail}" alt="${safeTitle}">
+                    ${badgesHTML(v)}
                     <div class="play-icon">▶</div>
                 </div>
                 <div class="latest-info">
@@ -910,6 +1486,7 @@
 
         const animateStars = () => {
             drawStars();
+            drawMeteors();
             stars.forEach(s => {
                 s.y += s.speed;
                 if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
@@ -926,6 +1503,12 @@
             window.addEventListener('resize', resizeCanvas, { passive: true });
             resizeCanvas();
             if (!reduceMotion) animateStars();
+            document.getElementById('year').textContent = new Date().getFullYear();
+            document.getElementById('autoplay-toggle').checked = (() => { try { return localStorage.getItem('vt_autoplay') !== '0'; } catch (e) { return true; } })();
+            document.getElementById('site-title').addEventListener('click', onTitleTap);
+            registerServiceWorker();
+            initAnalytics();
+            fetchChannelStats();
             fetchPlaylists();
             fetchLatestVideo();
             fetchModInfo();

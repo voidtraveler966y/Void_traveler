@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinyal Yok | Void Traveler</title>
+    <meta name="theme-color" content="#050510">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, sans-serif; background: #050510; color: #fff; min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 1.5rem;
+               background-image: radial-gradient(circle at 50% 40%, rgba(0, 243, 255, 0.12), transparent 60%); }
+        .icon { font-size: 4rem; filter: drop-shadow(0 0 18px #00f3ff); }
+        h1 { margin: 1rem 0 0.6rem; font-size: 1.8rem; letter-spacing: 4px; color: #00f3ff; text-shadow: 0 0 12px #00f3ff; text-transform: uppercase; }
+        p { color: #aaa; max-width: 420px; margin: 0 auto 2rem; line-height: 1.5; font-size: 1.05rem; }
+        button { padding: 0.8rem 2rem; font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase; color: #050510; background: #00f3ff; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 0 15px #00f3ff; }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="icon" aria-hidden="true">📡</div>
+        <h1>Sinyal Yok</h1>
+        <p>Galaktik iletişim ağına şu an bağlanılamıyor. İnternet bağlantını kontrol edip tekrar dene.</p>
+        <button onclick="location.reload()">↻ Yeniden Bağlan</button>
+    </main>
+</body>
+</html>
