@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Void Traveler | Uzay İletişim Ağı</title>
+    <meta name="description" content="Void Traveler YouTube kanalının galaktik video arşivi: oyun serileri, oynatma listeleri, ColoredBlocks Minecraft modu ve MC Bot.">
+    <meta name="theme-color" content="#050510">
+    <link rel="canonical" href="https://voidtraveler966y.github.io/Void_traveler/">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Link önizlemesi (WhatsApp, Discord, X, Facebook...) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Void Traveler">
+    <meta property="og:title" content="Void Traveler | Galaktik Veri Arşivi">
+    <meta property="og:description" content="Oyun serileri, oynatma listeleri, ColoredBlocks Minecraft modu ve daha fazlası.">
+    <meta property="og:url" content="https://voidtraveler966y.github.io/Void_traveler/">
+    <meta property="og:image" content="https://voidtraveler966y.github.io/Void_traveler/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="tr_TR">
+    <meta name="twitter:card" content="summary_large_image">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -107,7 +123,24 @@
         .modal-content { background: #050510; border: 2px solid var(--primary-color); border-radius: 12px; width: 100%; max-width: 900px; box-shadow: 0 0 30px var(--primary-color); overflow: hidden; animation: zoomIn 0.3s ease; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header { padding: 1rem; background: rgba(0, 243, 255, 0.1); border-bottom: 1px solid var(--primary-color); display: flex; justify-content: space-between; align-items: center; }
-        .modal-header h4 { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 85%; }
+        .modal-header { gap: 1rem; }
+        .modal-header h4 { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+        .modal-header-actions { display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
+        .share-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+        .share-btn:hover { background: var(--primary-color); color: #000; }
+
+        /* Son Video */
+        .latest-video { display: none; margin-bottom: 2.5rem; }
+        .latest-video.ready { display: grid; grid-template-columns: 1.4fr 1fr; background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 10px; overflow: hidden; box-shadow: 0 0 25px rgba(0, 243, 255, 0.25); backdrop-filter: blur(5px); }
+        .latest-thumb { position: relative; cursor: pointer; background: #000; }
+        .latest-thumb img { width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+        .latest-thumb .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; font-size: 2rem; transition: transform 0.3s; }
+        .latest-thumb:hover .play-icon, .latest-thumb:focus-visible .play-icon { transform: translate(-50%, -50%) scale(1.12); }
+        .latest-info { padding: 1.8rem; display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
+        .latest-badge { align-self: flex-start; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 2px; color: var(--bg-color); background: var(--secondary-color); padding: 4px 10px; border-radius: 3px; box-shadow: 0 0 12px var(--secondary-color); }
+        .latest-info h2 { font-size: 1.5rem; line-height: 1.3; color: #fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .latest-meta { display: flex; gap: 1.2rem; flex-wrap: wrap; color: #aaa; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; }
+        .latest-info .card-actions { justify-content: flex-start; }
         .close-modal-btn { background: transparent; border: none; color: var(--secondary-color); font-size: 1.8rem; cursor: pointer; font-family: 'Orbitron', sans-serif; transition: color 0.3s; }
         .close-modal-btn:hover { color: #fff; text-shadow: 0 0 10px var(--secondary-color); }
         .video-player-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; }
@@ -131,14 +164,38 @@
         .mod-changelog li { padding-left: 1.2rem; position: relative; margin-bottom: 0.4rem; }
         .mod-changelog li::before { content: '▸'; position: absolute; left: 0; color: var(--primary-color); }
 
+        @media (max-width: 800px) {
+            .latest-video.ready { grid-template-columns: 1fr; }
+            .latest-info { padding: 1.2rem; }
+            .latest-info h2 { font-size: 1.25rem; }
+        }
         @media (max-width: 600px) {
             .container { padding: 1rem; }
-            header h1 { font-size: 2rem; letter-spacing: 2px; }
+            header { margin: 0.5rem 0 1.5rem; }
+            header h1 { font-size: 1.9rem; letter-spacing: 2px; }
             header p { font-size: 1rem; letter-spacing: 2px; }
-            .main-nav { gap: 1rem; }
-            .main-nav button { font-size: 0.95rem; }
-            .section-title { font-size: 1.4rem; }
-            .mode-grid { grid-template-columns: 1fr; }
+            .yt-button { padding: 0.7rem 1.4rem; font-size: 0.8rem; }
+
+            /* Sekmeler ve kategoriler: alt alta yığılmak yerine yana kaydırılır */
+            .main-nav, .category-nav { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+            .main-nav::-webkit-scrollbar, .category-nav::-webkit-scrollbar { display: none; }
+            .main-nav { gap: 1.2rem; padding-bottom: 0.8rem; margin-bottom: 1.5rem; }
+            .main-nav button { font-size: 0.85rem; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; }
+            .category-nav { gap: 0.6rem; margin-bottom: 1.2rem; padding-bottom: 4px; }
+            .category-nav button { white-space: nowrap; flex-shrink: 0; padding: 0.55rem 1rem; font-size: 0.75rem; }
+
+            .filter-bar { padding: 0.7rem; }
+            .search-box { min-width: 0; flex-basis: 100%; }
+            .sort-box, .sort-box select { width: 100%; }
+            .video-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .section-title { font-size: 1.3rem; letter-spacing: 2px; }
+            .mode-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .hud-card { padding: 1.3rem; }
+            .mod-specs div { font-size: 0.8rem; }
+            .modal-backdrop { padding: 0.5rem; }
+            .modal-header h4 { font-size: 0.9rem; }
+            .share-label { display: none; }
+            #notification-toast { left: 1rem; right: 1rem; bottom: 1rem; text-align: center; font-size: 0.85rem; }
         }
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; }
@@ -158,7 +215,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 id="modal-video-title">Sinyal Bağlantısı</h4>
-                <button class="close-modal-btn" onclick="closeVideoModal()">&times;</button>
+                <div class="modal-header-actions">
+                    <button class="share-btn" onclick="copyCurrentLink()" title="Bu videonun linkini kopyala" aria-label="Linki kopyala">🔗 <span class="share-label">Linki Kopyala</span></button>
+                    <button class="close-modal-btn" onclick="closeVideoModal()" aria-label="Kapat">&times;</button>
+                </div>
             </div>
             <div class="video-player-container">
                 <iframe id="modal-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -168,7 +228,7 @@
 
     <div class="container">
         <header>
-            <h1>Void Traveler</h1>
+            <h1 lang="en">Void Traveler</h1>
             <p>Galaktik Veri Arşivi</p>
             <div class="header-buttons">
                 <a href="https://www.youtube.com/@void_traveler966" target="_blank" class="yt-button" rel="noopener">Ana Gemiye Dön</a>
@@ -185,6 +245,9 @@
 
         <!-- 1. İletişim Kayıtları -->
         <div id="page-records" class="page-content active-page">
+            <!-- Son Video (kanaldaki en yeni yükleme, otomatik) -->
+            <section class="latest-video" id="latest-video" aria-label="Son video"></section>
+
             <div class="category-nav" id="category-nav">
                 <div class="loading">Oynatma Listeleri Yükleniyor...</div>
             </div>
@@ -290,7 +353,8 @@
             <div class="mode-grid">
                 <div class="hud-card">
                     <h3>🚀 Son Güncellemeler</h3>
-                    <div class="update-timeline">
+                    <!-- GitHub'daki son yüklemelerden otomatik doldurulur; GitHub'a ulaşılamazsa aşağıdaki kayıtlar görünür -->
+                    <div class="update-timeline" id="update-timeline">
                         <div class="update-item">
                             <div class="update-date">KASIM 2026</div>
                             <div class="update-title">MC Bot Bölümü & Arşiv İyileştirmeleri</div>
@@ -379,7 +443,7 @@
                     });
 
                     buttonsHTML += data.items.map(pl => `
-                        <button onclick="selectPlaylist('${pl.id}', this)">
+                        <button onclick="selectPlaylist('${pl.id}', this)" data-playlist="${pl.id}">
                             ${sanitizeHTML(pl.snippet.title)}
                         </button>
                     `).join('');
@@ -388,7 +452,11 @@
                 showToast('Oynatma listeleri alınamadı.');
             }
             navContainer.innerHTML = buttonsHTML;
-            selectTumu(document.querySelector('.btn-tumu'));
+
+            const { list } = readHash();
+            const listBtn = list && playlistsMap[list] ? navContainer.querySelector(`[data-playlist="${CSS.escape(list)}"]`) : null;
+            if (listBtn) selectPlaylist(list, listBtn);
+            else selectTumu(document.querySelector('.btn-tumu'));
         }
 
         function resetFilters() {
@@ -407,6 +475,7 @@
             setActiveCategory(btn);
             // TÜMÜ butonunda varsayılan uzay teması aktif kalır
             document.getElementById('bg-overlay').style.opacity = '0';
+            writeHash({ list: null });
             fetchPlaylistVideos(currentPlaylistId);
         }
 
@@ -414,6 +483,7 @@
             currentPlaylistId = playlistId;
             resetFilters();
             setActiveCategory(btn);
+            writeHash({ list: playlistId });
             const playlistInfo = playlistsMap[playlistId];
             updateDynamicBackground(playlistInfo?.title || '', playlistInfo?.thumbUrl || '');
             fetchPlaylistVideos(playlistId);
@@ -523,7 +593,8 @@
                         title: item.snippet.title,
                         thumbnail: t.maxres?.url || t.high?.url || t.medium?.url || `https://img.youtube.com/vi/${vId}/hqdefault.jpg`,
                         viewCount: parseInt(stats.viewCount || 0),
-                        likeCount: parseInt(stats.likeCount || 0)
+                        likeCount: parseInt(stats.likeCount || 0),
+                        publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
                     };
                 });
 
@@ -618,14 +689,19 @@
 
         // Modal
         function openVideoModal(videoId, title) {
-            document.getElementById('modal-video-title').innerText = title;
+            if (!VIDEO_ID_RE.test(videoId)) return;
+            document.getElementById('modal-video-title').innerText = title || 'Sinyal Bağlantısı';
             document.getElementById('modal-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
             document.getElementById('video-modal').style.display = 'flex';
+            writeHash({ video: videoId });
         }
 
         function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            if (modal.style.display !== 'flex') return;
             document.getElementById('modal-iframe').src = '';
-            document.getElementById('video-modal').style.display = 'none';
+            modal.style.display = 'none';
+            writeHash({ video: null });
         }
 
         function handleBackdropClick(e) {
@@ -647,6 +723,145 @@
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.style.display = 'none', 3000);
         };
+
+        // ---- Paylaşılabilir linkler: #video=ID ve #list=ID ----
+        const VIDEO_ID_RE = /^[A-Za-z0-9_-]{11}$/;
+
+        function readHash() {
+            const p = new URLSearchParams(location.hash.slice(1));
+            const video = p.get('video'), list = p.get('list');
+            return { video: VIDEO_ID_RE.test(video || '') ? video : null, list: /^[A-Za-z0-9_-]{2,64}$/.test(list || '') ? list : null };
+        }
+
+        function writeHash(changes) {
+            const p = new URLSearchParams(location.hash.slice(1));
+            Object.entries(changes).forEach(([k, v]) => v ? p.set(k, v) : p.delete(k));
+            const h = p.toString();
+            history.replaceState(null, '', h ? `#${h}` : location.pathname + location.search);
+        }
+
+        async function openVideoFromHash() {
+            const { video } = readHash();
+            if (!video) return closeVideoModal();
+            let title = loadedVideosData.find(v => v.id === video)?.title;
+            if (!title) {
+                try {
+                    const data = await ytFetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${video}&key=${API_KEY}`);
+                    title = data.items?.[0]?.snippet?.title;
+                } catch (e) {}
+            }
+            openVideoModal(video, title);
+        }
+
+        async function copyCurrentLink() {
+            const url = location.href;
+            try {
+                await navigator.clipboard.writeText(url);
+            } catch (e) {
+                const tmp = document.createElement('textarea');
+                tmp.value = url; tmp.style.position = 'fixed'; tmp.style.opacity = '0';
+                document.body.appendChild(tmp); tmp.select();
+                try { document.execCommand('copy'); } catch (err) {}
+                tmp.remove();
+            }
+            showToast('Link kopyalandı!');
+        }
+
+        // ---- Son Video: kanaldaki en yeni yükleme ----
+        async function fetchLatestVideo() {
+            try {
+                const data = await ytFetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=5&key=${API_KEY}`);
+                const items = (data.items || []).filter(it => !isUnavailable(it));
+                if (!items.length) return;
+                items.sort((a, b) => new Date(b.contentDetails.videoPublishedAt || b.snippet.publishedAt) - new Date(a.contentDetails.videoPublishedAt || a.snippet.publishedAt));
+                const item = items[0], vId = item.contentDetails.videoId, t = item.snippet.thumbnails;
+                const stats = (await fetchVideoStats([vId]))[vId] || {};
+                renderLatestVideo({
+                    id: vId,
+                    title: item.snippet.title,
+                    thumbnail: t.maxres?.url || t.standard?.url || t.high?.url || `https://img.youtube.com/vi/${vId}/hqdefault.jpg`,
+                    viewCount: parseInt(stats.viewCount || 0),
+                    likeCount: parseInt(stats.likeCount || 0),
+                    publishedAt: item.contentDetails.videoPublishedAt || item.snippet.publishedAt
+                });
+            } catch (err) { /* Son video alınamazsa alan gizli kalır */ }
+        }
+
+        function renderLatestVideo(v) {
+            const box = document.getElementById('latest-video');
+            const safeTitle = sanitizeHTML(v.title);
+            const date = v.publishedAt ? new Date(v.publishedAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+            box.innerHTML = `
+                <div class="latest-thumb" data-latest-play role="button" tabindex="0" aria-label="Oynat: ${safeTitle}">
+                    <img src="${v.thumbnail}" alt="${safeTitle}">
+                    <div class="play-icon">▶</div>
+                </div>
+                <div class="latest-info">
+                    <span class="latest-badge">📡 SON SİNYAL</span>
+                    <h2>${safeTitle}</h2>
+                    <div class="latest-meta">
+                        ${date ? `<span>📅 ${date}</span>` : ''}
+                        <span>👁️ ${formatNumber(v.viewCount)}</span>
+                        <span>👍 ${formatNumber(v.likeCount)}</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="watch-btn" data-latest-play>▶ HEMEN İZLE</button>
+                        <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" class="external-btn" title="YouTube'da Aç">↗</a>
+                    </div>
+                </div>`;
+            const play = () => openVideoModal(v.id, v.title);
+            box.querySelectorAll('[data-latest-play]').forEach(el => {
+                el.addEventListener('click', play);
+                el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+            });
+            box.classList.add('ready');
+        }
+
+        // ---- Son Güncellemeler: GitHub'daki son yüklemelerden otomatik ----
+        const GITHUB_REPO = 'voidtraveler966y/Void_traveler';
+        const DEFAULT_COMMIT_RE = /^(Add files via upload|Initial commit|Update [^\s]+|Create [^\s]+|Delete [^\s]+|Rename [^\s]+)$/i;
+
+        async function fetchSiteUpdates() {
+            const cacheKey = 'vt_commits';
+            let commits;
+            try {
+                const c = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+                if (c && Date.now() - c.t < 10 * 60 * 1000) commits = c.data;
+            } catch (e) {}
+
+            try {
+                if (!commits) {
+                    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=15`);
+                    if (!res.ok) throw new Error(res.status);
+                    commits = (await res.json()).map(c => ({ msg: c.commit?.message || '', date: c.commit?.author?.date }));
+                    try { sessionStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), data: commits })); } catch (e) {}
+                }
+            } catch (err) { return; } // GitHub'a ulaşılamazsa elle yazılmış kayıtlar kalır
+
+            const entries = [];
+            commits.forEach(c => {
+                if (!c.date) return;
+                const [first, ...rest] = c.msg.split('\n');
+                const isDefault = DEFAULT_COMMIT_RE.test(first.trim());
+                const day = c.date.slice(0, 10);
+                // Aynı gün yapılan açıklamasız yüklemeler tek kayıtta birleştirilir
+                if (isDefault && entries.some(e => e.day === day)) return;
+                entries.push({
+                    day,
+                    date: c.date,
+                    title: isDefault ? (/^Initial commit$/i.test(first.trim()) ? 'Site yayına alındı' : 'Site güncellendi') : first.trim(),
+                    desc: isDefault ? '' : rest.join(' ').trim()
+                });
+            });
+            if (!entries.length) return;
+
+            document.getElementById('update-timeline').innerHTML = entries.slice(0, 5).map(e => `
+                <div class="update-item">
+                    <div class="update-date">${new Date(e.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }).toLocaleUpperCase('tr-TR')}</div>
+                    <div class="update-title">${sanitizeHTML(e.title)}</div>
+                    ${e.desc ? `<div class="update-desc">${sanitizeHTML(e.desc)}</div>` : ''}
+                </div>`).join('');
+        }
 
         // Oyun Modum: CurseForge son sürüm bilgisi (kendi API'mizden)
         async function fetchModInfo() {
@@ -712,7 +927,11 @@
             resizeCanvas();
             if (!reduceMotion) animateStars();
             fetchPlaylists();
+            fetchLatestVideo();
             fetchModInfo();
+            fetchSiteUpdates();
+            if (readHash().video) openVideoFromHash();
+            window.addEventListener('hashchange', openVideoFromHash);
         };
     </script>
 </body>
