@@ -124,7 +124,12 @@
         .mod-yt-btn { background: rgba(255,0,0,0.1); color: #fff; border: 1px solid #ff0000; }
         .mod-yt-btn:hover { background: rgba(255,0,0,0.8); box-shadow: 0 0 18px #ff0000; transform: translateY(-2px); }
         .mod-steps { color: #ccc; padding-left: 1.2rem; line-height: 1.9; font-size: 0.95rem; }
-        .mod-steps b { color: var(--primary-color); font-weight: 600; }
+        .mod-steps b { color: var(--primary-color); font-weight: 600; word-break: break-all; }
+        .mod-specs b { font-weight: 400; }
+        .cl-version { font-size: 0.85rem; color: var(--accent-gold); }
+        .mod-changelog { list-style: none; color: #ccc; font-size: 0.95rem; line-height: 1.6; max-height: 320px; overflow-y: auto; padding-right: 6px; }
+        .mod-changelog li { padding-left: 1.2rem; position: relative; margin-bottom: 0.4rem; }
+        .mod-changelog li::before { content: '▸'; position: absolute; left: 0; color: var(--primary-color); }
 
         @media (max-width: 600px) {
             .container { padding: 1rem; }
@@ -217,14 +222,17 @@
                         rengârenk dekoratif bloklar ve tuğlalar ekler. Karmaşık sistemler ya da zor tarifler yok;
                         odak noktası tamamen renk ve dekorasyon. Yeni renkler ve blok çeşitleri yolda!
                     </p>
+                    <!-- Bu değerler API'den otomatik güncellenir; API'ye ulaşılamazsa buradakiler görünür -->
                     <div class="mod-specs">
-                        <div><span>Sürüm</span>1.1.0</div>
-                        <div><span>Minecraft</span>1.21.1</div>
-                        <div><span>Yükleyici</span>NeoForge</div>
+                        <div><span>Sürüm</span><b id="mod-version">1.1.0</b></div>
+                        <div><span>Minecraft</span><b id="mod-mc">1.21.1</b></div>
+                        <div><span>Yükleyici</span><b id="mod-loader">NeoForge</b></div>
                         <div><span>Tür</span>Dekoratif</div>
+                        <div><span>Yayın Tarihi</span><b id="mod-date">—</b></div>
+                        <div><span>Toplam İndirme</span><b id="mod-downloads">—</b></div>
                     </div>
                     <div class="mod-actions">
-                        <a href="https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder" target="_blank" rel="noopener" class="mod-download-btn">⬇ CurseForge'dan İndir</a>
+                        <a href="https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder" target="_blank" rel="noopener" class="mod-download-btn" id="mod-download-link">⬇ CurseForge'dan İndir</a>
                         <a href="https://www.youtube.com/@McModder-t1f" target="_blank" rel="noopener" class="mod-yt-btn">▶ McModder Kanalı</a>
                     </div>
                 </div>
@@ -233,12 +241,21 @@
                     <h3>🛠️ Nasıl Kurulur?</h3>
                     <ol class="mod-steps">
                         <li>Minecraft 1.21.1 için <b>NeoForge</b> yükleyin.</li>
-                        <li>CurseForge sayfasından <b>coloredblocks-1.1.0-neoforge-1.21.1.jar</b> dosyasını indirin.</li>
+                        <li>CurseForge sayfasından <b id="mod-filename">coloredblocks-1.1.0-neoforge-1.21.1.jar</b> dosyasını indirin.</li>
                         <li>Dosyayı <b>.minecraft/mods</b> klasörüne atın.</li>
                         <li>Oyunu NeoForge profiliyle başlatın ve renkli blokların tadını çıkarın!</li>
                     </ol>
                     <div class="hud-footer">
                         <span class="hud-badge">Yapımcı: McModder</span>
+                    </div>
+                </div>
+
+                <!-- Son sürümün değişiklik notu (API'den gelir; veri yoksa gizli kalır) -->
+                <div class="hud-card" id="mod-changelog-card" style="display:none;">
+                    <h3>📜 Bu Sürümde Neler Var? <span class="cl-version" id="mod-cl-version"></span></h3>
+                    <ul class="mod-changelog" id="mod-changelog"></ul>
+                    <div class="hud-footer">
+                        <span class="hud-badge" id="mod-release-type">Release</span>
                     </div>
                 </div>
             </div>
@@ -311,6 +328,11 @@
         const UPLOADS_PLAYLIST_ID = 'UULZ6rdlFePsR8_vqxY48XRw';
         const PAGE_SIZE = 20;          // Ekranda her seferinde gösterilecek video sayısı
         const MAX_API_PAGES = 20;      // Bir listeden en fazla 20 x 50 = 1000 video çekilir
+
+        // Kendi API'miz (Cloudflare Worker) — yayınlandıktan sonra adresi buraya yapıştırın.
+        // Örnek: 'https://coloredblocks-api.KULLANICIADI.workers.dev/coloredblocks'
+        // Boş bırakılırsa Oyun Modum kartında sabit bilgiler görünür.
+        const MOD_API_URL = '';
 
         let currentPlaylistId, loadedVideosData = [], filteredVideos = [], visibleCount = PAGE_SIZE, searchTimeout;
         let playlistsMap = {}; // Oynatma listesi bilgilerini saklayan harita
@@ -626,6 +648,34 @@
             toastTimer = setTimeout(() => toast.style.display = 'none', 3000);
         };
 
+        // Oyun Modum: CurseForge son sürüm bilgisi (kendi API'mizden)
+        async function fetchModInfo() {
+            if (!MOD_API_URL) return;
+            try {
+                const res = await fetch(MOD_API_URL);
+                const d = await res.json();
+                if (!res.ok || d.error) throw new Error(d.error || res.status);
+
+                const setText = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+                setText('mod-version', d.version);
+                setText('mod-mc', d.mcVersions?.join(', '));
+                setText('mod-loader', d.loaders?.join(', '));
+                setText('mod-filename', d.fileName);
+                if (d.fileDate) setText('mod-date', new Date(d.fileDate).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }));
+                if (d.totalDownloads != null) setText('mod-downloads', new Intl.NumberFormat('tr-TR').format(d.totalDownloads));
+
+                const link = document.getElementById('mod-download-link');
+                if (link && /^https:\/\/www\.curseforge\.com\//.test(d.fileUrl || '')) link.href = d.fileUrl;
+
+                if (d.changelog?.length) {
+                    document.getElementById('mod-changelog').innerHTML = d.changelog.map(l => `<li>${sanitizeHTML(l)}</li>`).join('');
+                    setText('mod-cl-version', `v${d.version}`);
+                    setText('mod-release-type', d.releaseType);
+                    document.getElementById('mod-changelog-card').style.display = '';
+                }
+            } catch (err) { /* API'ye ulaşılamazsa sabit bilgiler kalır */ }
+        }
+
         // Arka Plan Uzay Tuvali
         const canvas = document.getElementById('space-canvas'), ctx = canvas.getContext('2d');
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -662,6 +712,7 @@
             resizeCanvas();
             if (!reduceMotion) animateStars();
             fetchPlaylists();
+            fetchModInfo();
         };
     </script>
 </body>
