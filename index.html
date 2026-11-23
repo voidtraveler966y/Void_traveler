@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Void Traveler | Uzay İletişim Ağı</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
         :root { 
@@ -36,19 +35,9 @@
         header p { font-size: 1.2rem; color: #aaa; margin-top: 0.5rem; letter-spacing: 3px; }
 
         .header-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
-        .yt-button, .notify-btn, .auth-btn { padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; border-radius: 4px; cursor: pointer; }
+        .yt-button { padding: 0.8rem 2rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; border-radius: 4px; cursor: pointer; }
         .yt-button { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
         .yt-button:hover { background: rgba(255, 0, 0, 0.8); box-shadow: 0 0 25px #ff0000; transform: translateY(-2px); }
-        .notify-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
-        .notify-btn:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: translateY(-2px); }
-        .auth-btn { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--accent-gold); color: var(--accent-gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
-        .auth-btn:hover { background: var(--accent-gold); color: #000; box-shadow: 0 0 20px var(--accent-gold); transform: translateY(-2px); }
-        
-        #user-profile { display: none; align-items: center; justify-content: center; gap: 15px; margin: 1.5rem auto 0; padding: 10px 20px; background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 8px; box-shadow: var(--text-glow); max-width: 400px; }
-        #user-profile img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color); }
-        #user-profile .user-info-text { text-align: left; font-family: 'Orbitron', sans-serif; }
-        #user-profile h4 { font-size: 1rem; color: #fff; }
-        #user-profile p { font-size: 0.8rem; color: var(--primary-color); }
 
         .main-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 1rem; flex-wrap: wrap; }
         .main-nav button { background: none; border: none; color: #888; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; }
@@ -77,7 +66,7 @@
         .video-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow: hidden; transition: transform 0.3s ease, border-color 0.5s ease; display: flex; flex-direction: column; justify-content: space-between; backdrop-filter: blur(5px); }
         .video-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .thumbnail-wrapper { position: relative; }
-        .thumbnail-wrapper img { width: 100%; display: block; border-bottom: 2px solid var(--primary-color); }
+        .thumbnail-wrapper img { width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; background: #000; border-bottom: 2px solid var(--primary-color); }
         .play-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; cursor: pointer; }
         .thumbnail-wrapper:hover .play-overlay, .play-overlay:focus-visible { opacity: 1; }
         .play-icon { width: 50px; height: 50px; background: var(--primary-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #000; font-size: 1.5rem; box-shadow: 0 0 20px var(--primary-color); }
@@ -89,14 +78,11 @@
         .video-metrics span { display: flex; align-items: center; gap: 4px; }
 
         .card-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
-        .watch-btn, .like-btn, .external-btn { padding: 0.5rem 0.9rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 5px; }
+        .watch-btn, .external-btn { padding: 0.5rem 0.9rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; border: none; cursor: pointer; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 5px; }
         .watch-btn { background: var(--primary-color); color: var(--bg-color); }
         .watch-btn:hover { opacity: 0.85; box-shadow: 0 0 10px var(--primary-color); }
         .external-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid #aaa; color: #aaa; }
         .external-btn:hover { background: #fff; color: #000; }
-        .like-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: #fff; }
-        .like-btn:hover { background: var(--primary-color); color: #000; }
-        .like-btn.liked { background: #39ff14; border-color: #39ff14; color: #000; cursor: default; }
 
         .load-more-container { text-align: center; margin-top: 3rem; display: none; }
         .load-more-btn { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); padding: 0.8rem 2.5rem; font-family: 'Orbitron', sans-serif; font-size: 1rem; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: all 0.3s; }
@@ -128,6 +114,18 @@
         .video-player-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         .loading, .error { grid-column: 1 / -1; text-align: center; font-size: 1.3rem; color: var(--primary-color); font-family: 'Orbitron', sans-serif; margin-top: 2rem; letter-spacing: 2px; }
+        .mod-specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin: 1.2rem 0; }
+        .mod-specs div { background: rgba(0,0,0,0.35); border: 1px solid rgba(0,243,255,0.25); border-radius: 4px; padding: 0.5rem 0.7rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; }
+        .mod-specs span { display: block; font-size: 0.7rem; color: var(--accent-gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+        .mod-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+        .mod-download-btn, .mod-yt-btn { padding: 0.7rem 1.2rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; }
+        .mod-download-btn { background: #f16436; color: #fff; border: 1px solid #f16436; }
+        .mod-download-btn:hover { box-shadow: 0 0 18px #f16436; transform: translateY(-2px); }
+        .mod-yt-btn { background: rgba(255,0,0,0.1); color: #fff; border: 1px solid #ff0000; }
+        .mod-yt-btn:hover { background: rgba(255,0,0,0.8); box-shadow: 0 0 18px #ff0000; transform: translateY(-2px); }
+        .mod-steps { color: #ccc; padding-left: 1.2rem; line-height: 1.9; font-size: 0.95rem; }
+        .mod-steps b { color: var(--primary-color); font-weight: 600; }
+
         @media (max-width: 600px) {
             .container { padding: 1rem; }
             header h1 { font-size: 2rem; letter-spacing: 2px; }
@@ -169,16 +167,14 @@
             <p>Galaktik Veri Arşivi</p>
             <div class="header-buttons">
                 <a href="https://www.youtube.com/@void_traveler966" target="_blank" class="yt-button" rel="noopener">Ana Gemiye Dön</a>
-                <button onclick="requestNotificationPermission()" class="notify-btn" id="notify-btn">🔔 Bildirimleri Aç</button>
-                <button onclick="handleAuthClick()" class="auth-btn" id="auth-btn">🛸 YouTube Bağlan</button>
             </div>
-            <div id="user-profile"></div>
         </header>
 
         <!-- Navigasyon -->
         <nav class="main-nav">
             <button onclick="switchPage('page-records', this)" class="active">İletişim Kayıtları</button>
             <button onclick="switchPage('page-mode', this)">Oyun Modum</button>
+            <button onclick="switchPage('page-mcbot', this)">MC Bot</button>
             <button onclick="switchPage('page-updates', this)">Son Güncelleme</button>
         </nav>
 
@@ -214,14 +210,63 @@
         <div id="page-mode" class="page-content">
             <h2 class="section-title">Oyun <span>Modum</span></h2>
             <div class="mode-grid">
+                <div class="hud-card mod-card">
+                    <h3>🧱 ColoredBlocks By McModder</h3>
+                    <p class="hud-text">
+                        Yapılarınıza renk katın! ColoredBlocks, Minecraft'a inşaat, duvar ve piksel sanatı için
+                        rengârenk dekoratif bloklar ve tuğlalar ekler. Karmaşık sistemler ya da zor tarifler yok;
+                        odak noktası tamamen renk ve dekorasyon. Yeni renkler ve blok çeşitleri yolda!
+                    </p>
+                    <div class="mod-specs">
+                        <div><span>Sürüm</span>1.1.0</div>
+                        <div><span>Minecraft</span>1.21.1</div>
+                        <div><span>Yükleyici</span>NeoForge</div>
+                        <div><span>Tür</span>Dekoratif</div>
+                    </div>
+                    <div class="mod-actions">
+                        <a href="https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder" target="_blank" rel="noopener" class="mod-download-btn">⬇ CurseForge'dan İndir</a>
+                        <a href="https://www.youtube.com/@McModder-t1f" target="_blank" rel="noopener" class="mod-yt-btn">▶ McModder Kanalı</a>
+                    </div>
+                </div>
+
                 <div class="hud-card">
-                    <h3>🎮 Hazırlanıyor</h3>
-                    <p class="hud-text">Bu bölüm yakında güncellenecek. Oyun modu bilgileri burada yer alacak.</p>
+                    <h3>🛠️ Nasıl Kurulur?</h3>
+                    <ol class="mod-steps">
+                        <li>Minecraft 1.21.1 için <b>NeoForge</b> yükleyin.</li>
+                        <li>CurseForge sayfasından <b>coloredblocks-1.1.0-neoforge-1.21.1.jar</b> dosyasını indirin.</li>
+                        <li>Dosyayı <b>.minecraft/mods</b> klasörüne atın.</li>
+                        <li>Oyunu NeoForge profiliyle başlatın ve renkli blokların tadını çıkarın!</li>
+                    </ol>
+                    <div class="hud-footer">
+                        <span class="hud-badge">Yapımcı: McModder</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Son Güncelleme -->
+        <!-- 3. MC Bot (içerik daha sonra doldurulacak) -->
+        <div id="page-mcbot" class="page-content">
+            <h2 class="section-title">MC <span>Bot</span></h2>
+            <div class="mode-grid">
+                <div class="hud-card">
+                    <h3>🤖 MC Bot</h3>
+                    <p class="hud-text">
+                        <!-- Bot tanıtım metni buraya -->
+                        Bu bölüm yakında güncellenecek.
+                    </p>
+                </div>
+
+                <div class="hud-card">
+                    <h3>🛠️ Nasıl Kullanılır?</h3>
+                    <p class="hud-text">
+                        <!-- Kurulum / kullanım adımları buraya -->
+                        Yakında...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Son Güncelleme -->
         <div id="page-updates" class="page-content">
             <h2 class="section-title">Son <span>Güncelleme</span> & Sistem Durumu</h2>
             
@@ -229,6 +274,11 @@
                 <div class="hud-card">
                     <h3>🚀 Son Güncellemeler</h3>
                     <div class="update-timeline">
+                        <div class="update-item">
+                            <div class="update-date">KASIM 2026</div>
+                            <div class="update-title">MC Bot Bölümü & Arşiv İyileştirmeleri</div>
+                            <div class="update-desc">MC Bot sekmesi eklendi. Arama artık tüm arşivde çalışıyor, gizli/silinmiş videolar listeden çıkarıldı ve kapak görselleri düzeltildi.</div>
+                        </div>
                         <div class="update-item">
                             <div class="update-date">EYLÜL 2026</div>
                             <div class="update-title">Yapay Zekâ Arka Plan & UI Modernizasyonu</div>
@@ -256,13 +306,13 @@
     </div>
 
     <script>
-        const CLIENT_ID = '477152702497-2j98r43u0gbsiapndv4iisq6e9ldh5rv.apps.googleusercontent.com';
         const API_KEY = 'AIzaSyB3ZPLI9O-LvKB7LMqMgPdxqz8-79qLyMs';
         const CHANNEL_ID = 'UCLZ6rdlFePsR8_vqxY48XRw';
         const UPLOADS_PLAYLIST_ID = 'UULZ6rdlFePsR8_vqxY48XRw';
-        const SCOPES = 'https://www.googleapis.com/auth/youtube.force-ssl';
+        const PAGE_SIZE = 20;          // Ekranda her seferinde gösterilecek video sayısı
+        const MAX_API_PAGES = 20;      // Bir listeden en fazla 20 x 50 = 1000 video çekilir
 
-        let tokenClient, accessToken, currentPlaylistId, nextPageToken, loadedVideosData = [], searchTimeout;
+        let currentPlaylistId, loadedVideosData = [], filteredVideos = [], visibleCount = PAGE_SIZE, searchTimeout;
         let playlistsMap = {}; // Oynatma listesi bilgilerini saklayan harita
         let requestCounter = 0, toastTimer;
 
@@ -272,61 +322,30 @@
             return str ? str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])) : '';
         }
 
-        // OAuth
-        function initOAuth() {
-            if (window.google?.accounts?.oauth2) {
-                tokenClient = google.accounts.oauth2.initTokenClient({
-                    client_id: CLIENT_ID,
-                    scope: SCOPES,
-                    callback: (res) => {
-                        if (res?.access_token) {
-                            accessToken = res.access_token;
-                            showToast("YouTube Bağlantısı Başarılı!");
-                            fetchUserProfile();
-                            handleSearchAndSort(); // Beğen butonlarını göstermek için yalnızca yeniden çiz
-                        }
-                    },
-                });
+        // YouTube API çağrısı: hata yanıtlarını (kota, geçersiz anahtar vb.) gerçek hata olarak fırlatır
+        async function ytFetch(url) {
+            const res = await fetch(url);
+            const data = await res.json();
+            if (!res.ok || data.error) {
+                const reason = data.error?.errors?.[0]?.reason || data.error?.message || res.status;
+                throw new Error(reason);
             }
+            return data;
         }
 
-        function handleAuthClick() {
-            if (!tokenClient) initOAuth();
-            tokenClient ? tokenClient.requestAccessToken() : showToast("OAuth yükleniyor, lütfen bekleyin.");
-        }
-
-        async function fetchUserProfile() {
-            try {
-                const res = await fetch('https://www.googleapis.com/youtube/v3/channels?mine=true&part=snippet,statistics', {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                const data = await res.json();
-                if (data.items?.[0]) {
-                    const ch = data.items[0];
-                    const profileDiv = document.getElementById('user-profile');
-                    profileDiv.style.display = 'flex';
-                    profileDiv.innerHTML = `
-                        <img src="${ch.snippet.thumbnails.default.url}" alt="Profil">
-                        <div class="user-info-text">
-                            <h4>${sanitizeHTML(ch.snippet.title)}</h4>
-                            <p>Abone: ${formatNumber(ch.statistics.subscriberCount)}</p>
-                        </div>
-                    `;
-                    document.getElementById('auth-btn').innerText = "✓ Bağlandı";
-                } else {
-                    document.getElementById('auth-btn').innerText = "✓ Bağlandı";
-                }
-            } catch (err) { showToast("Profil bilgisi alınamadı."); }
+        function apiErrorMessage(err) {
+            const r = String(err?.message || '');
+            if (r.includes('quota')) return 'Günlük sinyal kotası doldu. Lütfen daha sonra tekrar deneyin.';
+            if (r.includes('keyInvalid') || r.includes('forbidden') || r.includes('Referer') || r.includes('403')) return 'Arşive erişim reddedildi (API anahtarı).';
+            return 'Sinyal hatası oluştu!';
         }
 
         // Oynatma Listeleri
         async function fetchPlaylists() {
             const navContainer = document.getElementById('category-nav');
+            let buttonsHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>`;
             try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
-                const data = await res.json();
-
-                let buttonsHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>`;
+                const data = await ytFetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
 
                 if (data.items?.length > 0) {
                     playlistsMap = {};
@@ -334,11 +353,7 @@
                         const thumbs = pl.snippet?.thumbnails;
                         // Kalite sırasına göre en iyi kapak görselini belirle
                         const thumbUrl = thumbs?.maxres?.url || thumbs?.standard?.url || thumbs?.high?.url || thumbs?.medium?.url || thumbs?.default?.url || '';
-                        
-                        playlistsMap[pl.id] = {
-                            title: pl.snippet.title,
-                            thumbUrl: thumbUrl
-                        };
+                        playlistsMap[pl.id] = { title: pl.snippet.title, thumbUrl };
                     });
 
                     buttonsHTML += data.items.map(pl => `
@@ -347,10 +362,10 @@
                         </button>
                     `).join('');
                 }
-                navContainer.innerHTML = buttonsHTML;
             } catch (err) {
-                navContainer.innerHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>`;
+                showToast('Oynatma listeleri alınamadı.');
             }
+            navContainer.innerHTML = buttonsHTML;
             selectTumu(document.querySelector('.btn-tumu'));
         }
 
@@ -359,35 +374,27 @@
             document.getElementById('sort-select').value = 'default';
         }
 
-        function selectTumu(btn) {
-            currentPlaylistId = UPLOADS_PLAYLIST_ID;
-            nextPageToken = null;
-            loadedVideosData = [];
-            resetFilters();
-            
+        function setActiveCategory(btn) {
             document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
             btn?.classList.add('active');
+        }
 
+        function selectTumu(btn) {
+            currentPlaylistId = UPLOADS_PLAYLIST_ID;
+            resetFilters();
+            setActiveCategory(btn);
             // TÜMÜ butonunda varsayılan uzay teması aktif kalır
             document.getElementById('bg-overlay').style.opacity = '0';
-            fetchPlaylistVideos(currentPlaylistId, false);
+            fetchPlaylistVideos(currentPlaylistId);
         }
 
         function selectPlaylist(playlistId, btn) {
             currentPlaylistId = playlistId;
-            nextPageToken = null;
-            loadedVideosData = [];
             resetFilters();
-
-            document.querySelectorAll('.category-nav button').forEach(b => b.classList.remove('active'));
-            btn?.classList.add('active');
-
+            setActiveCategory(btn);
             const playlistInfo = playlistsMap[playlistId];
-            const title = playlistInfo?.title || '';
-            const thumbUrl = playlistInfo?.thumbUrl || '';
-
-            updateDynamicBackground(title, thumbUrl);
-            fetchPlaylistVideos(playlistId, false);
+            updateDynamicBackground(playlistInfo?.title || '', playlistInfo?.thumbUrl || '');
+            fetchPlaylistVideos(playlistId);
         }
 
         // AI / Fallback Arka Plan Görselleri
@@ -403,124 +410,137 @@
             'pokemon': 'lush anime adventure landscape, tall grass field, scenic mountains'
         };
 
+        const findTheme = title => Object.entries(GAME_THEMES).find(([k]) => title.toLowerCase().includes(k))?.[1];
+
         function getOrGenerateAIBg(title) {
             if (!title) return '';
             const key = title.toLowerCase().trim();
             const cacheKey = `vt_bg_${key}`;
-            const cached = localStorage.getItem(cacheKey);
-            if (cached) return cached;
+            try {
+                const cached = localStorage.getItem(cacheKey);
+                if (cached) return cached;
+            } catch (e) {}
 
-            let prompt = Object.entries(GAME_THEMES).find(([k]) => key.includes(k))?.[1] 
+            const prompt = findTheme(title)
                 || `${title.replace(/(bölüm|part|gameplay|oynanış|türkçe|sezon|season|\d+)/gi, '').trim()} video game concept art landscape`;
 
             let hash = 0;
-            for (let i = 0; i < title.length; i++) hash = ((hash << 5) - hash) + title.charCodeAt(i);
-            
+            for (let i = 0; i < title.length; i++) hash = (((hash << 5) - hash) + title.charCodeAt(i)) | 0;
+
             const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1920&height=1080&nologo=true&seed=${Math.abs(hash)}`;
             try { localStorage.setItem(cacheKey, url); } catch (e) {}
             return url;
         }
 
+        function setBg(url) {
+            const bgOverlay = document.getElementById('bg-overlay');
+            bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${url}')`;
+            bgOverlay.style.opacity = '1';
+        }
+
         function updateDynamicBackground(title, playlistThumbUrl) {
             const bgOverlay = document.getElementById('bg-overlay');
-            
-            // Öncelik: Oynatma Listesinin Kapak Fotoğrafı -> Yoksa AI / Varsayılan Görsel
-            let targetImageUrl = playlistThumbUrl || getOrGenerateAIBg(title);
+            // Öncelik: Tanımlı oyun teması (AI) -> Oynatma listesi kapağı -> Genel AI görseli
+            const aiUrl = getOrGenerateAIBg(title);
+            const primary = findTheme(title) ? aiUrl : (playlistThumbUrl || aiUrl);
+            const fallback = primary === aiUrl ? playlistThumbUrl : aiUrl;
 
-            if (!targetImageUrl) {
-                bgOverlay.style.opacity = '0';
-                return;
-            }
+            if (!primary) { bgOverlay.style.opacity = '0'; return; }
 
-            const imgLoader = new Image();
-            imgLoader.src = targetImageUrl;
-
-            imgLoader.onload = () => {
-                bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${targetImageUrl}')`;
-                bgOverlay.style.opacity = '1';
+            const loader = new Image();
+            loader.onload = () => setBg(primary);
+            loader.onerror = () => {
+                if (!fallback) { bgOverlay.style.opacity = '0'; return; }
+                const fb = new Image();
+                fb.onload = () => setBg(fallback);
+                fb.onerror = () => bgOverlay.style.opacity = '0';
+                fb.src = fallback;
             };
-
-            imgLoader.onerror = () => {
-                // Kapak görseli yüklenemezse yedek görsele düş
-                const fallbackUrl = getOrGenerateAIBg(title);
-                if (fallbackUrl && fallbackUrl !== targetImageUrl) {
-                    bgOverlay.style.backgroundImage = `linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.88)), url('${fallbackUrl}')`;
-                    bgOverlay.style.opacity = '1';
-                } else {
-                    bgOverlay.style.opacity = '0';
-                }
-            };
+            loader.src = primary;
         }
 
         // Video İşlemleri
-        async function fetchPlaylistVideos(playlistId, isLoadMore = false) {
+        const HIDDEN_TITLES = ['Private video', 'Deleted video', 'Gizli video', 'Silinmiş video'];
+        const isUnavailable = item => HIDDEN_TITLES.includes(item.snippet?.title) || !item.snippet?.thumbnails || !Object.keys(item.snippet.thumbnails).length;
+
+        // Bir oynatma listesindeki tüm videoları sayfa sayfa çeker (arama ve sıralama tüm arşivde çalışsın diye)
+        async function fetchPlaylistVideos(playlistId) {
             const gridContainer = document.getElementById('video-grid');
             const loadMoreBtn = document.getElementById('load-more-container');
-            
-            if (!isLoadMore) gridContainer.innerHTML = '<div class="loading">Sinyal alınıyor...</div>';
+            gridContainer.innerHTML = '<div class="loading">Sinyal alınıyor...</div>';
+            loadMoreBtn.style.display = 'none';
             const requestId = ++requestCounter; // Hızlı kategori değişiminde eski yanıtları yok saymak için
 
             try {
-                let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=20&key=${API_KEY}`;
-                if (nextPageToken) url += `&pageToken=${nextPageToken}`;
+                let items = [], pageToken = null, pages = 0;
+                do {
+                    let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=50&key=${API_KEY}`;
+                    if (pageToken) url += `&pageToken=${pageToken}`;
+                    const data = await ytFetch(url);
+                    if (requestId !== requestCounter) return;
+                    items.push(...(data.items || []).filter(it => !isUnavailable(it)));
+                    pageToken = data.nextPageToken || null;
+                    pages++;
+                } while (pageToken && pages < MAX_API_PAGES);
 
-                const res = await fetch(url);
-                const data = await res.json();
-                if (requestId !== requestCounter) return;
-
-                if (!data.items?.length) {
-                    if (!isLoadMore) gridContainer.innerHTML = '<div class="error">Video bulunamadı.</div>';
-                    loadMoreBtn.style.display = 'none';
+                if (!items.length) {
+                    loadedVideosData = [];
+                    gridContainer.innerHTML = '<div class="error">Video bulunamadı.</div>';
                     return;
                 }
 
-                nextPageToken = data.nextPageToken || null;
-                loadMoreBtn.style.display = nextPageToken ? 'block' : 'none';
-
-                const videoIds = data.items.map(item => item.contentDetails.videoId);
-                const statsMap = await fetchVideoStats(videoIds);
+                const statsMap = await fetchVideoStats(items.map(it => it.contentDetails.videoId));
                 if (requestId !== requestCounter) return;
 
-                const newVideos = data.items.map(item => {
+                loadedVideosData = items.map(item => {
                     const vId = item.contentDetails.videoId;
                     const stats = statsMap[vId] || {};
+                    const t = item.snippet.thumbnails;
                     return {
                         id: vId,
                         title: item.snippet.title,
-                        thumbnail: item.snippet.thumbnails.high?.url || `https://img.youtube.com/vi/${vId}/hqdefault.jpg`,
+                        thumbnail: t.maxres?.url || t.high?.url || t.medium?.url || `https://img.youtube.com/vi/${vId}/hqdefault.jpg`,
                         viewCount: parseInt(stats.viewCount || 0),
                         likeCount: parseInt(stats.likeCount || 0)
                     };
                 });
 
-                loadedVideosData = isLoadMore ? [...loadedVideosData, ...newVideos] : newVideos;
-                handleSearchAndSort(); // Arama ve sıralama korunarak çiz
+                handleSearchAndSort();
             } catch (err) {
                 if (requestId !== requestCounter) return;
-                if (!isLoadMore) gridContainer.innerHTML = '<div class="error">Sinyal hatası oluştu!</div>';
+                loadedVideosData = [];
+                gridContainer.innerHTML = `<div class="error">${apiErrorMessage(err)}</div>`;
             }
+        }
+
+        // İstatistikler 50'şerlik gruplar hâlinde alınır (API sınırı)
+        async function fetchVideoStats(videoIds) {
+            const result = {};
+            for (let i = 0; i < videoIds.length; i += 50) {
+                try {
+                    const data = await ytFetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds.slice(i, i + 50).join(',')}&key=${API_KEY}`);
+                    (data.items || []).forEach(item => result[item.id] = item.statistics);
+                } catch (err) { /* istatistik alınamazsa sayılar 0 görünür */ }
+            }
+            return result;
         }
 
         function loadMoreVideos() {
-            if (currentPlaylistId && nextPageToken) fetchPlaylistVideos(currentPlaylistId, true);
+            visibleCount += PAGE_SIZE;
+            renderVideoGrid();
         }
 
-        async function fetchVideoStats(videoIds) {
-            try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds.join(',')}&key=${API_KEY}`);
-                const data = await res.json();
-                return Object.fromEntries((data.items || []).map(item => [item.id, item.statistics]));
-            } catch (err) { return {}; }
-        }
-
-        function renderVideoGrid(videos) {
+        function renderVideoGrid() {
             const gridContainer = document.getElementById('video-grid');
-            if (!videos.length) {
+            const loadMoreBtn = document.getElementById('load-more-container');
+
+            if (!filteredVideos.length) {
                 gridContainer.innerHTML = '<div class="error">Aranan kriterde video bulunamadı.</div>';
+                loadMoreBtn.style.display = 'none';
                 return;
             }
 
-            gridContainer.innerHTML = videos.map(v => {
+            gridContainer.innerHTML = filteredVideos.slice(0, visibleCount).map(v => {
                 const safeTitle = sanitizeHTML(v.title);
                 return `
                 <div class="video-card">
@@ -539,11 +559,12 @@
                         <div class="card-actions">
                             <button data-action="play" data-id="${v.id}" class="watch-btn">▶ İZLE</button>
                             <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" class="external-btn" title="YouTube'da Aç">↗</a>
-                            ${accessToken ? `<button data-action="like" data-id="${v.id}" class="like-btn">👍 Beğen</button>` : ''}
                         </div>
                     </div>
                 </div>`;
             }).join('');
+
+            loadMoreBtn.style.display = filteredVideos.length > visibleCount ? 'block' : 'none';
         }
 
         // Kart butonları için tek bir tıklama dinleyicisi (başlıkta ' olsa da çalışır)
@@ -551,9 +572,7 @@
             const el = e.target.closest('[data-action]');
             if (!el) return;
             const video = loadedVideosData.find(x => x.id === el.dataset.id);
-            if (!video) return;
-            if (el.dataset.action === 'play') openVideoModal(video.id, video.title);
-            else if (el.dataset.action === 'like' && !el.disabled) likeVideo(video.id, el);
+            if (video && el.dataset.action === 'play') openVideoModal(video.id, video.title);
         }
 
         function debouncedSearch() {
@@ -562,16 +581,17 @@
         }
 
         function handleSearchAndSort() {
-            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const query = document.getElementById('search-input').value.toLocaleLowerCase('tr-TR').trim();
             const sortBy = document.getElementById('sort-select').value;
 
-            let filtered = loadedVideosData.filter(v => v.title.toLowerCase().includes(query));
+            filteredVideos = loadedVideosData.filter(v => v.title.toLocaleLowerCase('tr-TR').includes(query));
 
-            if (sortBy === 'views') filtered.sort((a, b) => b.viewCount - a.viewCount);
-            else if (sortBy === 'likes') filtered.sort((a, b) => b.likeCount - a.likeCount);
-            else if (sortBy === 'title') filtered.sort((a, b) => a.title.localeCompare(b.title));
+            if (sortBy === 'views') filteredVideos.sort((a, b) => b.viewCount - a.viewCount);
+            else if (sortBy === 'likes') filteredVideos.sort((a, b) => b.likeCount - a.likeCount);
+            else if (sortBy === 'title') filteredVideos.sort((a, b) => a.title.localeCompare(b.title, 'tr'));
 
-            renderVideoGrid(filtered);
+            visibleCount = PAGE_SIZE;
+            renderVideoGrid();
         }
 
         // Modal
@@ -592,31 +612,6 @@
 
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideoModal(); });
 
-        async function likeVideo(videoId, btn) {
-            if (!accessToken) return showToast("Lütfen önce YouTube hesabınızla giriş yapın!");
-
-            try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/videos/rate?id=${videoId}&rating=like`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
-                });
-
-                if (res.ok || res.status === 204) {
-                    btn.classList.add('liked');
-                    btn.innerHTML = '✓ Beğenildi';
-                    btn.disabled = true;
-                    showToast('Video beğenildi!');
-                } else if (res.status === 401) {
-                    accessToken = null;
-                    showToast('Oturum süresi doldu, lütfen yeniden bağlanın.');
-                    document.getElementById('auth-btn').innerText = "🛸 YouTube Bağlan";
-                    handleSearchAndSort();
-                } else {
-                    showToast('Beğeni gönderilemedi.');
-                }
-            } catch (err) { showToast('Hata oluştu.'); }
-        }
-
         // Genel Arayüz Mantığı
         const switchPage = (pageId, btn) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
@@ -631,36 +626,26 @@
             toastTimer = setTimeout(() => toast.style.display = 'none', 3000);
         };
 
-        const updateNotificationButtonState = perm => {
-            const btn = document.getElementById('notify-btn');
-            if (!btn) return;
-            const isGranted = perm === 'granted';
-            btn.innerText = isGranted ? '✓ Bildirimler Aktif' : (perm === 'denied' ? '✕ İzin Engellendi' : '🔔 Bildirimleri Aç');
-            btn.style.borderColor = btn.style.color = isGranted ? '#39ff14' : (perm === 'denied' ? '#ff0055' : 'var(--primary-color)');
-        };
-
-        const requestNotificationPermission = () => {
-            if (!("Notification" in window)) return showToast("Tarayıcınız bildirim desteklemiyor.");
-            Notification.requestPermission().then(p => {
-                updateNotificationButtonState(p);
-                showToast(p === "granted" ? "Sinyal İzni Alındı!" : "Bildirim reddedildi.");
-            });
-        };
-
         // Arka Plan Uzay Tuvali
         const canvas = document.getElementById('space-canvas'), ctx = canvas.getContext('2d');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let stars = [];
+
+        const drawStars = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); });
+        };
 
         const resizeCanvas = () => {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             stars = Array.from({ length: 120 }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 + 0.1 }));
+            if (reduceMotion) drawStars(); // Hareket azaltma açıksa yıldızlar sabit çizilir
         };
 
         const animateStars = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            drawStars();
             stars.forEach(s => {
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
                 s.y += s.speed;
                 if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
             });
@@ -668,16 +653,14 @@
         };
 
         window.onload = () => {
-            initOAuth();
             const grid = document.getElementById('video-grid');
             grid.addEventListener('click', handleGridAction);
             grid.addEventListener('keydown', e => {
                 if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.play-overlay')) { e.preventDefault(); handleGridAction(e); }
             });
-            if ("Notification" in window) updateNotificationButtonState(Notification.permission);
             window.addEventListener('resize', resizeCanvas, { passive: true });
-            resizeCanvas(); 
-            animateStars(); 
+            resizeCanvas();
+            if (!reduceMotion) animateStars();
             fetchPlaylists();
         };
     </script>
