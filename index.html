@@ -317,12 +317,173 @@
         #giscus-container { margin-top: 1.5rem; min-height: 120px; }
         .gb-soon { text-align: center; padding: 2rem 1rem; color: #aaa; border: 1px dashed rgba(0, 243, 255, 0.4); border-radius: 8px; }
 
+        /* ---------- 3D gezegen (başlık) ---------- */
+        header { position: relative; }
+        #planet-canvas { position: absolute; top: -20px; right: 0; width: 260px; height: 260px; pointer-events: none; z-index: -1; }
+        @media (max-width: 1100px) { #planet-canvas { width: 200px; height: 200px; right: 0; } }
+        body { overflow-x: clip; }
+
+        /* ---------- Nav (6 sekme) ---------- */
+        .main-nav { gap: 1.6rem; }
+        .main-nav button, .main-nav .nav-link { font-size: 1.05rem; }
+
+        /* ---------- HUD (ses + başarım) ---------- */
+        .hud-dock { position: fixed; top: 14px; right: 14px; z-index: 2400; display: flex; gap: 8px; }
+        .hud-dock button { background: rgba(5, 5, 16, 0.85); border: 1px solid rgba(0, 243, 255, 0.6); color: #fff; border-radius: 22px; height: 40px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; backdrop-filter: blur(6px); box-shadow: 0 0 12px rgba(0, 243, 255, 0.25); transition: all 0.3s; }
+        .hud-dock button:hover { border-color: var(--primary-color); box-shadow: 0 0 18px rgba(0, 243, 255, 0.6); }
+        #sound-btn { width: 40px; font-size: 1.05rem; }
+        #ach-btn { display: flex; align-items: center; gap: 8px; padding: 0 14px 0 10px; }
+        #ach-btn .lv { color: var(--accent-gold); font-weight: 700; }
+        .xp-mini { width: 54px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.15); overflow: hidden; }
+        .xp-mini span, .xp-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--accent-gold)); box-shadow: 0 0 8px var(--primary-color); transition: width 0.8s ease; }
+
+        /* Başarım paneli */
+        .ach-panel { position: fixed; inset: 0; z-index: 2500; display: none; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); padding: 1rem; }
+        .ach-panel.open { display: flex; }
+        .ach-box { background: #050510; border: 2px solid var(--accent-gold); border-radius: 12px; box-shadow: 0 0 35px rgba(255, 215, 0, 0.35); width: 100%; max-width: 860px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; }
+        .ach-head { padding: 1.4rem 1.6rem 1rem; border-bottom: 1px solid rgba(255, 215, 0, 0.3); display: flex; gap: 1.2rem; align-items: center; }
+        .ach-level { width: 74px; height: 74px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; font-family: 'Orbitron', sans-serif; border: 2px solid var(--accent-gold); box-shadow: 0 0 18px rgba(255, 215, 0, 0.5) inset, 0 0 14px rgba(255, 215, 0, 0.4); }
+        .ach-level b { font-size: 1.7rem; color: var(--accent-gold); line-height: 1; }
+        .ach-level small { font-size: 0.6rem; color: #aaa; letter-spacing: 2px; }
+        .ach-rank { flex: 1; min-width: 0; }
+        .ach-rank h3 { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.25rem; letter-spacing: 2px; }
+        .ach-rank p { color: #aaa; font-size: 0.9rem; margin: 0.2rem 0 0.6rem; }
+        .xp-bar { height: 10px; border-radius: 5px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+        .ach-close { background: none; border: none; color: var(--secondary-color); font-size: 2rem; cursor: pointer; align-self: flex-start; }
+        .ach-grid { padding: 1.2rem 1.6rem 1.6rem; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.8rem; }
+        .ach-item { display: flex; gap: 0.8rem; align-items: center; padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); }
+        .ach-item .ico { font-size: 1.8rem; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, 0.05); flex-shrink: 0; }
+        .ach-item h4 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #fff; letter-spacing: 1px; }
+        .ach-item p { font-size: 0.85rem; color: #999; line-height: 1.3; }
+        .ach-item .xp { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--accent-gold); }
+        .ach-item.got { border-color: rgba(255, 215, 0, 0.55); background: rgba(255, 215, 0, 0.06); }
+        .ach-item.got .ico { background: rgba(255, 215, 0, 0.15); box-shadow: 0 0 12px rgba(255, 215, 0, 0.4); }
+        .ach-item.locked .ico { filter: grayscale(1); opacity: 0.35; }
+        .ach-item.locked h4 { color: #777; }
+
+        /* Başarım açıldı bildirimi */
+        .ach-popup { position: fixed; top: 18px; left: 50%; transform: translate(-50%, -180%); visibility: hidden; opacity: 0; z-index: 2700; display: flex; align-items: center; gap: 14px; padding: 12px 22px 12px 14px; background: linear-gradient(135deg, rgba(40, 30, 0, 0.95), rgba(5, 5, 16, 0.95)); border: 2px solid var(--accent-gold); border-radius: 40px; box-shadow: 0 0 30px rgba(255, 215, 0, 0.55); transition: transform 0.5s cubic-bezier(.2, 1.4, .4, 1), opacity 0.3s, visibility 0s 0.5s; max-width: calc(100vw - 24px); }
+        .ach-popup.show { transform: translate(-50%, 0); visibility: visible; opacity: 1; transition: transform 0.5s cubic-bezier(.2, 1.4, .4, 1), opacity 0.2s, visibility 0s; }
+        .ach-popup .ico { font-size: 2rem; width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 215, 0, 0.18); flex-shrink: 0; }
+        .ach-popup small { display: block; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--accent-gold); letter-spacing: 2px; }
+        .ach-popup b { display: block; font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1rem; }
+        .ach-popup span { font-size: 0.85rem; color: #ccc; }
+
+        /* ---------- Devam bandı ---------- */
+        .continue-banner { display: none; margin-bottom: 1.5rem; }
+        .continue-banner.ready { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; padding-right: 1rem; background: linear-gradient(90deg, rgba(255, 0, 85, 0.18), rgba(0, 24, 40, 0.85)); border: 1px solid var(--secondary-color); border-radius: 10px; box-shadow: 0 0 20px rgba(255, 0, 85, 0.25); backdrop-filter: blur(5px); }
+        .continue-banner img { width: 150px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+        .continue-text { flex: 1; min-width: 0; }
+        .continue-text small { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--secondary-color); }
+        .continue-text b { display: block; color: #fff; font-size: 1.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .continue-text span { color: #aaa; font-size: 0.95rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .continue-close { background: none; border: none; color: #888; font-size: 1.4rem; cursor: pointer; }
+
+        /* ---------- Seferler ---------- */
+        .series-intro { text-align: center; color: #aaa; margin: -1rem auto 2rem; max-width: 640px; }
+        .series-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+        .series-card { background: var(--card-bg); border: 1px solid rgba(0, 243, 255, 0.35); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(5px); transition: transform 0.3s, box-shadow 0.3s; }
+        .series-card:hover { transform: translateY(-4px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.35); }
+        .series-card.done { border-color: var(--accent-gold); box-shadow: 0 0 16px rgba(255, 215, 0, 0.25); }
+        .series-cover { position: relative; background: #000; }
+        .series-cover img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+        .series-status { position: absolute; top: 10px; left: 10px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; padding: 4px 9px; border-radius: 3px; letter-spacing: 1px; }
+        .series-status.new { background: var(--primary-color); color: #000; }
+        .series-status.going { background: var(--secondary-color); color: #fff; }
+        .series-status.done { background: var(--accent-gold); color: #000; box-shadow: 0 0 12px var(--accent-gold); }
+        .series-body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.7rem; flex: 1; }
+        .series-body h3 { font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; letter-spacing: 1px; }
+        .series-progress { display: flex; align-items: center; gap: 0.8rem; }
+        .series-progress .bar { flex: 1; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+        .series-progress .bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); transition: width 1s ease; }
+        .series-card.done .series-progress .bar span { background: var(--accent-gold); }
+        .series-count { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #aaa; white-space: nowrap; }
+        .series-next { color: #bbb; font-size: 0.95rem; line-height: 1.35; height: 2.7em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .series-next b { color: var(--primary-color); font-weight: 600; }
+        .series-actions { display: flex; gap: 0.6rem; margin-top: auto; }
+        .series-list-btn { background: transparent; border: 1px solid rgba(255, 255, 255, 0.4); color: #ddd; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 0.55rem 0.9rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+        .series-list-btn:hover { border-color: #fff; color: #fff; }
+        .series-actions .watch-btn { flex: 1; }
+
+        /* ---------- Projelerim ---------- */
+        .project-heading { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.35rem; letter-spacing: 2px; margin: 0 0 1.2rem; display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
+        .project-heading small { font-size: 0.75rem; color: var(--accent-gold); letter-spacing: 2px; text-transform: uppercase; }
+        .project-sep { height: 1px; margin: 3rem 0 2.2rem; background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.6), transparent); }
+        .mcbot-card { border-color: #39ff14; }
+        .mcbot-card h3 { color: #39ff14; }
+        .mcbot-site-btn { background: #39ff14; color: #000; border: 1px solid #39ff14; }
+        .mcbot-site-btn:hover { box-shadow: 0 0 18px #39ff14; transform: translateY(-2px); }
+        .mcbot-gh-btn { background: rgba(255, 255, 255, 0.06); color: #fff; border: 1px solid rgba(255, 255, 255, 0.5); }
+        .mcbot-gh-btn:hover { background: #fff; color: #000; transform: translateY(-2px); }
+        .mcbot-site-btn, .mcbot-gh-btn { padding: 0.7rem 1.2rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; }
+        .release-notes { color: #ccc; font-size: 0.95rem; line-height: 1.6; max-height: 300px; overflow-y: auto; padding-right: 6px; }
+        .release-notes h4 { font-family: 'Orbitron', sans-serif; color: #39ff14; font-size: 0.85rem; margin: 0.8rem 0 0.3rem; letter-spacing: 1px; }
+        .release-notes ul { list-style: none; }
+        .release-notes li { padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem; }
+        .release-notes li::before { content: '▸'; position: absolute; left: 0; color: #39ff14; }
+        .release-notes p { margin-bottom: 0.4rem; }
+        .release-notes code { font-family: monospace; background: rgba(57, 255, 20, 0.12); color: #9dff8a; padding: 1px 5px; border-radius: 3px; }
+        .release-history { list-style: none; margin-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 0.8rem; }
+        .release-history li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.35rem 0; color: #aaa; font-size: 0.9rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); }
+        .release-history li b { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 0.8rem; font-weight: 400; }
+
+        @media (max-width: 600px) {
+            header { padding-top: 2.4rem; }
+            #planet-canvas { width: 140px; height: 140px; top: 4px; right: -6px; opacity: 0.55; }
+            .main-nav button, .main-nav .nav-link { font-size: 0.85rem; }
+            .hud-dock { top: 8px; right: 8px; gap: 6px; }
+            .hud-dock button { height: 34px; font-size: 0.7rem; }
+            #sound-btn { width: 34px; font-size: 0.95rem; }
+            .xp-mini { width: 34px; }
+            .ach-head { padding: 1rem; gap: 0.8rem; }
+            .ach-level { width: 58px; height: 58px; }
+            .ach-level b { font-size: 1.3rem; }
+            .ach-rank h3 { font-size: 1rem; }
+            .ach-grid { padding: 1rem; grid-template-columns: 1fr; }
+            .ach-popup { padding: 10px 16px 10px 10px; gap: 10px; }
+            .ach-popup .ico { width: 40px; height: 40px; font-size: 1.5rem; }
+            .continue-banner.ready { flex-wrap: wrap; }
+            .continue-banner img { width: 110px; }
+            .continue-text { flex-basis: calc(100% - 160px); }
+            .continue-text b { white-space: normal; font-size: 1rem; line-height: 1.3; }
+            .continue-text span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 0.85rem; }
+            .continue-banner .watch-btn { flex: 1; }
+            .series-grid { grid-template-columns: 1fr; }
+            .project-heading { font-size: 1.1rem; }
+        }
+        @media (prefers-reduced-motion: reduce) { .ach-popup { transition: none; } .series-progress .bar span, .xp-mini span, .xp-bar span { transition: none; } }
+
         #notification-toast { position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--primary-color); color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 20px var(--primary-color); font-family: 'Orbitron', sans-serif; display: none; z-index: 3000; }
     </style>
 </head>
 <body>
 
     <canvas id="space-canvas"></canvas>
+
+    <!-- Ses ve başarım düğmeleri (sağ üst) -->
+    <div class="hud-dock">
+        <button id="sound-btn" onclick="toggleSound()" title="Ses atmosferi" aria-label="Sesi aç">🔇</button>
+        <button id="ach-btn" onclick="toggleAchievements(true)" title="Başarımların" aria-label="Başarımlar">🏆 <span class="lv" id="hud-level">Lv 1</span><span class="xp-mini"><span id="hud-xp" style="width:0%"></span></span></button>
+    </div>
+
+    <!-- Başarım paneli -->
+    <div class="ach-panel" id="ach-panel" onclick="if (event.target === this) toggleAchievements(false)">
+        <div class="ach-box" role="dialog" aria-label="Başarımlar">
+            <div class="ach-head">
+                <div class="ach-level"><div style="text-align:center"><b id="ach-level-num">1</b><br><small>SEVİYE</small></div></div>
+                <div class="ach-rank">
+                    <h3 id="ach-rank-name">Çaylak Kaşif</h3>
+                    <p id="ach-summary">0 / 0 başarım · 0 XP</p>
+                    <div class="xp-bar"><span id="ach-xp-bar" style="width:0%"></span></div>
+                </div>
+                <button class="ach-close" onclick="toggleAchievements(false)" aria-label="Kapat">&times;</button>
+            </div>
+            <div class="ach-grid" id="ach-grid"></div>
+        </div>
+    </div>
+
+    <!-- Başarım açıldı bildirimi -->
+    <div class="ach-popup" id="ach-popup" role="status" aria-live="polite"></div>
     <div id="bg-overlay"></div>
     <div class="scanline"></div>
     <div id="notification-toast"></div>
@@ -364,6 +525,8 @@
                 <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Önceki / sonraki video</td></tr>
                 <tr><td><kbd>F</kbd></td><td>Açık videoyu favorilere ekle</td></tr>
                 <tr><td><kbd>Esc</kbd></td><td>Pencereyi kapat</td></tr>
+                <tr><td><kbd>A</kbd></td><td>Başarımlarını gör</td></tr>
+                <tr><td><kbd>M</kbd></td><td>Ses atmosferini aç / kapat</td></tr>
                 <tr><td><kbd>?</kbd></td><td>Bu paneli aç / kapat</td></tr>
             </table>
             <p class="hint">Bu sitede gizli bir sinyal var. Bulabilecek misin? 🛸</p>
@@ -372,6 +535,7 @@
 
     <div class="container">
         <header>
+            <canvas id="planet-canvas" aria-hidden="true"></canvas>
             <h1 lang="en" id="site-title">Void Traveler</h1>
             <p>Galaktik Veri Arşivi</p>
             <div class="header-buttons">
@@ -389,7 +553,8 @@
         <!-- Navigasyon -->
         <nav class="main-nav">
             <button onclick="switchPage('page-records', this)" class="active">İletişim Kayıtları</button>
-            <button onclick="switchPage('page-mode', this)">Oyun Modum</button>
+            <button onclick="switchPage('page-series', this)">Seferler</button>
+            <button onclick="switchPage('page-mode', this)">Projelerim</button>
             <a href="https://voidtraveler966y.github.io/mcbotwebsite/" target="_blank" rel="noopener" class="nav-link" title="MC Bot sitesine git">MC Bot ↗</a>
             <button onclick="switchPage('page-updates', this)">Son Güncelleme</button>
             <button onclick="switchPage('page-guestbook', this)">Ziyaretçi Defteri</button>
@@ -397,6 +562,9 @@
 
         <!-- 1. İletişim Kayıtları -->
         <div id="page-records" class="page-content active-page">
+            <!-- Kaldığın yerden devam et (ziyaretçinin izlediği seriye göre) -->
+            <section class="continue-banner" id="continue-banner" aria-label="Kaldığın yerden devam et"></section>
+
             <!-- Son Video (kanaldaki en yeni yükleme, otomatik) -->
             <section class="latest-video" id="latest-video" aria-label="Son video"></section>
 
@@ -432,9 +600,17 @@
             </div>
         </div>
 
-        <!-- 2. Oyun Modum -->
+        <!-- Seferler (seriler ve ilerleme) -->
+        <div id="page-series" class="page-content">
+            <h2 class="section-title">Sefer <span>Kayıtları</span></h2>
+            <p class="series-intro">Her seri bir sefer. İzlediğin bölümler işaretlenir, kaldığın yerden tek tıkla devam edersin. Bütün bölümleri bitir, <b>Seri Avcısı</b> rozetini kap!</p>
+            <div class="series-grid" id="series-grid"><div class="loading">Sefer kayıtları yükleniyor...</div></div>
+        </div>
+
+        <!-- 2. Projelerim -->
         <div id="page-mode" class="page-content">
-            <h2 class="section-title">Oyun <span>Modum</span></h2>
+            <h2 class="section-title">Proje<span>lerim</span></h2>
+            <h3 class="project-heading">🧱 ColoredBlocks <small>Minecraft Modu</small></h3>
             <div class="mode-grid">
                 <div class="hud-card mod-card">
                     <h3>🧱 ColoredBlocks By McModder</h3>
@@ -478,6 +654,37 @@
                     <div class="hud-footer">
                         <span class="hud-badge" id="mod-release-type">Release</span>
                     </div>
+                </div>
+            </div>
+
+            <div class="project-sep"></div>
+
+            <!-- MC Bot: sürüm bilgileri GitHub'dan otomatik gelir -->
+            <h3 class="project-heading">🤖 MC Bot <small>Minecraft Botu · Windows & Android</small></h3>
+            <div class="mode-grid">
+                <div class="hud-card mcbot-card">
+                    <h3>🤖 MC Bot</h3>
+                    <p class="hud-text">
+                        Minecraft sunucuna katılan ve sohbetten verdiğin komutlarla çalışan yardımcı bot.
+                        Windows ve Android'de çalışır, her Cumartesi yeni özelliklerle güncellenir.
+                    </p>
+                    <div class="mod-specs">
+                        <div><span>Son Sürüm</span><b id="mcbot-version">—</b></div>
+                        <div><span>Yayın Tarihi</span><b id="mcbot-date">—</b></div>
+                        <div><span>Toplam İndirme</span><b id="mcbot-downloads">—</b></div>
+                        <div><span>Platform</span>Windows · Android</div>
+                    </div>
+                    <div class="mod-actions">
+                        <a href="https://voidtraveler966y.github.io/mcbotwebsite/#indir" target="_blank" rel="noopener" class="mcbot-site-btn">⬇ MC Bot'u İndir</a>
+                        <a href="https://voidtraveler966y.github.io/mcbotwebsite/" target="_blank" rel="noopener" class="mcbot-gh-btn">🌐 Site</a>
+                        <a href="https://github.com/voidtraveler966y/mcbot" target="_blank" rel="noopener" class="mcbot-gh-btn">GitHub ↗</a>
+                    </div>
+                </div>
+
+                <div class="hud-card mcbot-card" id="mcbot-notes-card" style="display:none;">
+                    <h3>📜 Sürüm Notları <span class="cl-version" id="mcbot-notes-version"></span></h3>
+                    <div class="release-notes" id="mcbot-notes"></div>
+                    <ul class="release-history" id="mcbot-history"></ul>
                 </div>
             </div>
         </div>
@@ -568,7 +775,8 @@
         };
 
         let currentPlaylistId, loadedVideosData = [], filteredVideos = [], visibleCount = PAGE_SIZE, searchTimeout;
-        let currentVideoId = null, playQueue = [], playIndex = -1;
+        let currentVideoId = null, playQueue = [], playIndex = -1, playSeriesId = null;
+        let playlistsReady = null;
         let playlistsMap = {}; // Oynatma listesi bilgilerini saklayan harita
         let requestCounter = 0, toastTimer;
 
@@ -602,7 +810,7 @@
             let buttonsHTML = `<button onclick="selectTumu(this)" class="btn-tumu active">🌌 TÜMÜ</button>
                 <button onclick="selectFavorites(this)" class="btn-favs" id="favs-btn">⭐ FAVORİLERİM <span id="favs-count"></span></button>`;
             try {
-                const data = await ytFetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
+                const data = await ytFetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${CHANNEL_ID}&maxResults=50&key=${API_KEY}`);
 
                 if (data.items?.length > 0) {
                     playlistsMap = {};
@@ -610,7 +818,7 @@
                         const thumbs = pl.snippet?.thumbnails;
                         // Kalite sırasına göre en iyi kapak görselini belirle
                         const thumbUrl = thumbs?.maxres?.url || thumbs?.standard?.url || thumbs?.high?.url || thumbs?.medium?.url || thumbs?.default?.url || '';
-                        playlistsMap[pl.id] = { title: pl.snippet.title, thumbUrl };
+                        playlistsMap[pl.id] = { title: pl.snippet.title, thumbUrl, count: pl.contentDetails?.itemCount || 0 };
                     });
 
                     buttonsHTML += data.items.map(pl => `
@@ -852,7 +1060,7 @@
             if (!el) return;
             const video = loadedVideosData.find(x => x.id === el.dataset.id);
             if (!video) return;
-            if (el.dataset.action === 'play') openVideoModal(video.id, video.title, filteredVideos);
+            if (el.dataset.action === 'play') openVideoModal(video.id, video.title, filteredVideos, playlistsMap[currentPlaylistId] ? currentPlaylistId : null);
             else if (el.dataset.action === 'fav') toggleFavorite(video.id, video);
         }
 
@@ -881,8 +1089,11 @@
 
         // Modal
         // queue: önceki/sonraki için kullanılacak liste (verilmezse ekrandaki liste)
-        function openVideoModal(videoId, title, queue) {
+        function openVideoModal(videoId, title, queue, seriesId) {
             if (!VIDEO_ID_RE.test(videoId)) return;
+            // Seri bilgisi: açıkça verildiyse onu kullan; önceki/sonraki ile aynı kuyrukta kalınıyorsa koru
+            if (seriesId !== undefined) playSeriesId = seriesId;
+            else if (!queue || queue !== playQueue) playSeriesId = null;
             const list = queue || filteredVideos;
             const i = list.findIndex(v => v.id === videoId);
             if (i >= 0) { playQueue = list.slice(); playIndex = i; }
@@ -893,9 +1104,11 @@
             document.getElementById('video-modal').style.display = 'flex';
             playInModal(videoId);
             writeHash({ video: videoId });
+            const videoObj = list.find(v => v.id === videoId) || findVideo(videoId);
             markWatched(videoId);
             updateModalControls();
             trackEvent(`video/${videoId}`, title);
+            onVideoWatched(videoId, videoObj);
         }
 
         function closeVideoModal() {
@@ -905,6 +1118,7 @@
             modal.style.display = 'none';
             currentVideoId = null;
             writeHash({ video: null });
+            refreshContinueBanner();
         }
 
         function playAdjacent(step) {
@@ -1016,6 +1230,7 @@
                 const { title, thumbnail, viewCount, likeCount, publishedAt, duration, live, isShort } = v;
                 favorites.unshift({ id, title, thumbnail, viewCount, likeCount, publishedAt, duration, live, isShort });
                 showToast('⭐ Favorilere eklendi!');
+                if (favorites.length >= 3) setTimeout(() => unlockAchievement('koleksiyoncu'), 50);
                 trackEvent(`favori/${id}`, title);
             }
             store.set('vt_favs', favorites);
@@ -1052,10 +1267,12 @@
         function toggleHelp(show) {
             const panel = document.getElementById('help-panel');
             panel.classList.toggle('open', show ?? !panel.classList.contains('open'));
+            if (panel.classList.contains('open')) unlockAchievement('teknisyen');
         }
 
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
+                if (document.getElementById('ach-panel').classList.contains('open')) return toggleAchievements(false);
                 if (document.getElementById('help-panel').classList.contains('open')) return toggleHelp(false);
                 return closeVideoModal();
             }
@@ -1074,6 +1291,8 @@
                 document.getElementById('search-input').focus();
             }
             else if (k === 'r' && !modalOpen) teleportRandom();
+            else if (k === 'a' && !modalOpen && konamiPos !== KONAMI.length - 1) toggleAchievements();
+            else if (k === 'm') toggleSound();
         });
 
         // ---- Gizli sürpriz: Konami kodu ya da başlığa 7 kez dokunma ----
@@ -1099,6 +1318,8 @@
             setTimeout(() => eggCooldown = false, 6000);
             showToast('🛸 Gizli sinyal yakalandı! Meteor yağmuru başlıyor...');
             trackEvent('gizli-sinyal', 'Easter egg bulundu');
+            sfx.whoosh();
+            unlockAchievement('gizli-sinyal');
             if (reduceMotion) return;
             for (let i = 0; i < 70; i++) {
                 meteors.push({
@@ -1162,7 +1383,7 @@
             if (!installPrompt) return;
             installPrompt.prompt();
             const choice = await installPrompt.userChoice.catch(() => null);
-            if (choice?.outcome === 'accepted') trackEvent('uygulama-yuklendi', 'PWA yüklendi');
+            if (choice?.outcome === 'accepted') { trackEvent('uygulama-yuklendi', 'PWA yüklendi'); unlockAchievement('us-kuruldu'); }
             installPrompt = null;
             document.getElementById('install-btn').style.display = 'none';
         }
@@ -1177,7 +1398,9 @@
         const switchPage = (pageId, btn) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.toggle('active-page', p.id === pageId));
             document.querySelectorAll('.main-nav button').forEach(b => b.classList.toggle('active', b === btn));
-            if (pageId === 'page-guestbook') loadGiscus();
+            if (pageId === 'page-guestbook') { loadGiscus(); unlockAchievement('misafir'); }
+            if (pageId === 'page-series') renderSeriesPage();
+            if (pageId === 'page-mode') { fetchMcBotReleases(); unlockAchievement('muhendis'); }
         };
 
         const showToast = msg => {
@@ -1250,7 +1473,9 @@
             const pool = filteredVideos.length > 1 ? filteredVideos.filter(v => v.id !== current) : filteredVideos;
             const v = pool[Math.floor(Math.random() * pool.length)];
             showToast('🌀 Rastgele koordinatlara ışınlanılıyor...');
-            openVideoModal(v.id, v.title, filteredVideos);
+            sfx.whoosh();
+            openVideoModal(v.id, v.title, filteredVideos, null);
+            unlockAchievement('isinlanma');
         }
 
         // ---- Kanal istatistikleri ----
@@ -1334,6 +1559,7 @@
                 tmp.remove();
             }
             showToast('Link kopyalandı!');
+            unlockAchievement('sinyal-yayici');
         }
 
         // ---- Son Video: kanaldaki en yeni yükleme ----
@@ -1467,32 +1693,615 @@
             } catch (err) { /* API'ye ulaşılamazsa sabit bilgiler kalır */ }
         }
 
-        // Arka Plan Uzay Tuvali
+        // ================= Arka plan: parallax yıldızlar + nebula =================
         const canvas = document.getElementById('space-canvas'), ctx = canvas.getContext('2d');
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let stars = [];
+        const STAR_LAYERS = [
+            { count: 140, size: [0.3, 1.0], speed: 0.06, parallax: 0.015, alpha: 0.45 },
+            { count: 70,  size: [0.8, 1.6], speed: 0.18, parallax: 0.04,  alpha: 0.7 },
+            { count: 28,  size: [1.4, 2.4], speed: 0.4,  parallax: 0.08,  alpha: 0.95 }
+        ];
+        let stars = [], nebula = null, pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
-        const drawStars = () => {
+        function buildNebula(w, h) {
+            const off = document.createElement('canvas');
+            off.width = w; off.height = h;
+            const c = off.getContext('2d');
+            [
+                { x: 0.15, y: 0.2, r: 0.55, col: '0, 243, 255', a: 0.07 },
+                { x: 0.85, y: 0.35, r: 0.5, col: '255, 0, 85', a: 0.06 },
+                { x: 0.55, y: 0.85, r: 0.6, col: '120, 60, 255', a: 0.07 },
+                { x: 0.4, y: 0.45, r: 0.35, col: '0, 140, 255', a: 0.04 }
+            ].forEach(n => {
+                const r = Math.max(w, h) * n.r;
+                const g = c.createRadialGradient(n.x * w, n.y * h, 0, n.x * w, n.y * h, r);
+                g.addColorStop(0, `rgba(${n.col}, ${n.a})`);
+                g.addColorStop(1, `rgba(${n.col}, 0)`);
+                c.fillStyle = g; c.fillRect(0, 0, w, h);
+            });
+            return off;
+        }
+
+        const rand = (a, b) => a + Math.random() * (b - a);
+
+        const drawStars = (t = 0) => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); });
+            const sy = window.scrollY || 0;
+            if (nebula) ctx.drawImage(nebula, -pointer.x * 20, -pointer.y * 20 - sy * 0.02);
+            stars.forEach(s => {
+                const L = STAR_LAYERS[s.layer];
+                let y = (s.y - sy * L.parallax * 3) % canvas.height; if (y < 0) y += canvas.height;
+                const x = s.x - pointer.x * L.parallax * 400;
+                const tw = s.layer === 2 ? 0.75 + 0.25 * Math.sin(t / 500 + s.phase) : 1;
+                ctx.globalAlpha = L.alpha * tw;
+                ctx.fillStyle = s.tint;
+                ctx.beginPath(); ctx.arc(x, y - pointer.y * L.parallax * 300, s.size, 0, Math.PI * 2); ctx.fill();
+            });
+            ctx.globalAlpha = 1;
         };
 
         const resizeCanvas = () => {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            stars = Array.from({ length: 120 }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 + 0.1 }));
-            if (reduceMotion) drawStars(); // Hareket azaltma açıksa yıldızlar sabit çizilir
+            const tints = ['#ffffff', '#ffffff', '#ffffff', '#bdf8ff', '#ffd6e4'];
+            stars = [];
+            const density = Math.min(1, (canvas.width * canvas.height) / (1440 * 900));
+            STAR_LAYERS.forEach((L, li) => {
+                for (let i = 0; i < Math.round(L.count * Math.max(0.45, density)); i++) {
+                    stars.push({ layer: li, x: rand(-40, canvas.width + 40), y: rand(0, canvas.height), size: rand(...L.size), phase: rand(0, 6.28), tint: tints[Math.floor(Math.random() * tints.length)] });
+                }
+            });
+            nebula = buildNebula(canvas.width + 60, canvas.height + 60);
+            if (reduceMotion) drawStars();
         };
 
-        const animateStars = () => {
-            drawStars();
-            drawMeteors();
+        const animateStars = (t) => {
+            pointer.x += (pointer.tx - pointer.x) * 0.04;
+            pointer.y += (pointer.ty - pointer.y) * 0.04;
             stars.forEach(s => {
-                s.y += s.speed;
-                if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+                s.y += STAR_LAYERS[s.layer].speed;
+                if (s.y > canvas.height) { s.y = 0; s.x = rand(-40, canvas.width + 40); }
             });
+            drawStars(t);
+            drawMeteors();
             requestAnimationFrame(animateStars);
         };
+
+        window.addEventListener('pointermove', e => {
+            pointer.tx = e.clientX / window.innerWidth - 0.5;
+            pointer.ty = e.clientY / window.innerHeight - 0.5;
+        }, { passive: true });
+
+        // ================= 3D gezegen (başlıkta) =================
+        const planet = (() => {
+            const cv = document.getElementById('planet-canvas');
+            const c = cv.getContext('2d');
+            let W = 0, R = 0, rot = 0, tilt = -0.38, tiltT = -0.38, visible = true, last = 0;
+            const spots = Array.from({ length: 46 }, () => ({
+                lon: rand(0, Math.PI * 2), lat: rand(-1.1, 1.1), r: rand(0.06, 0.2), a: rand(0.12, 0.35), col: Math.random() < 0.7 ? '255, 255, 255' : '0, 60, 120'
+            }));
+            const bands = [-0.55, -0.2, 0.15, 0.45];
+
+            function size() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                const rect = cv.getBoundingClientRect();
+                W = Math.max(60, rect.width);
+                cv.width = W * dpr; cv.height = W * dpr;
+                c.setTransform(dpr, 0, 0, dpr, 0, 0);
+                R = W * 0.26;
+            }
+
+            function ring(front) {
+                c.save();
+                c.translate(W / 2, W / 2);
+                c.rotate(tilt);
+                c.scale(1, 0.28);
+                for (let i = 0; i < 3; i++) {
+                    c.beginPath();
+                    const rr = R * (1.55 + i * 0.16);
+                    c.ellipse(0, 0, rr, rr, 0, front ? 0 : Math.PI, front ? Math.PI : Math.PI * 2);
+                    c.strokeStyle = i === 1 ? 'rgba(255, 0, 85, 0.95)' : 'rgba(255, 80, 140, 0.45)';
+                    c.lineWidth = (i === 1 ? 7 : 3) / 0.6;
+                    c.shadowColor = 'rgba(255, 0, 85, 0.8)'; c.shadowBlur = 12;
+                    c.stroke();
+                }
+                c.restore();
+            }
+
+            function draw() {
+                c.clearRect(0, 0, W, W);
+                const cx = W / 2, cy = W / 2;
+                // atmosfer parlaması
+                const glow = c.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.6);
+                glow.addColorStop(0, 'rgba(0, 243, 255, 0.35)'); glow.addColorStop(1, 'rgba(0, 243, 255, 0)');
+                c.fillStyle = glow; c.beginPath(); c.arc(cx, cy, R * 1.6, 0, Math.PI * 2); c.fill();
+
+                ring(false);
+
+                c.save();
+                c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.clip();
+                const base = c.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+                base.addColorStop(0, '#5ffcff'); base.addColorStop(0.5, '#00b8d4'); base.addColorStop(1, '#004a70');
+                c.fillStyle = base; c.fillRect(cx - R, cy - R, R * 2, R * 2);
+                // dönen bulut bantları
+                c.translate(cx, cy); c.rotate(tilt * 0.6);
+                bands.forEach((b, i) => {
+                    c.fillStyle = `rgba(255, 255, 255, ${0.07 + i * 0.02})`;
+                    const y = b * R, h = R * 0.12 * (1 + Math.sin(rot * 2 + i));
+                    c.fillRect(-R, y, R * 2, h);
+                });
+                // küresel izdüşümle dönen lekeler
+                spots.forEach(s => {
+                    const lon = s.lon + rot;
+                    const z = Math.cos(lon) * Math.cos(s.lat);
+                    if (z <= 0) return;
+                    const x = Math.sin(lon) * Math.cos(s.lat) * R, y = Math.sin(s.lat) * R;
+                    c.fillStyle = `rgba(${s.col}, ${s.a * z})`;
+                    c.beginPath(); c.ellipse(x, y, s.r * R * z, s.r * R * 0.55, 0, 0, Math.PI * 2); c.fill();
+                });
+                c.restore();
+
+                // ışık ve gölge (3D hissi)
+                const shade = c.createRadialGradient(cx - R * 0.45, cy - R * 0.5, R * 0.1, cx, cy, R * 1.05);
+                shade.addColorStop(0, 'rgba(255, 255, 255, 0.35)');
+                shade.addColorStop(0.45, 'rgba(255, 255, 255, 0)');
+                shade.addColorStop(1, 'rgba(0, 0, 20, 0.75)');
+                c.fillStyle = shade; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.fill();
+
+                ring(true);
+            }
+
+            function frame(t) {
+                if (visible && t - last > 30) {
+                    last = t;
+                    tiltT = -0.38 + pointer.x * 0.35;
+                    tilt += (tiltT - tilt) * 0.06;
+                    rot += 0.006;
+                    draw();
+                }
+                requestAnimationFrame(frame);
+            }
+
+            return {
+                start() {
+                    size();
+                    window.addEventListener('resize', () => { size(); draw(); }, { passive: true });
+                    if ('IntersectionObserver' in window) new IntersectionObserver(e => visible = e[0].isIntersecting).observe(cv);
+                    draw();
+                    if (!reduceMotion) requestAnimationFrame(frame);
+                }
+            };
+        })();
+
+        // ================= Ses atmosferi (Web Audio, dosya gerektirmez) =================
+        const sfx = {
+            ac: null, master: null, amb: null, on: false,
+            init() {
+                if (this.ac) return;
+                const AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return;
+                this.ac = new AC();
+                this.master = this.ac.createGain();
+                this.master.gain.value = 0;
+                this.master.connect(this.ac.destination);
+            },
+            startAmbient() {
+                const c = this.ac;
+                if (!c || this.amb) return;
+                const g = c.createGain(); g.gain.value = 0.35; g.connect(this.master);
+                const o1 = c.createOscillator(); o1.type = 'sine'; o1.frequency.value = 55;
+                const o2 = c.createOscillator(); o2.type = 'triangle'; o2.frequency.value = 82.4; o2.detune.value = 6;
+                const og = c.createGain(); og.gain.value = 0.22; o1.connect(og); o2.connect(og); og.connect(g);
+                const len = c.sampleRate * 4, buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+                for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+                const n = c.createBufferSource(); n.buffer = buf; n.loop = true;
+                const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 420; f.Q.value = 0.8;
+                const ng = c.createGain(); ng.gain.value = 0.1; n.connect(f); f.connect(ng); ng.connect(g);
+                const lfo = c.createOscillator(); lfo.frequency.value = 0.05;
+                const lg = c.createGain(); lg.gain.value = 260; lfo.connect(lg); lg.connect(f.frequency);
+                [o1, o2, n, lfo].forEach(x => x.start());
+                this.amb = g;
+            },
+            async enable() {
+                this.init();
+                if (!this.ac) return false;
+                if (this.ac.state === 'suspended') await this.ac.resume().catch(() => {});
+                this.startAmbient();
+                const t = this.ac.currentTime;
+                this.master.gain.cancelScheduledValues(t);
+                this.master.gain.setTargetAtTime(0.45, t, 0.6);
+                this.on = true;
+                return true;
+            },
+            disable() {
+                this.on = false;
+                if (this.ac) this.master.gain.setTargetAtTime(0, this.ac.currentTime, 0.2);
+            },
+            tone(freq, dur = 0.08, type = 'sine', vol = 0.25, when = 0) {
+                if (!this.on || !this.ac) return;
+                const c = this.ac, t = c.currentTime + when;
+                const o = c.createOscillator(), g = c.createGain();
+                o.type = type; o.frequency.setValueAtTime(freq, t);
+                g.gain.setValueAtTime(0, t);
+                g.gain.linearRampToValueAtTime(vol, t + 0.008);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                o.connect(g); g.connect(this.master);
+                o.start(t); o.stop(t + dur + 0.05);
+            },
+            blip() { this.tone(1250, 0.06, 'sine', 0.16); this.tone(1870, 0.05, 'sine', 0.07, 0.025); },
+            chime() { [660, 880, 1320, 1760].forEach((f, i) => this.tone(f, 0.45, 'triangle', 0.2, i * 0.09)); },
+            whoosh() {
+                if (!this.on || !this.ac) return;
+                const c = this.ac, t = c.currentTime, dur = 1.1;
+                const buf = c.createBuffer(1, c.sampleRate * dur, c.sampleRate), d = buf.getChannelData(0);
+                for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+                const n = c.createBufferSource(); n.buffer = buf;
+                const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 3;
+                f.frequency.setValueAtTime(200, t); f.frequency.exponentialRampToValueAtTime(3200, t + dur * 0.7);
+                const g = c.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.25); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                n.connect(f); f.connect(g); g.connect(this.master); n.start(t);
+            }
+        };
+
+        function setSoundIcon(on) {
+            const b = document.getElementById('sound-btn');
+            b.textContent = on ? '🔊' : '🔇';
+            b.setAttribute('aria-label', on ? 'Sesi kapat' : 'Sesi aç');
+        }
+
+        async function toggleSound() {
+            if (sfx.on) {
+                sfx.disable(); setSoundIcon(false);
+                try { localStorage.setItem('vt_sound', '0'); } catch (e) {}
+                return;
+            }
+            const ok = await sfx.enable();
+            if (!ok) { showToast('Bu tarayıcı sesi desteklemiyor.'); return; }
+            setSoundIcon(true);
+            try { localStorage.setItem('vt_sound', '1'); } catch (e) {}
+            sfx.blip();
+            unlockAchievement('frekans');
+        }
+
+        function initSound() {
+            let pref = false;
+            try { pref = localStorage.getItem('vt_sound') === '1'; } catch (e) {}
+            if (pref) {
+                // Tarayıcılar sesi ancak bir tıklamadan sonra başlatır
+                setSoundIcon(true);
+                const start = () => { sfx.enable(); window.removeEventListener('pointerdown', start, true); window.removeEventListener('keydown', start, true); };
+                window.addEventListener('pointerdown', start, true);
+                window.addEventListener('keydown', start, true);
+            }
+            document.addEventListener('click', e => {
+                if (e.target.closest('#sound-btn')) return;
+                if (e.target.closest('button, .nav-link, .external-btn, .play-overlay, .latest-thumb, .mod-actions a')) sfx.blip();
+            }, true);
+        }
+
+        // ================= Başarımlar =================
+        const ACHIEVEMENTS = [
+            { id: 'ilk-sinyal',     icon: '📡', name: 'İlk Sinyal',       desc: 'İlk videonu izle.', xp: 10 },
+            { id: 'kasif',          icon: '🧭', name: 'Kaşif',            desc: '5 farklı video izle.', xp: 20 },
+            { id: 'maratoncu',      icon: '🏃', name: 'Maratoncu',        desc: '10 farklı video izle.', xp: 30 },
+            { id: 'arsiv-bekcisi',  icon: '🗄️', name: 'Arşiv Bekçisi',    desc: '25 farklı video izle.', xp: 50 },
+            { id: 'seri-avcisi',    icon: '🏁', name: 'Seri Avcısı',      desc: 'Bir serinin bütün bölümlerini izle.', xp: 60 },
+            { id: 'hizli-sinyal',   icon: '⚡', name: 'Hızlı Sinyal',     desc: '3 Shorts izle.', xp: 10 },
+            { id: 'isinlanma',      icon: '🌀', name: 'Işınlanma Deneyi', desc: 'Işınlan düğmesini kullan.', xp: 10 },
+            { id: 'koleksiyoncu',   icon: '⭐', name: 'Koleksiyoncu',     desc: '3 videoyu favorilerine ekle.', xp: 15 },
+            { id: 'gece-kusu',      icon: '🦉', name: 'Gece Kuşu',        desc: 'Gece yarısından sonra (00:00–05:00) video izle.', xp: 20 },
+            { id: 'sadik-yolcu',    icon: '📅', name: 'Sadık Yolcu',      desc: 'Siteye 3 farklı gün uğra.', xp: 30 },
+            { id: 'sinyal-yayici',  icon: '🔗', name: 'Sinyal Yayıcı',    desc: 'Bir videonun linkini kopyala.', xp: 10 },
+            { id: 'misafir',        icon: '💬', name: 'Misafir',          desc: "Ziyaretçi Defteri'ne uğra.", xp: 10 },
+            { id: 'muhendis',       icon: '🛠️', name: 'Mühendis',         desc: 'Projelerim sayfasını incele.', xp: 10 },
+            { id: 'teknisyen',      icon: '⌨️', name: 'Teknisyen',        desc: 'Klavye kısayol panelini aç.', xp: 10 },
+            { id: 'frekans',        icon: '🔊', name: 'Frekans Ayarı',    desc: 'Ses atmosferini aç.', xp: 5 },
+            { id: 'us-kuruldu',     icon: '📲', name: 'Üs Kuruldu',       desc: 'Siteyi uygulama olarak yükle.', xp: 25 },
+            { id: 'gizli-sinyal',   icon: '🛸', name: 'Gizli Sinyal',     desc: 'Sitedeki gizli sinyali bul.', xp: 40, secret: true }
+        ];
+        const RANKS = [
+            { min: 0, name: 'Çaylak Kaşif' }, { min: 30, name: 'Uzay Yolcusu' }, { min: 80, name: 'Yıldız Pilotu' },
+            { min: 150, name: 'Galaksi Gezgini' }, { min: 250, name: 'Nebula Kaptanı' }, { min: 340, name: 'Boşluk Efsanesi' }
+        ];
+        let achState = store.get('vt_ach', {});
+        let visitStats = store.get('vt_stats', { shorts: [], days: [] });
+        const popupQueue = [];
+        let popupBusy = false;
+
+        const totalXp = () => ACHIEVEMENTS.reduce((sum, a) => sum + (achState[a.id] ? a.xp : 0), 0);
+        function rankInfo(xp = totalXp()) {
+            let i = 0;
+            RANKS.forEach((r, k) => { if (xp >= r.min) i = k; });
+            const next = RANKS[i + 1];
+            const pct = next ? (xp - RANKS[i].min) / (next.min - RANKS[i].min) * 100 : 100;
+            return { level: i + 1, name: RANKS[i].name, next, pct, xp };
+        }
+
+        function updateHud() {
+            const r = rankInfo();
+            document.getElementById('hud-level').textContent = `Lv ${r.level}`;
+            document.getElementById('hud-xp').style.width = `${r.pct}%`;
+        }
+
+        function unlockAchievement(id) {
+            const a = ACHIEVEMENTS.find(x => x.id === id);
+            if (!a || achState[id]) return;
+            const before = rankInfo().level;
+            achState[id] = Date.now();
+            store.set('vt_ach', achState);
+            const after = rankInfo();
+            popupQueue.push({ a, levelUp: after.level > before ? after : null });
+            updateHud();
+            trackEvent(`basarim/${id}`, a.name);
+            if (document.getElementById('ach-panel').classList.contains('open')) renderAchievements();
+            showNextPopup();
+        }
+
+        function showNextPopup() {
+            if (popupBusy || !popupQueue.length) return;
+            popupBusy = true;
+            const { a, levelUp } = popupQueue.shift();
+            const el = document.getElementById('ach-popup');
+            el.innerHTML = `<div class="ico">${a.icon}</div><div><small>🏆 BAŞARIM AÇILDI · +${a.xp} XP</small><b>${sanitizeHTML(a.name)}</b><span>${levelUp ? `Seviye atladın! Lv ${levelUp.level} · ${sanitizeHTML(levelUp.name)}` : sanitizeHTML(a.desc)}</span></div>`;
+            el.classList.add('show');
+            sfx.chime();
+            setTimeout(() => {
+                el.classList.remove('show');
+                setTimeout(() => { popupBusy = false; showNextPopup(); }, 550);
+            }, 3400);
+        }
+
+        function renderAchievements() {
+            const r = rankInfo();
+            const got = ACHIEVEMENTS.filter(a => achState[a.id]).length;
+            document.getElementById('ach-level-num').textContent = r.level;
+            document.getElementById('ach-rank-name').textContent = r.name;
+            document.getElementById('ach-summary').textContent = `${got} / ${ACHIEVEMENTS.length} başarım · ${r.xp} XP` + (r.next ? ` · sonraki rütbe "${r.next.name}" için ${r.next.min - r.xp} XP` : ' · en yüksek rütbe!');
+            document.getElementById('ach-xp-bar').style.width = `${r.pct}%`;
+            const sorted = [...ACHIEVEMENTS].sort((x, y) => (!!achState[y.id]) - (!!achState[x.id]));
+            document.getElementById('ach-grid').innerHTML = sorted.map(a => {
+                const has = achState[a.id];
+                const hidden = a.secret && !has;
+                const date = has ? new Date(has).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                return `<div class="ach-item ${has ? 'got' : 'locked'}">
+                    <div class="ico">${hidden ? '❔' : a.icon}</div>
+                    <div><h4>${hidden ? '???' : sanitizeHTML(a.name)}</h4>
+                    <p>${hidden ? 'Gizli başarım. Etrafı iyi kolaçan et...' : sanitizeHTML(a.desc)}</p>
+                    <span class="xp">${has ? `✓ ${date} · ` : '🔒 '}+${a.xp} XP</span></div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleAchievements(show) {
+            const panel = document.getElementById('ach-panel');
+            const open = show ?? !panel.classList.contains('open');
+            if (open) renderAchievements();
+            panel.classList.toggle('open', open);
+        }
+
+        // Video izlendiğinde başarımları ve seri ilerlemesini güncelle
+        function onVideoWatched(id, video) {
+            const n = watchedSet.size;
+            if (n >= 1) unlockAchievement('ilk-sinyal');
+            if (n >= 5) unlockAchievement('kasif');
+            if (n >= 10) unlockAchievement('maratoncu');
+            if (n >= 25) unlockAchievement('arsiv-bekcisi');
+            if (new Date().getHours() < 5) unlockAchievement('gece-kusu');
+            if (video?.isShort && !visitStats.shorts.includes(id)) {
+                visitStats.shorts.push(id);
+                store.set('vt_stats', visitStats);
+            }
+            if (visitStats.shorts.length >= 3) unlockAchievement('hizli-sinyal');
+            if (playSeriesId) {
+                store.set('vt_last_series', { id: playSeriesId, at: Date.now() });
+                const items = seriesCache[playSeriesId] || (currentPlaylistId === playSeriesId ? loadedVideosData : null);
+                if (items?.length && items.every(v => isWatched(v.id))) unlockAchievement('seri-avcisi');
+            }
+        }
+
+        function initAchievements() {
+            const today = new Date().toLocaleDateString('sv-SE');
+            if (!visitStats.days.includes(today)) {
+                visitStats.days = [...visitStats.days, today].slice(-30);
+                store.set('vt_stats', visitStats);
+            }
+            updateHud();
+            // Önceden yapılanlar için (ör. eski ziyaretlerde izlenen videolar)
+            setTimeout(() => {
+                if (visitStats.days.length >= 3) unlockAchievement('sadik-yolcu');
+                if (watchedSet.size) onVideoWatched(null, null);
+                if (favorites.length >= 3) unlockAchievement('koleksiyoncu');
+                if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) unlockAchievement('us-kuruldu');
+            }, 1500);
+            window.addEventListener('appinstalled', () => unlockAchievement('us-kuruldu'));
+        }
+
+        // ================= Seferler (seriler) =================
+        const seriesCache = {};
+
+        async function getSeriesItems(plId) {
+            if (seriesCache[plId]) return seriesCache[plId];
+            const key = `vt_series_${plId}`;
+            try {
+                const c = JSON.parse(sessionStorage.getItem(key) || 'null');
+                if (c && Date.now() - c.t < 30 * 60 * 1000) return (seriesCache[plId] = c.items);
+            } catch (e) {}
+            const items = [];
+            let pageToken = null, pages = 0;
+            do {
+                let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&fields=nextPageToken,items(snippet(title,thumbnails(medium,high)),contentDetails(videoId,videoPublishedAt))&playlistId=${plId}&maxResults=50&key=${API_KEY}`;
+                if (pageToken) url += `&pageToken=${pageToken}`;
+                const data = await ytFetch(url);
+                (data.items || []).filter(it => !isUnavailable(it)).forEach(it => {
+                    const t = it.snippet.thumbnails;
+                    items.push({ id: it.contentDetails.videoId, title: it.snippet.title, thumbnail: t.high?.url || t.medium?.url, publishedAt: it.contentDetails.videoPublishedAt });
+                });
+                pageToken = data.nextPageToken || null;
+                pages++;
+            } while (pageToken && pages < MAX_API_PAGES);
+            try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), items })); } catch (e) {}
+            return (seriesCache[plId] = items);
+        }
+
+        function seriesProgress(items) {
+            const watched = items.filter(v => isWatched(v.id)).length;
+            const nextIdx = items.findIndex(v => !isWatched(v.id));
+            return { watched, total: items.length, nextIdx, done: items.length > 0 && nextIdx === -1, pct: items.length ? watched / items.length * 100 : 0 };
+        }
+
+        async function renderSeriesPage() {
+            const grid = document.getElementById('series-grid');
+            await playlistsReady;
+            const ids = Object.keys(playlistsMap).filter(id => playlistsMap[id].count !== 0);
+            if (!ids.length) { grid.innerHTML = '<div class="error">Henüz sefer kaydı yok.</div>'; return; }
+            if (!grid.querySelector('.series-card')) {
+                grid.innerHTML = ids.map(id => `
+                    <div class="series-card" data-series="${id}">
+                        <div class="series-cover"><img src="${playlistsMap[id].thumbUrl}" alt="" loading="lazy"><span class="series-status"></span></div>
+                        <div class="series-body">
+                            <h3>${sanitizeHTML(playlistsMap[id].title)}</h3>
+                            <div class="series-progress"><div class="bar"><span></span></div><span class="series-count">… / ${playlistsMap[id].count || '…'}</span></div>
+                            <div class="series-next">Sinyal alınıyor...</div>
+                            <div class="series-actions">
+                                <button class="watch-btn" data-series-play disabled>▶ YÜKLENİYOR</button>
+                                <button class="series-list-btn" data-series-open>📂 Bölümler</button>
+                            </div>
+                        </div>
+                    </div>`).join('');
+            }
+            await Promise.all(ids.map(async id => {
+                const card = grid.querySelector(`[data-series="${id}"]`);
+                try {
+                    const items = await getSeriesItems(id);
+                    const p = seriesProgress(items);
+                    card.classList.toggle('done', p.done);
+                    card.querySelector('.bar span').style.width = `${p.pct}%`;
+                    card.querySelector('.series-count').textContent = `${p.watched} / ${p.total} bölüm`;
+                    const st = card.querySelector('.series-status');
+                    st.className = `series-status ${p.done ? 'done' : p.watched ? 'going' : 'new'}`;
+                    st.textContent = p.done ? '✓ TAMAMLANDI' : p.watched ? 'DEVAM EDİYOR' : 'YENİ SEFER';
+                    const next = p.done ? items[0] : items[p.nextIdx];
+                    card.querySelector('.series-next').innerHTML = p.done
+                        ? 'Bu seferi tamamladın! 🏁 İstersen baştan izleyebilirsin.'
+                        : `Sıradaki: <b>Bölüm ${p.nextIdx + 1}</b> — ${sanitizeHTML(next.title)}`;
+                    const btn = card.querySelector('[data-series-play]');
+                    btn.disabled = !items.length;
+                    btn.textContent = p.done ? '↻ BAŞTAN İZLE' : p.watched ? '▶ DEVAM ET' : '▶ SEFERE BAŞLA';
+                    if (p.done) unlockAchievement('seri-avcisi');
+                } catch (e) {
+                    card.querySelector('.series-next').textContent = 'Bu seferin kayıtları alınamadı.';
+                    card.querySelector('[data-series-play]').textContent = '— —';
+                }
+            }));
+        }
+
+        async function playSeries(plId) {
+            const items = await getSeriesItems(plId);
+            if (!items.length) return;
+            const p = seriesProgress(items);
+            const v = p.done ? items[0] : items[p.nextIdx];
+            openVideoModal(v.id, v.title, items, plId);
+        }
+
+        function openSeriesList(plId) {
+            switchPage('page-records', document.querySelector('.main-nav button'));
+            const btn = document.querySelector(`.category-nav [data-playlist="${CSS.escape(plId)}"]`);
+            if (btn) selectPlaylist(plId, btn);
+            document.getElementById('category-nav').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
+
+        document.getElementById('series-grid').addEventListener('click', e => {
+            const card = e.target.closest('[data-series]');
+            if (!card) return;
+            if (e.target.closest('[data-series-play]')) playSeries(card.dataset.series);
+            else if (e.target.closest('[data-series-open]')) openSeriesList(card.dataset.series);
+        });
+
+        // "Kaldığın yerden devam et" bandı
+        let continueHidden = false;
+        async function refreshContinueBanner() {
+            const box = document.getElementById('continue-banner');
+            const last = store.get('vt_last_series', null);
+            if (continueHidden || !last?.id) { box.classList.remove('ready'); return; }
+            await playlistsReady;
+            const info = playlistsMap[last.id];
+            if (!info) { box.classList.remove('ready'); return; }
+            try {
+                const items = await getSeriesItems(last.id);
+                const p = seriesProgress(items);
+                if (p.done || p.nextIdx < 0) { box.classList.remove('ready'); return; }
+                const v = items[p.nextIdx];
+                box.innerHTML = `
+                    <img src="${v.thumbnail}" alt="">
+                    <div class="continue-text">
+                        <small>🛰️ KALDIĞIN YERDEN DEVAM ET</small>
+                        <b>${sanitizeHTML(info.title)} · Bölüm ${p.nextIdx + 1} / ${p.total}</b>
+                        <span>${sanitizeHTML(v.title)}</span>
+                    </div>
+                    <button class="watch-btn" id="continue-play">▶ DEVAM ET</button>
+                    <button class="continue-close" id="continue-close" aria-label="Gizle" title="Gizle">&times;</button>`;
+                box.querySelector('#continue-play').onclick = () => openVideoModal(v.id, v.title, items, last.id);
+                box.querySelector('#continue-close').onclick = () => { continueHidden = true; box.classList.remove('ready'); };
+                box.classList.add('ready');
+            } catch (e) { box.classList.remove('ready'); }
+        }
+
+        // ================= Projelerim: MC Bot sürümleri (GitHub) =================
+        const MCBOT_REPO = 'voidtraveler966y/mcbot';
+        let mcbotLoaded = false;
+
+        function renderMarkdownLite(md) {
+            const lines = (md || '').replace(/\r/g, '').split('\n').slice(0, 40);
+            let html = '', inList = false;
+            const inline = t => sanitizeHTML(t)
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+            lines.forEach(raw => {
+                const l = raw.trim();
+                const li = /^[-*+]\s+(.*)$/.exec(l) || /^\d+[.)]\s+(.*)$/.exec(l);
+                if (li) { if (!inList) { html += '<ul>'; inList = true; } html += `<li>${inline(li[1])}</li>`; return; }
+                if (inList) { html += '</ul>'; inList = false; }
+                const h = /^#{1,6}\s+(.*)$/.exec(l);
+                if (h) html += `<h4>${inline(h[1])}</h4>`;
+                else if (l) html += `<p>${inline(l)}</p>`;
+            });
+            if (inList) html += '</ul>';
+            return html;
+        }
+
+        async function fetchMcBotReleases() {
+            if (mcbotLoaded) return;
+            mcbotLoaded = true;
+            let releases;
+            try {
+                const c = JSON.parse(sessionStorage.getItem('vt_mcbot') || 'null');
+                if (c && Date.now() - c.t < 10 * 60 * 1000) releases = c.data;
+            } catch (e) {}
+            try {
+                if (!releases) {
+                    const res = await fetch(`https://api.github.com/repos/${MCBOT_REPO}/releases?per_page=30`);
+                    if (!res.ok) throw new Error(res.status);
+                    releases = (await res.json()).filter(r => !r.draft).map(r => ({
+                        tag: r.tag_name, name: r.name, date: r.published_at, pre: r.prerelease, body: r.body || '',
+                        downloads: (r.assets || []).reduce((s, a) => s + (a.download_count || 0), 0)
+                    }));
+                    try { sessionStorage.setItem('vt_mcbot', JSON.stringify({ t: Date.now(), data: releases })); } catch (e) {}
+                }
+            } catch (err) { mcbotLoaded = false; return; }
+            if (!releases.length) return;
+            releases.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const latest = releases.find(r => !r.pre) || releases[0];
+            const fmtDate = d => new Date(d).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+            const total = releases.reduce((s, r) => s + r.downloads, 0);
+            document.getElementById('mcbot-version').textContent = latest.tag;
+            document.getElementById('mcbot-date').textContent = fmtDate(latest.date);
+            document.getElementById('mcbot-downloads').textContent = new Intl.NumberFormat('tr-TR').format(total);
+            document.getElementById('mcbot-notes-version').textContent = latest.tag;
+            document.getElementById('mcbot-notes').innerHTML = renderMarkdownLite(latest.body) || '<p>Bu sürüm için not yazılmamış.</p>';
+            document.getElementById('mcbot-history').innerHTML = releases.slice(0, 6).map(r =>
+                `<li><b>${sanitizeHTML(r.tag)}</b><span>${fmtDate(r.date)} · ⬇ ${new Intl.NumberFormat('tr-TR').format(r.downloads)}</span></li>`).join('');
+            document.getElementById('mcbot-notes-card').style.display = '';
+        }
 
         window.onload = () => {
             const grid = document.getElementById('video-grid');
@@ -1502,14 +2311,18 @@
             });
             window.addEventListener('resize', resizeCanvas, { passive: true });
             resizeCanvas();
-            if (!reduceMotion) animateStars();
+            if (!reduceMotion) requestAnimationFrame(animateStars);
+            planet.start();
+            initSound();
+            initAchievements();
             document.getElementById('year').textContent = new Date().getFullYear();
             document.getElementById('autoplay-toggle').checked = (() => { try { return localStorage.getItem('vt_autoplay') !== '0'; } catch (e) { return true; } })();
             document.getElementById('site-title').addEventListener('click', onTitleTap);
             registerServiceWorker();
             initAnalytics();
             fetchChannelStats();
-            fetchPlaylists();
+            playlistsReady = fetchPlaylists();
+            playlistsReady.then(refreshContinueBanner);
             fetchLatestVideo();
             fetchModInfo();
             fetchSiteUpdates();
