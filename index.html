@@ -60,7 +60,10 @@
             --accent-gold: #ffd700;
             --bg-color: #050510; 
             --card-bg: rgba(0, 24, 40, 0.75); 
-            --text-glow: 0 0 10px var(--primary-color); 
+            --text-glow: 0 0 10px var(--primary-color);
+            --primary-rgb: 0, 243, 255;
+            --secondary-rgb: 255, 0, 85;
+            --gold-rgb: 255, 215, 0; 
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,12 +100,12 @@
         .section-title { text-align: center; font-family: 'Orbitron', sans-serif; font-size: 2rem; color: #fff; margin-bottom: 2rem; letter-spacing: 4px; text-transform: uppercase; }
         .section-title span { color: var(--primary-color); }
 
-        .filter-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; background: var(--card-bg); padding: 1rem; border-radius: 8px; border: 1px solid rgba(0, 243, 255, 0.3); }
+        .filter-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; background: var(--card-bg); padding: 1rem; border-radius: 8px; border: 1px solid rgba(var(--primary-rgb), 0.3); }
         .search-box { flex: 1; min-width: 250px; display: flex; align-items: center; background: rgba(5, 5, 16, 0.8); border: 1px solid var(--primary-color); border-radius: 4px; padding: 0.4rem 0.8rem; }
         .search-box input { width: 100%; background: transparent; border: none; outline: none; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; padding: 4px; }
         .search-box input::placeholder { color: #666; }
         .sort-box { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-        .random-btn { background: rgba(255, 0, 85, 0.12); border: 1px solid var(--secondary-color); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; padding: 0.6rem 1rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+        .random-btn { background: rgba(var(--secondary-rgb), 0.12); border: 1px solid var(--secondary-color); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; padding: 0.6rem 1rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
         .random-btn:hover { background: var(--secondary-color); box-shadow: 0 0 15px var(--secondary-color); }
         .random-btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; background: transparent; }
 
@@ -110,7 +113,7 @@
         .main-nav .nav-link:hover { color: var(--secondary-color); text-shadow: 0 0 10px var(--secondary-color); }
 
         .channel-stats { display: flex; justify-content: center; gap: 0.8rem; margin: 1.5rem auto 0; flex-wrap: wrap; }
-        .channel-stats .stat { min-width: 140px; background: var(--card-bg); border: 1px solid rgba(0, 243, 255, 0.35); border-radius: 6px; padding: 0.6rem 1rem; display: flex; flex-direction: column; align-items: center; backdrop-filter: blur(5px); position: relative; overflow: hidden; }
+        .channel-stats .stat { min-width: 140px; background: var(--card-bg); border: 1px solid rgba(var(--primary-rgb), 0.35); border-radius: 6px; padding: 0.6rem 1rem; display: flex; flex-direction: column; align-items: center; backdrop-filter: blur(5px); position: relative; overflow: hidden; }
         .channel-stats .stat::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary-color), transparent); }
         .stat-value { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--primary-color); text-shadow: var(--text-glow); }
         .stat-label { font-size: 0.8rem; color: #aaa; letter-spacing: 2px; text-transform: uppercase; }
@@ -163,7 +166,7 @@
         .hud-badge { color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; border: 1px solid var(--primary-color); padding: 5px 10px; border-radius: 4px; }
         
         .update-timeline { list-style: none; margin-top: 0.5rem; }
-        .update-item { border-left: 2px solid rgba(0, 243, 255, 0.3); padding-left: 15px; margin-bottom: 1.2rem; position: relative; }
+        .update-item { border-left: 2px solid rgba(var(--primary-rgb), 0.3); padding-left: 15px; margin-bottom: 1.2rem; position: relative; }
         .update-item::before { content: ''; position: absolute; left: -6px; top: 5px; width: 10px; height: 10px; background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 8px var(--primary-color); }
         .update-date { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 3px; }
         .update-title { font-weight: 600; font-size: 1.05rem; color: #fff; margin-bottom: 4px; }
@@ -172,16 +175,16 @@
         .modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 1rem; }
         .modal-content { background: #050510; border: 2px solid var(--primary-color); border-radius: 12px; width: 100%; max-width: 900px; box-shadow: 0 0 30px var(--primary-color); overflow: hidden; animation: zoomIn 0.3s ease; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-header { padding: 1rem; background: rgba(0, 243, 255, 0.1); border-bottom: 1px solid var(--primary-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header { padding: 1rem; background: rgba(var(--primary-rgb), 0.1); border-bottom: 1px solid var(--primary-color); display: flex; justify-content: space-between; align-items: center; }
         .modal-header { gap: 1rem; }
         .modal-header h4 { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
         .modal-header-actions { display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
-        .share-btn { background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+        .share-btn { background: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
         .share-btn:hover { background: var(--primary-color); color: #000; }
 
         /* Son Video */
         .latest-video { display: none; margin-bottom: 2.5rem; }
-        .latest-video.ready { display: grid; grid-template-columns: 1.4fr 1fr; background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 10px; overflow: hidden; box-shadow: 0 0 25px rgba(0, 243, 255, 0.25); backdrop-filter: blur(5px); }
+        .latest-video.ready { display: grid; grid-template-columns: 1.4fr 1fr; background: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 10px; overflow: hidden; box-shadow: 0 0 25px rgba(var(--primary-rgb), 0.25); backdrop-filter: blur(5px); }
         .latest-thumb { position: relative; cursor: pointer; background: #000; }
         .latest-thumb img { width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
         .latest-thumb .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; font-size: 2rem; transition: transform 0.3s; }
@@ -198,7 +201,7 @@
 
         .loading, .error { grid-column: 1 / -1; text-align: center; font-size: 1.3rem; color: var(--primary-color); font-family: 'Orbitron', sans-serif; margin-top: 2rem; letter-spacing: 2px; }
         .mod-specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin: 1.2rem 0; }
-        .mod-specs div { background: rgba(0,0,0,0.35); border: 1px solid rgba(0,243,255,0.25); border-radius: 4px; padding: 0.5rem 0.7rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; }
+        .mod-specs div { background: rgba(0,0,0,0.35); border: 1px solid rgba(var(--primary-rgb),0.25); border-radius: 4px; padding: 0.5rem 0.7rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; }
         .mod-specs span { display: block; font-size: 0.7rem; color: var(--accent-gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
         .mod-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
         .mod-download-btn, .mod-yt-btn { padding: 0.7rem 1.2rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; }
@@ -271,14 +274,14 @@
         .video-card.watched .thumbnail-wrapper img { filter: brightness(0.6) saturate(0.7); }
 
         /* Favori */
-        .fav-btn { background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.6); color: var(--accent-gold); padding: 0.5rem 0.7rem; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; line-height: 1; }
-        .fav-btn:hover { background: rgba(255, 215, 0, 0.25); }
+        .fav-btn { background: rgba(var(--gold-rgb), 0.08); border: 1px solid rgba(var(--gold-rgb), 0.6); color: var(--accent-gold); padding: 0.5rem 0.7rem; font-size: 0.9rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; line-height: 1; }
+        .fav-btn:hover { background: rgba(var(--gold-rgb), 0.25); }
         .fav-btn.on { background: var(--accent-gold); color: #000; box-shadow: 0 0 10px var(--accent-gold); }
         .category-nav button.btn-favs { border-color: var(--accent-gold); color: var(--accent-gold); }
         .category-nav button.btn-favs:hover, .category-nav button.btn-favs.active { background: var(--accent-gold); color: #000; box-shadow: 0 0 15px var(--accent-gold); }
 
         /* Video penceresi alt çubuğu */
-        .modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.8rem 1rem; background: rgba(0, 243, 255, 0.06); border-top: 1px solid rgba(0, 243, 255, 0.4); flex-wrap: wrap; }
+        .modal-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.8rem 1rem; background: rgba(var(--primary-rgb), 0.06); border-top: 1px solid rgba(var(--primary-rgb), 0.4); flex-wrap: wrap; }
         .modal-nav-btn { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; padding: 0.5rem 0.9rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
         .modal-nav-btn:hover:not(:disabled) { background: var(--primary-color); color: #000; }
         .modal-nav-btn:disabled { opacity: 0.3; cursor: default; }
@@ -296,7 +299,7 @@
         .footer-links a, .footer-links button { color: #aaa; text-decoration: none; background: none; border: none; font: inherit; cursor: pointer; transition: color 0.3s; }
         .footer-links a:hover, .footer-links button:hover { color: var(--primary-color); }
         #install-btn { display: none; color: var(--accent-gold); }
-        kbd { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; background: rgba(0, 243, 255, 0.12); border: 1px solid rgba(0, 243, 255, 0.5); border-bottom-width: 3px; border-radius: 4px; padding: 2px 7px; color: #fff; }
+        kbd { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; background: rgba(var(--primary-rgb), 0.12); border: 1px solid rgba(var(--primary-rgb), 0.5); border-bottom-width: 3px; border-radius: 4px; padding: 2px 7px; color: #fff; }
 
         /* Kısayol yardımı */
         .help-panel { position: fixed; inset: 0; z-index: 2500; display: none; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); padding: 1rem; }
@@ -315,7 +318,7 @@
         /* Ziyaretçi defteri */
         .guestbook-card { max-width: 900px; margin: 0 auto; }
         #giscus-container { margin-top: 1.5rem; min-height: 120px; }
-        .gb-soon { text-align: center; padding: 2rem 1rem; color: #aaa; border: 1px dashed rgba(0, 243, 255, 0.4); border-radius: 8px; }
+        .gb-soon { text-align: center; padding: 2rem 1rem; color: #aaa; border: 1px dashed rgba(var(--primary-rgb), 0.4); border-radius: 8px; }
 
         /* ---------- 3D gezegen (başlık) ---------- */
         header { position: relative; }
@@ -324,13 +327,13 @@
         body { overflow-x: clip; }
 
         /* ---------- Nav (6 sekme) ---------- */
-        .main-nav { gap: 1.6rem; }
-        .main-nav button, .main-nav .nav-link { font-size: 1.05rem; }
+        .main-nav { gap: 1.3rem; }
+        .main-nav button, .main-nav .nav-link { font-size: 0.92rem; letter-spacing: 1.5px; }
 
         /* ---------- HUD (ses + başarım) ---------- */
         .hud-dock { position: fixed; top: 14px; right: 14px; z-index: 2400; display: flex; gap: 8px; }
-        .hud-dock button { background: rgba(5, 5, 16, 0.85); border: 1px solid rgba(0, 243, 255, 0.6); color: #fff; border-radius: 22px; height: 40px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; backdrop-filter: blur(6px); box-shadow: 0 0 12px rgba(0, 243, 255, 0.25); transition: all 0.3s; }
-        .hud-dock button:hover { border-color: var(--primary-color); box-shadow: 0 0 18px rgba(0, 243, 255, 0.6); }
+        .hud-dock button { background: rgba(5, 5, 16, 0.85); border: 1px solid rgba(var(--primary-rgb), 0.6); color: #fff; border-radius: 22px; height: 40px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; backdrop-filter: blur(6px); box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.25); transition: all 0.3s; }
+        .hud-dock button:hover { border-color: var(--primary-color); box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.6); }
         #sound-btn { width: 40px; font-size: 1.05rem; }
         #ach-btn { display: flex; align-items: center; gap: 8px; padding: 0 14px 0 10px; }
         #ach-btn .lv { color: var(--accent-gold); font-weight: 700; }
@@ -340,9 +343,9 @@
         /* Başarım paneli */
         .ach-panel { position: fixed; inset: 0; z-index: 2500; display: none; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); padding: 1rem; }
         .ach-panel.open { display: flex; }
-        .ach-box { background: #050510; border: 2px solid var(--accent-gold); border-radius: 12px; box-shadow: 0 0 35px rgba(255, 215, 0, 0.35); width: 100%; max-width: 860px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; }
-        .ach-head { padding: 1.4rem 1.6rem 1rem; border-bottom: 1px solid rgba(255, 215, 0, 0.3); display: flex; gap: 1.2rem; align-items: center; }
-        .ach-level { width: 74px; height: 74px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; font-family: 'Orbitron', sans-serif; border: 2px solid var(--accent-gold); box-shadow: 0 0 18px rgba(255, 215, 0, 0.5) inset, 0 0 14px rgba(255, 215, 0, 0.4); }
+        .ach-box { background: #050510; border: 2px solid var(--accent-gold); border-radius: 12px; box-shadow: 0 0 35px rgba(var(--gold-rgb), 0.35); width: 100%; max-width: 860px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; }
+        .ach-head { padding: 1.4rem 1.6rem 1rem; border-bottom: 1px solid rgba(var(--gold-rgb), 0.3); display: flex; gap: 1.2rem; align-items: center; }
+        .ach-level { width: 74px; height: 74px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; font-family: 'Orbitron', sans-serif; border: 2px solid var(--accent-gold); box-shadow: 0 0 18px rgba(var(--gold-rgb), 0.5) inset, 0 0 14px rgba(var(--gold-rgb), 0.4); }
         .ach-level b { font-size: 1.7rem; color: var(--accent-gold); line-height: 1; }
         .ach-level small { font-size: 0.6rem; color: #aaa; letter-spacing: 2px; }
         .ach-rank { flex: 1; min-width: 0; }
@@ -356,22 +359,22 @@
         .ach-item h4 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #fff; letter-spacing: 1px; }
         .ach-item p { font-size: 0.85rem; color: #999; line-height: 1.3; }
         .ach-item .xp { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--accent-gold); }
-        .ach-item.got { border-color: rgba(255, 215, 0, 0.55); background: rgba(255, 215, 0, 0.06); }
-        .ach-item.got .ico { background: rgba(255, 215, 0, 0.15); box-shadow: 0 0 12px rgba(255, 215, 0, 0.4); }
+        .ach-item.got { border-color: rgba(var(--gold-rgb), 0.55); background: rgba(var(--gold-rgb), 0.06); }
+        .ach-item.got .ico { background: rgba(var(--gold-rgb), 0.15); box-shadow: 0 0 12px rgba(var(--gold-rgb), 0.4); }
         .ach-item.locked .ico { filter: grayscale(1); opacity: 0.35; }
         .ach-item.locked h4 { color: #777; }
 
         /* Başarım açıldı bildirimi */
-        .ach-popup { position: fixed; top: 18px; left: 50%; transform: translate(-50%, -180%); visibility: hidden; opacity: 0; z-index: 2700; display: flex; align-items: center; gap: 14px; padding: 12px 22px 12px 14px; background: linear-gradient(135deg, rgba(40, 30, 0, 0.95), rgba(5, 5, 16, 0.95)); border: 2px solid var(--accent-gold); border-radius: 40px; box-shadow: 0 0 30px rgba(255, 215, 0, 0.55); transition: transform 0.5s cubic-bezier(.2, 1.4, .4, 1), opacity 0.3s, visibility 0s 0.5s; max-width: calc(100vw - 24px); }
+        .ach-popup { position: fixed; top: 18px; left: 50%; transform: translate(-50%, -180%); visibility: hidden; opacity: 0; z-index: 2700; display: flex; align-items: center; gap: 14px; padding: 12px 22px 12px 14px; background: linear-gradient(135deg, rgba(40, 30, 0, 0.95), rgba(5, 5, 16, 0.95)); border: 2px solid var(--accent-gold); border-radius: 40px; box-shadow: 0 0 30px rgba(var(--gold-rgb), 0.55); transition: transform 0.5s cubic-bezier(.2, 1.4, .4, 1), opacity 0.3s, visibility 0s 0.5s; width: max-content; max-width: calc(100vw - 24px); }
         .ach-popup.show { transform: translate(-50%, 0); visibility: visible; opacity: 1; transition: transform 0.5s cubic-bezier(.2, 1.4, .4, 1), opacity 0.2s, visibility 0s; }
-        .ach-popup .ico { font-size: 2rem; width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 215, 0, 0.18); flex-shrink: 0; }
+        .ach-popup .ico { font-size: 2rem; width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; background: rgba(var(--gold-rgb), 0.18); flex-shrink: 0; }
         .ach-popup small { display: block; font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--accent-gold); letter-spacing: 2px; }
         .ach-popup b { display: block; font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1rem; }
         .ach-popup span { font-size: 0.85rem; color: #ccc; }
 
         /* ---------- Devam bandı ---------- */
         .continue-banner { display: none; margin-bottom: 1.5rem; }
-        .continue-banner.ready { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; padding-right: 1rem; background: linear-gradient(90deg, rgba(255, 0, 85, 0.18), rgba(0, 24, 40, 0.85)); border: 1px solid var(--secondary-color); border-radius: 10px; box-shadow: 0 0 20px rgba(255, 0, 85, 0.25); backdrop-filter: blur(5px); }
+        .continue-banner.ready { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; padding-right: 1rem; background: linear-gradient(90deg, rgba(var(--secondary-rgb), 0.18), rgba(0, 24, 40, 0.85)); border: 1px solid var(--secondary-color); border-radius: 10px; box-shadow: 0 0 20px rgba(var(--secondary-rgb), 0.25); backdrop-filter: blur(5px); }
         .continue-banner img { width: 150px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
         .continue-text { flex: 1; min-width: 0; }
         .continue-text small { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--secondary-color); }
@@ -382,9 +385,9 @@
         /* ---------- Seferler ---------- */
         .series-intro { text-align: center; color: #aaa; margin: -1rem auto 2rem; max-width: 640px; }
         .series-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-        .series-card { background: var(--card-bg); border: 1px solid rgba(0, 243, 255, 0.35); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(5px); transition: transform 0.3s, box-shadow 0.3s; }
-        .series-card:hover { transform: translateY(-4px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.35); }
-        .series-card.done { border-color: var(--accent-gold); box-shadow: 0 0 16px rgba(255, 215, 0, 0.25); }
+        .series-card { background: var(--card-bg); border: 1px solid rgba(var(--primary-rgb), 0.35); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(5px); transition: transform 0.3s, box-shadow 0.3s; }
+        .series-card:hover { transform: translateY(-4px); box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.35); }
+        .series-card.done { border-color: var(--accent-gold); box-shadow: 0 0 16px rgba(var(--gold-rgb), 0.25); }
         .series-cover { position: relative; background: #000; }
         .series-cover img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
         .series-status { position: absolute; top: 10px; left: 10px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; padding: 4px 9px; border-radius: 3px; letter-spacing: 1px; }
@@ -408,7 +411,7 @@
         /* ---------- Projelerim ---------- */
         .project-heading { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.35rem; letter-spacing: 2px; margin: 0 0 1.2rem; display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
         .project-heading small { font-size: 0.75rem; color: var(--accent-gold); letter-spacing: 2px; text-transform: uppercase; }
-        .project-sep { height: 1px; margin: 3rem 0 2.2rem; background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.6), transparent); }
+        .project-sep { height: 1px; margin: 3rem 0 2.2rem; background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.6), transparent); }
         .mcbot-card { border-color: #39ff14; }
         .mcbot-card h3 { color: #39ff14; }
         .mcbot-site-btn { background: #39ff14; color: #000; border: 1px solid #39ff14; }
@@ -440,7 +443,7 @@
             .ach-level b { font-size: 1.3rem; }
             .ach-rank h3 { font-size: 1rem; }
             .ach-grid { padding: 1rem; grid-template-columns: 1fr; }
-            .ach-popup { padding: 10px 16px 10px 10px; gap: 10px; }
+            .ach-popup { padding: 10px 16px 10px 10px; gap: 10px; width: calc(100vw - 24px); border-radius: 18px; }
             .ach-popup .ico { width: 40px; height: 40px; font-size: 1.5rem; }
             .continue-banner.ready { flex-wrap: wrap; }
             .continue-banner img { width: 110px; }
@@ -452,6 +455,72 @@
             .project-heading { font-size: 1.1rem; }
         }
         @media (prefers-reduced-motion: reduce) { .ach-popup { transition: none; } .series-progress .bar span, .xp-mini span, .xp-bar span { transition: none; } }
+
+        /* ---------- Tema seçici ---------- */
+        .theme-section { padding: 1rem 1.6rem 0; }
+        .theme-section h4 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 0.7rem; }
+        .theme-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .theme-btn { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.04); color: #ddd; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; cursor: pointer; transition: all 0.25s; }
+        .theme-btn:hover:not(:disabled) { border-color: #fff; color: #fff; }
+        .theme-btn.on { border-color: var(--accent-gold); color: #fff; box-shadow: 0 0 12px rgba(var(--gold-rgb), 0.45); }
+        .theme-btn:disabled { opacity: 0.45; cursor: default; }
+        .theme-swatch { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px rgba(255, 255, 255, 0.25); }
+
+        /* ---------- Asteroit Kaçışı ---------- */
+        .game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 1.5rem; align-items: start; }
+        .game-wrap { position: relative; border: 2px solid var(--primary-color); border-radius: 10px; overflow: hidden; box-shadow: 0 0 25px rgba(var(--primary-rgb), 0.35); background: #02020a; }
+        #game-canvas { display: block; width: 100%; height: min(72vh, 600px); touch-action: none; cursor: crosshair; }
+        .game-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 0.9rem; padding: 1.5rem; background: rgba(2, 2, 10, 0.78); backdrop-filter: blur(3px); }
+        .game-overlay.hidden { display: none; }
+        .game-overlay h3 { font-family: 'Orbitron', sans-serif; font-size: clamp(1.3rem, 4vw, 2.2rem); color: var(--primary-color); text-shadow: var(--text-glow); letter-spacing: 3px; }
+        .game-overlay p { color: #bbb; max-width: 460px; font-size: 1.05rem; }
+        .game-overlay .big { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; color: #fff; }
+        .game-overlay .record { color: var(--accent-gold); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 2px; animation: pulse 1.5s infinite; }
+        .game-stats { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+        .game-stats span { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: #ddd; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); padding: 6px 12px; border-radius: 4px; }
+        .game-stats b { color: var(--accent-gold); }
+        .game-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+        .game-btn { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; padding: 0.8rem 1.4rem; border-radius: 4px; cursor: pointer; border: 1px solid var(--primary-color); background: var(--primary-color); color: #000; transition: all 0.25s; }
+        .game-btn:hover { box-shadow: 0 0 20px var(--primary-color); transform: translateY(-2px); }
+        .game-btn.alt { background: transparent; color: var(--primary-color); }
+        .game-btn.gold { background: var(--accent-gold); border-color: var(--accent-gold); }
+        .game-help { font-size: 0.85rem !important; color: #888 !important; }
+        .game-pause-btn { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.4); background: rgba(0, 0, 0, 0.5); color: #fff; font-size: 1rem; cursor: pointer; display: none; }
+        .game-pause-btn.show { display: block; }
+        .tier-list { list-style: none; display: grid; gap: 0.5rem; margin-top: 0.4rem; }
+        .tier-list li { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.5rem 0.7rem; border-radius: 5px; background: rgba(255, 255, 255, 0.04); border-left: 3px solid; font-size: 0.95rem; color: #ccc; }
+        .tier-list b { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 1px; }
+
+        /* ---------- Shorts modu ---------- */
+        .shorts-btn { background: rgba(var(--secondary-rgb), 0.12); border: 1px solid var(--secondary-color); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; padding: 0.6rem 1rem; border-radius: 4px; cursor: pointer; transition: all 0.3s; white-space: nowrap; display: none; }
+        .shorts-btn.show { display: inline-block; }
+        .shorts-btn:hover { background: var(--secondary-color); }
+        .shorts-mode { position: fixed; inset: 0; z-index: 2300; background: #000; display: none; }
+        .shorts-mode.open { display: block; }
+        body.shorts-open .hud-dock { display: none; }
+        .shorts-feed { height: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; }
+        .shorts-feed::-webkit-scrollbar { display: none; }
+        .short-slide { height: 100%; scroll-snap-align: start; scroll-snap-stop: always; display: flex; justify-content: center; align-items: center; position: relative; }
+        .short-frame { position: relative; height: 100%; max-height: 100vh; aspect-ratio: 9 / 16; max-width: 100vw; background: #111 center / cover no-repeat; border-radius: 12px; overflow: hidden; }
+        .short-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .short-info { position: absolute; left: 0; right: 0; bottom: 0; padding: 4.5rem 1rem 1rem; background: linear-gradient(transparent, rgba(0, 0, 0, 0.85)); pointer-events: none; }
+        .short-info h4 { color: #fff; font-size: 1.05rem; line-height: 1.3; text-shadow: 0 1px 4px #000; }
+        .short-info small { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--secondary-color); letter-spacing: 2px; }
+        .short-side { position: absolute; right: -64px; bottom: 90px; display: flex; flex-direction: column; gap: 14px; }
+        .short-side button, .short-side a { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 1.2rem; cursor: pointer; display: grid; place-items: center; text-decoration: none; }
+        .short-side .fav-on { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
+        .shorts-close { position: fixed; top: 14px; left: 14px; z-index: 2310; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 1.4rem; cursor: pointer; }
+        .shorts-hint { position: fixed; top: 28px; left: 50%; transform: translateX(-50%); z-index: 2310; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: rgba(255, 255, 255, 0.6); letter-spacing: 2px; pointer-events: none; }
+
+        @media (max-width: 900px) { .game-layout { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) {
+            #game-canvas { height: 68vh; }
+            .theme-section { padding: 0.8rem 1rem 0; }
+            .short-frame { border-radius: 0; width: 100vw; aspect-ratio: auto; }
+            .short-side { right: 10px; bottom: 120px; }
+            .short-side button, .short-side a { background: rgba(0, 0, 0, 0.45); }
+            .shorts-btn { flex: 1 1 100%; }
+        }
 
         #notification-toast { position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--primary-color); color: #fff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 20px var(--primary-color); font-family: 'Orbitron', sans-serif; display: none; z-index: 3000; }
     </style>
@@ -478,8 +547,19 @@
                 </div>
                 <button class="ach-close" onclick="toggleAchievements(false)" aria-label="Kapat">&times;</button>
             </div>
+            <div class="theme-section">
+                <h4>🎨 TEMALAR · seviye atladıkça yenileri açılır</h4>
+                <div class="theme-row" id="theme-row"></div>
+            </div>
             <div class="ach-grid" id="ach-grid"></div>
         </div>
+    </div>
+
+    <!-- Shorts modu (dikey, kaydırmalı) -->
+    <div class="shorts-mode" id="shorts-mode" aria-label="Shorts modu">
+        <button class="shorts-close" onclick="closeShortsMode()" aria-label="Kapat">&times;</button>
+        <div class="shorts-feed" id="shorts-feed"></div>
+        <div class="shorts-hint" id="shorts-hint">▲ ▼ KAYDIR</div>
     </div>
 
     <!-- Başarım açıldı bildirimi -->
@@ -555,6 +635,7 @@
             <button onclick="switchPage('page-records', this)" class="active">İletişim Kayıtları</button>
             <button onclick="switchPage('page-series', this)">Seferler</button>
             <button onclick="switchPage('page-mode', this)">Projelerim</button>
+            <button onclick="switchPage('page-game', this)">🕹️ Oyun</button>
             <a href="https://voidtraveler966y.github.io/mcbotwebsite/" target="_blank" rel="noopener" class="nav-link" title="MC Bot sitesine git">MC Bot ↗</a>
             <button onclick="switchPage('page-updates', this)">Son Güncelleme</button>
             <button onclick="switchPage('page-guestbook', this)">Ziyaretçi Defteri</button>
@@ -590,6 +671,7 @@
                         <option value="title">A-Z Başlık</option>
                     </select>
                     <button class="random-btn" onclick="teleportRandom()" title="Arşivden rastgele bir video aç">🎲 Işınlan</button>
+                    <button class="shorts-btn" id="shorts-btn" onclick="openShortsMode()" title="Shorts'ları dikey, kaydırarak izle">📱 Shorts Modu</button>
                 </div>
             </div>
 
@@ -685,6 +767,31 @@
                     <h3>📜 Sürüm Notları <span class="cl-version" id="mcbot-notes-version"></span></h3>
                     <div class="release-notes" id="mcbot-notes"></div>
                     <ul class="release-history" id="mcbot-history"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Oyun: Asteroit Kaçışı -->
+        <div id="page-game" class="page-content">
+            <h2 class="section-title">Asteroit <span>Kaçışı</span></h2>
+            <div class="game-layout">
+                <div class="game-wrap">
+                    <canvas id="game-canvas"></canvas>
+                    <div class="game-overlay" id="game-overlay"></div>
+                    <button class="game-pause-btn" id="game-pause-btn" aria-label="Duraklat">⏸</button>
+                </div>
+                <div class="hud-card">
+                    <h3>☄️ Nasıl Oynanır?</h3>
+                    <p class="hud-text">Gemini asteroitlerden kaçır. Her <b>10 saniye</b> hayatta kalırsan bir seviye atlarsın. 3 canın var; ölürsen her şey <b>1. seviyeden</b> yeniden başlar. ❤ can, 🛡 kalkan verir.</p>
+                    <p class="hud-text" style="margin-top:0.6rem">⬅ ➡ ya da <b>A / D</b> tuşları, fare ya da parmakla sürükle. <b>P</b> duraklatır.</p>
+                    <ul class="tier-list">
+                        <li style="border-color:#39ff14"><span>Seviye 1</span><b style="color:#39ff14">ISINMA</b></li>
+                        <li style="border-color:#00f3ff"><span>Seviye 10</span><b style="color:#00f3ff">NORMAL</b></li>
+                        <li style="border-color:#ff8a3d"><span>Seviye 50</span><b style="color:#ff8a3d">ZOR</b></li>
+                        <li style="border-color:#ff0055"><span>Seviye 100</span><b style="color:#ff0055">KAOS</b></li>
+                        <li style="border-color:#b06cff"><span>Seviye 500</span><b style="color:#b06cff">İMKÂNSIZ</b></li>
+                        <li style="border-color:#fff"><span>Seviye 1000</span><b style="color:#fff">💀 HAYATSIZ</b></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1078,6 +1185,7 @@
                 v.title.toLocaleLowerCase('tr-TR').includes(query) &&
                 (type === 'all' || (type === 'shorts' ? v.isShort : !v.isShort)));
             updateRandomButton();
+            document.getElementById('shorts-btn').classList.toggle('show', loadedVideosData.some(v => v.isShort));
 
             if (sortBy === 'views') filteredVideos.sort((a, b) => b.viewCount - a.viewCount);
             else if (sortBy === 'likes') filteredVideos.sort((a, b) => b.likeCount - a.likeCount);
@@ -1271,6 +1379,7 @@
         }
 
         document.addEventListener('keydown', e => {
+            if (game.isOpen() || shortsOpen) return; // oyun ve Shorts modu kendi tuşlarını kullanır
             if (e.key === 'Escape') {
                 if (document.getElementById('ach-panel').classList.contains('open')) return toggleAchievements(false);
                 if (document.getElementById('help-panel').classList.contains('open')) return toggleHelp(false);
@@ -1300,6 +1409,7 @@
         let konamiPos = 0, titleTaps = 0, titleTapTimer, meteors = [], eggCooldown = false;
 
         document.addEventListener('keydown', e => {
+            if (game.isOpen() || shortsOpen) return;
             const k = e.key.toLowerCase();
             konamiPos = k === KONAMI[konamiPos] ? konamiPos + 1 : (k === KONAMI[0] ? 1 : 0);
             if (konamiPos === KONAMI.length) { konamiPos = 0; launchEasterEgg(); }
@@ -1338,8 +1448,8 @@
             meteors.forEach(m => {
                 const g = ctx.createLinearGradient(m.x, m.y, m.x + m.len * 0.6, m.y - m.len);
                 g.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-                g.addColorStop(0.3, 'rgba(0, 243, 255, 0.6)');
-                g.addColorStop(1, 'rgba(0, 243, 255, 0)');
+                g.addColorStop(0.3, `rgba(${TC.p}, 0.6)`);
+                g.addColorStop(1, `rgba(${TC.p}, 0)`);
                 ctx.strokeStyle = g; ctx.lineWidth = m.w;
                 ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x + m.len * 0.6, m.y - m.len); ctx.stroke();
                 m.x -= m.speed * 0.6; m.y += m.speed;
@@ -1401,6 +1511,7 @@
             if (pageId === 'page-guestbook') { loadGiscus(); unlockAchievement('misafir'); }
             if (pageId === 'page-series') renderSeriesPage();
             if (pageId === 'page-mode') { fetchMcBotReleases(); unlockAchievement('muhendis'); }
+            if (pageId === 'page-game') game.open(); else game.close();
         };
 
         const showToast = msg => {
@@ -1693,6 +1804,49 @@
             } catch (err) { /* API'ye ulaşılamazsa sabit bilgiler kalır */ }
         }
 
+        // ================= Temalar (seviye ödülleri) =================
+        const THEMES = [
+            { id: 'klasik', name: 'Klasik Sinyal', lv: 1, p: '0, 243, 255',   s: '255, 0, 85',   g: '255, 215, 0' },
+            { id: 'nebula', name: 'Mor Nebula',    lv: 2, p: '180, 107, 255', s: '255, 63, 210', g: '255, 211, 107' },
+            { id: 'mars',   name: 'Kızıl Gezegen', lv: 3, p: '255, 138, 61',  s: '255, 46, 46',  g: '255, 224, 102' },
+            { id: 'matrix', name: 'Yeşil Matrix',  lv: 4, p: '57, 255, 20',   s: '0, 255, 162',  g: '212, 255, 58' },
+            { id: 'buz',    name: 'Buz Kuyruklu',  lv: 5, p: '159, 232, 255', s: '77, 124, 255', g: '255, 255, 255' },
+            { id: 'altin',  name: 'Altın Efsane',  lv: 6, p: '255, 215, 0',   s: '255, 140, 0',  g: '255, 243, 160' },
+            { id: 'karadelik', name: 'Kara Delik', lv: 7, p: '224, 224, 255', s: '123, 44, 255', g: '255, 59, 59' }
+        ];
+        let TC = { p: THEMES[0].p, s: THEMES[0].s, g: THEMES[0].g };
+
+        function mixRgb(a, b, f) {
+            const A = a.split(',').map(Number), B = b.split(',').map(Number);
+            return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * f)).join(', ')})`;
+        }
+
+        function applyTheme(id, save = true) {
+            const t = THEMES.find(x => x.id === id) || THEMES[0];
+            const root = document.documentElement.style;
+            root.setProperty('--primary-color', `rgb(${t.p})`);
+            root.setProperty('--secondary-color', `rgb(${t.s})`);
+            root.setProperty('--accent-gold', `rgb(${t.g})`);
+            root.setProperty('--primary-rgb', t.p);
+            root.setProperty('--secondary-rgb', t.s);
+            root.setProperty('--gold-rgb', t.g);
+            TC = { p: t.p, s: t.s, g: t.g };
+            if (typeof canvas !== 'undefined' && canvas.width) { nebula = buildNebula(canvas.width + 60, canvas.height + 60); if (reduceMotion) drawStars(); }
+            if (typeof planet !== 'undefined') planet.redraw();
+            if (save) store.set('vt_theme', t.id);
+            const row = document.getElementById('theme-row');
+            if (row && row.childElementCount) renderThemes();
+        }
+
+        function renderThemes() {
+            const lv = rankInfo().level, cur = store.get('vt_theme', 'klasik');
+            document.getElementById('theme-row').innerHTML = THEMES.map(t => {
+                const open = lv >= t.lv;
+                return `<button class="theme-btn${t.id === cur ? ' on' : ''}" ${open ? `onclick="applyTheme('${t.id}')"` : 'disabled'} title="${open ? t.name : `Lv ${t.lv} gerekli`}">
+                    <span class="theme-swatch" style="background: radial-gradient(circle at 35% 35%, rgb(${t.p}), rgb(${t.s}))"></span>${open ? t.name : `🔒 Lv ${t.lv}`}</button>`;
+            }).join('');
+        }
+
         // ================= Arka plan: parallax yıldızlar + nebula =================
         const canvas = document.getElementById('space-canvas'), ctx = canvas.getContext('2d');
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1708,8 +1862,8 @@
             off.width = w; off.height = h;
             const c = off.getContext('2d');
             [
-                { x: 0.15, y: 0.2, r: 0.55, col: '0, 243, 255', a: 0.07 },
-                { x: 0.85, y: 0.35, r: 0.5, col: '255, 0, 85', a: 0.06 },
+                { x: 0.15, y: 0.2, r: 0.55, col: TC.p, a: 0.07 },
+                { x: 0.85, y: 0.35, r: 0.5, col: TC.s, a: 0.06 },
                 { x: 0.55, y: 0.85, r: 0.6, col: '120, 60, 255', a: 0.07 },
                 { x: 0.4, y: 0.45, r: 0.35, col: '0, 140, 255', a: 0.04 }
             ].forEach(n => {
@@ -1799,9 +1953,9 @@
                     c.beginPath();
                     const rr = R * (1.55 + i * 0.16);
                     c.ellipse(0, 0, rr, rr, 0, front ? 0 : Math.PI, front ? Math.PI : Math.PI * 2);
-                    c.strokeStyle = i === 1 ? 'rgba(255, 0, 85, 0.95)' : 'rgba(255, 80, 140, 0.45)';
+                    c.strokeStyle = i === 1 ? `rgba(${TC.s}, 0.95)` : `rgba(${TC.s}, 0.45)`;
                     c.lineWidth = (i === 1 ? 7 : 3) / 0.6;
-                    c.shadowColor = 'rgba(255, 0, 85, 0.8)'; c.shadowBlur = 12;
+                    c.shadowColor = `rgba(${TC.s}, 0.8)`; c.shadowBlur = 12;
                     c.stroke();
                 }
                 c.restore();
@@ -1812,7 +1966,7 @@
                 const cx = W / 2, cy = W / 2;
                 // atmosfer parlaması
                 const glow = c.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.6);
-                glow.addColorStop(0, 'rgba(0, 243, 255, 0.35)'); glow.addColorStop(1, 'rgba(0, 243, 255, 0)');
+                glow.addColorStop(0, `rgba(${TC.p}, 0.35)`); glow.addColorStop(1, `rgba(${TC.p}, 0)`);
                 c.fillStyle = glow; c.beginPath(); c.arc(cx, cy, R * 1.6, 0, Math.PI * 2); c.fill();
 
                 ring(false);
@@ -1820,7 +1974,7 @@
                 c.save();
                 c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.clip();
                 const base = c.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-                base.addColorStop(0, '#5ffcff'); base.addColorStop(0.5, '#00b8d4'); base.addColorStop(1, '#004a70');
+                base.addColorStop(0, mixRgb(TC.p, '255, 255, 255', 0.4)); base.addColorStop(0.5, mixRgb(TC.p, '0, 0, 0', 0.2)); base.addColorStop(1, mixRgb(TC.p, '0, 0, 20', 0.72));
                 c.fillStyle = base; c.fillRect(cx - R, cy - R, R * 2, R * 2);
                 // dönen bulut bantları
                 c.translate(cx, cy); c.rotate(tilt * 0.6);
@@ -1862,6 +2016,7 @@
             }
 
             return {
+                redraw() { if (W) draw(); },
                 start() {
                     size();
                     window.addEventListener('resize', () => { size(); draw(); }, { passive: true });
@@ -1929,6 +2084,17 @@
             },
             blip() { this.tone(1250, 0.06, 'sine', 0.16); this.tone(1870, 0.05, 'sine', 0.07, 0.025); },
             chime() { [660, 880, 1320, 1760].forEach((f, i) => this.tone(f, 0.45, 'triangle', 0.2, i * 0.09)); },
+            levelUp() { [523, 784].forEach((f, i) => this.tone(f, 0.18, 'square', 0.08, i * 0.08)); },
+            boom() {
+                if (!this.on || !this.ac) return;
+                const c = this.ac, t = c.currentTime, dur = 0.5;
+                const buf = c.createBuffer(1, c.sampleRate * dur, c.sampleRate), d = buf.getChannelData(0);
+                for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 2);
+                const n = c.createBufferSource(); n.buffer = buf;
+                const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900;
+                const g = c.createGain(); g.gain.value = 0.5;
+                n.connect(f); f.connect(g); g.connect(this.master); n.start(t);
+            },
             whoosh() {
                 if (!this.on || !this.ac) return;
                 const c = this.ac, t = c.currentTime, dur = 1.1;
@@ -1996,11 +2162,16 @@
             { id: 'teknisyen',      icon: '⌨️', name: 'Teknisyen',        desc: 'Klavye kısayol panelini aç.', xp: 10 },
             { id: 'frekans',        icon: '🔊', name: 'Frekans Ayarı',    desc: 'Ses atmosferini aç.', xp: 5 },
             { id: 'us-kuruldu',     icon: '📲', name: 'Üs Kuruldu',       desc: 'Siteyi uygulama olarak yükle.', xp: 25 },
-            { id: 'gizli-sinyal',   icon: '🛸', name: 'Gizli Sinyal',     desc: 'Sitedeki gizli sinyali bul.', xp: 40, secret: true }
+            { id: 'gizli-sinyal',   icon: '🛸', name: 'Gizli Sinyal',     desc: 'Sitedeki gizli sinyali bul.', xp: 40, secret: true },
+            { id: 'oyun-1',         icon: '🚀', name: 'Kalkış',           desc: "Asteroit Kaçışı'nda 1. seviyeyi geç.", xp: 10 },
+            { id: 'oyun-10',        icon: '☄️', name: 'Asteroit Avcısı',  desc: "Asteroit Kaçışı'nda 10. seviyeye ulaş.", xp: 25 },
+            { id: 'oyun-100',       icon: '🌪️', name: 'Kaos Pilotu',      desc: "Asteroit Kaçışı'nda 100. seviyeye ulaş.", xp: 100 },
+            { id: 'oyun-1000',      icon: '💀', name: 'Hayatsız',         desc: "Asteroit Kaçışı'nda 1000. seviyeye ulaş. Gerçekten mi?", xp: 500 }
         ];
         const RANKS = [
             { min: 0, name: 'Çaylak Kaşif' }, { min: 30, name: 'Uzay Yolcusu' }, { min: 80, name: 'Yıldız Pilotu' },
-            { min: 150, name: 'Galaksi Gezgini' }, { min: 250, name: 'Nebula Kaptanı' }, { min: 340, name: 'Boşluk Efsanesi' }
+            { min: 150, name: 'Galaksi Gezgini' }, { min: 250, name: 'Nebula Kaptanı' }, { min: 340, name: 'Boşluk Efsanesi' },
+            { min: 800, name: 'Hayatsız Efsane' }
         ];
         let achState = store.get('vt_ach', {});
         let visitStats = store.get('vt_stats', { shorts: [], days: [] });
@@ -2041,7 +2212,7 @@
             popupBusy = true;
             const { a, levelUp } = popupQueue.shift();
             const el = document.getElementById('ach-popup');
-            el.innerHTML = `<div class="ico">${a.icon}</div><div><small>🏆 BAŞARIM AÇILDI · +${a.xp} XP</small><b>${sanitizeHTML(a.name)}</b><span>${levelUp ? `Seviye atladın! Lv ${levelUp.level} · ${sanitizeHTML(levelUp.name)}` : sanitizeHTML(a.desc)}</span></div>`;
+            el.innerHTML = `<div class="ico">${a.icon}</div><div><small>🏆 BAŞARIM AÇILDI · +${a.xp} XP</small><b>${sanitizeHTML(a.name)}</b><span>${levelUp ? `Seviye atladın! Lv ${levelUp.level} · ${sanitizeHTML(levelUp.name)}${THEMES.find(t => t.lv === levelUp.level) ? ` · 🎨 Yeni tema: ${THEMES.find(t => t.lv === levelUp.level).name}` : ''}` : sanitizeHTML(a.desc)}</span></div>`;
             el.classList.add('show');
             sfx.chime();
             setTimeout(() => {
@@ -2074,7 +2245,7 @@
         function toggleAchievements(show) {
             const panel = document.getElementById('ach-panel');
             const open = show ?? !panel.classList.contains('open');
-            if (open) renderAchievements();
+            if (open) { renderAchievements(); renderThemes(); }
             panel.classList.toggle('open', open);
         }
 
@@ -2303,6 +2474,443 @@
             document.getElementById('mcbot-notes-card').style.display = '';
         }
 
+        // ================= Shorts modu =================
+        let shortsOpen = false, shortsList = [], shortsObserver = null, activeShort = -1;
+
+        function openShortsMode(startId) {
+            const base = filteredVideos.some(v => v.isShort) ? filteredVideos : loadedVideosData;
+            shortsList = base.filter(v => v.isShort);
+            playSeriesId = null;
+            if (!shortsList.length) { showToast('Bu listede Shorts yok.'); return; }
+            const feed = document.getElementById('shorts-feed');
+            feed.innerHTML = shortsList.map((v, i) => `
+                <div class="short-slide" data-i="${i}">
+                    <div class="short-frame" style="background-image:url('${v.thumbnail}')">
+                        <div class="short-info"><small>SHORTS · ${i + 1} / ${shortsList.length}</small><h4>${sanitizeHTML(v.title)}</h4></div>
+                        <div class="short-side">
+                            <button data-short-fav="${v.id}" class="${isFavorite(v.id) ? 'fav-on' : ''}" aria-label="Favori">${isFavorite(v.id) ? '★' : '☆'}</button>
+                            <a href="https://www.youtube.com/shorts/${v.id}" target="_blank" rel="noopener" aria-label="YouTube'da aç">↗</a>
+                        </div>
+                    </div>
+                </div>`).join('');
+            document.getElementById('shorts-mode').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('shorts-open');
+            shortsOpen = true; activeShort = -1;
+            shortsObserver = new IntersectionObserver(entries => {
+                entries.forEach(en => { if (en.isIntersecting && en.intersectionRatio > 0.6) activateShort(+en.target.dataset.i); });
+            }, { root: feed, threshold: [0.6] });
+            feed.querySelectorAll('.short-slide').forEach(sl => shortsObserver.observe(sl));
+            const start = Math.max(0, shortsList.findIndex(v => v.id === startId));
+            feed.scrollTop = start * feed.clientHeight;
+            activateShort(start);
+            trackEvent('shorts-modu', 'Shorts modu açıldı');
+        }
+
+        function activateShort(i) {
+            if (i === activeShort || !shortsList[i]) return;
+            activeShort = i;
+            document.querySelectorAll('#shorts-feed .short-slide').forEach((sl, k) => {
+                const frame = sl.querySelector('.short-frame');
+                const old = frame.querySelector('iframe');
+                if (k !== i && old) old.remove();
+                if (k === i && !old) {
+                    const v = shortsList[i];
+                    const f = document.createElement('iframe');
+                    f.src = `https://www.youtube.com/embed/${v.id}?autoplay=1&playsinline=1&rel=0&loop=1&playlist=${v.id}`;
+                    f.allow = 'autoplay; encrypted-media; picture-in-picture';
+                    f.allowFullscreen = true;
+                    frame.prepend(f);
+                }
+            });
+            const v = shortsList[i];
+            markWatched(v.id);
+            onVideoWatched(v.id, v);
+            trackEvent(`video/${v.id}`, v.title);
+            document.getElementById('shorts-hint').style.opacity = i === 0 ? '1' : '0';
+        }
+
+        function closeShortsMode() {
+            if (!shortsOpen) return;
+            shortsOpen = false;
+            shortsObserver?.disconnect();
+            document.getElementById('shorts-feed').innerHTML = '';
+            document.getElementById('shorts-mode').classList.remove('open');
+            document.body.style.overflow = '';
+            document.body.classList.remove('shorts-open');
+            refreshContinueBanner();
+        }
+
+        document.getElementById('shorts-feed').addEventListener('click', e => {
+            const b = e.target.closest('[data-short-fav]');
+            if (!b) return;
+            const id = b.dataset.shortFav;
+            toggleFavorite(id, shortsList.find(v => v.id === id));
+            const on = isFavorite(id);
+            b.classList.toggle('fav-on', on); b.textContent = on ? '★' : '☆';
+        });
+
+        document.addEventListener('keydown', e => {
+            if (!shortsOpen) return;
+            const feed = document.getElementById('shorts-feed');
+            if (e.key === 'Escape') closeShortsMode();
+            else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                const j = Math.min(shortsList.length - 1, Math.max(0, activeShort + (e.key === 'ArrowDown' ? 1 : -1)));
+                feed.scrollTo({ top: j * feed.clientHeight, behavior: reduceMotion ? 'auto' : 'smooth' });
+            }
+        });
+
+        // ================= Oyun: Asteroit Kaçışı =================
+        const game = (() => {
+            const cv = document.getElementById('game-canvas');
+            const g = cv.getContext('2d');
+            const overlay = document.getElementById('game-overlay');
+            const pauseBtn = document.getElementById('game-pause-btn');
+            const LEVEL_DUR = 10;
+            let W = 0, H = 0, S = 1, isOpenNow = false, state = 'menu', raf = null, lastTs = 0;
+            let ship, rocks, lasers, pickups, parts, bgStars, level, startLevel, levelTime, lives, shield, invul, spawnT, laserT, pickupT, flash, shake, elapsed;
+            let keys = { l: false, r: false }, pointerX = null, bestAtStart = 0;
+            let save = store.get('vt_game', { best: 0, checkpoint: 1, runs: 0 });
+
+            // Zorluk eğrisi: t = log10(seviye) → 1: 0, 10: 1, 100: 2, 1000: 3
+            function diff(L) {
+                const t = Math.log10(L);
+                return {
+                    t,
+                    speed: 160 * (1 + 0.65 * t + 0.3 * t * t),          // 1: 160, 10: 312, 100: 560, 1000: ~900 px/sn
+                    interval: 0.95 * Math.pow(0.5, 1.25 * t),           // 1: 0.95 sn, 10: 0.40, 100: 0.17, 1000: 0.07
+                    pShard: L >= 5 ? Math.min(0.35, 0.05 + 0.1 * t) : 0,
+                    pZig: L >= 15 ? Math.min(0.3, 0.12 * t) : 0,
+                    pHome: L >= 120 ? Math.min(0.25, 0.12 * (t - 2)) : 0,
+                    laserEvery: L >= 40 ? Math.max(1.0, 6.5 - 1.8 * t) : Infinity,
+                    laserWarn: Math.max(0.35, 1.3 - 0.32 * t),
+                    size: 1 + 0.12 * t
+                };
+            }
+            const tier = L => L >= 1000 ? ['💀 HAYATSIZ', '#ffffff'] : L >= 500 ? ['İMKÂNSIZ', '#b06cff'] : L >= 100 ? ['KAOS', '#ff0055'] : L >= 50 ? ['ZOR', '#ff8a3d'] : L >= 10 ? ['NORMAL', '#00f3ff'] : ['ISINMA', '#39ff14'];
+
+            function resize() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                const r = cv.getBoundingClientRect();
+                if (!r.width) return;
+                W = r.width; H = r.height; S = H / 600;
+                cv.width = W * dpr; cv.height = H * dpr;
+                g.setTransform(dpr, 0, 0, dpr, 0, 0);
+                if (ship) { ship.y = H - 60 * S; ship.x = Math.min(Math.max(ship.x, 20), W - 20); }
+                bgStars = Array.from({ length: 70 }, () => ({ x: Math.random() * W, y: Math.random() * H, z: Math.random() }));
+                if (state !== 'play') draw();
+            }
+
+            function reset(fromLevel) {
+                startLevel = level = fromLevel;
+                ship = { x: W / 2, y: H - 60 * S };
+                rocks = []; lasers = []; pickups = []; parts = [];
+                levelTime = 0; lives = 3; shield = false; invul = 1.2; spawnT = 0.6; flash = 1.6; shake = 0; elapsed = 0;
+                laserT = 3; pickupT = 12;
+            }
+
+            function poly(r) {
+                const n = 8 + Math.floor(Math.random() * 4);
+                return Array.from({ length: n }, (_, i) => { const a = i / n * Math.PI * 2, rr = r * (0.72 + Math.random() * 0.35); return [Math.cos(a) * rr, Math.sin(a) * rr]; });
+            }
+
+            function spawnRock(d) {
+                const roll = Math.random();
+                let type = 'rock';
+                if (roll < d.pHome) type = 'home';
+                else if (roll < d.pHome + d.pShard) type = 'shard';
+                else if (roll < d.pHome + d.pShard + d.pZig) type = 'zig';
+                const base = d.speed * S * (0.8 + Math.random() * 0.4);
+                let r = (14 + Math.random() * 18) * S * d.size, vy = base;
+                if (type === 'shard') { r = (6 + Math.random() * 3) * S; vy = base * 1.7; }
+                if (type === 'zig') r = (11 + Math.random() * 8) * S;
+                if (type === 'home') r = (11 + Math.random() * 6) * S;
+                const x = r + Math.random() * (W - 2 * r);
+                rocks.push({ type, x, bx: x, y: -r, r, vx: 0, vy, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 3, pts: poly(r), amp: (50 + Math.random() * 90) * S, fq: 2 + Math.random() * 2.5, ph: Math.random() * 6, t: 0, acc: 140 * S * (1 + d.t) });
+            }
+
+            function burst(x, y, col, n = 18) {
+                for (let i = 0; i < n; i++) {
+                    const a = Math.random() * Math.PI * 2, sp = (60 + Math.random() * 260) * S;
+                    parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0.4 + Math.random() * 0.5, col });
+                }
+            }
+
+            function hit() {
+                if (invul > 0) return;
+                if (shield) { shield = false; invul = 1; burst(ship.x, ship.y, `rgb(${TC.p})`, 14); sfx.blip(); return; }
+                lives--; invul = 1.6; shake = reduceMotion ? 0 : 12;
+                burst(ship.x, ship.y, '#ff5533', 26); sfx.boom();
+                if (lives <= 0) gameOver();
+            }
+
+            function reach(L) {
+                if (L >= 2) unlockAchievement('oyun-1');
+                if (L >= 10) unlockAchievement('oyun-10');
+                if (L >= 100) unlockAchievement('oyun-100');
+                if (L >= 1000) unlockAchievement('oyun-1000');
+                if (L > save.best) save.best = L;
+                store.set('vt_game', save);
+            }
+
+            function levelUp() {
+                level++; levelTime = 0; flash = 1.4;
+                sfx.levelUp();
+                reach(level);
+                if (level % 10 === 0) trackEvent(`oyun/seviye-${level}`, `Asteroit Kaçışı seviye ${level}`);
+            }
+
+            function gameOver() {
+                state = 'over';
+                const record = level > bestAtStart;
+                reach(level);
+                save.runs = (save.runs || 0) + 1; store.set('vt_game', save);
+                pauseBtn.classList.remove('show');
+                trackEvent('oyun/bitti', `Seviye ${level}`);
+                setTimeout(() => showOverlay('over', { record }), 700);
+            }
+
+            function update(dt) {
+                const d = diff(level);
+                elapsed += dt; levelTime += dt;
+                if (levelTime >= LEVEL_DUR) levelUp();
+
+                // gemi
+                const shipSpeed = 560 * S, follow = 950 * S;
+                const dir = (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
+                if (dir) ship.x += dir * shipSpeed * dt;
+                else if (pointerX !== null) { const dx = pointerX - ship.x; ship.x += Math.sign(dx) * Math.min(Math.abs(dx), follow * dt); }
+                ship.x = Math.min(Math.max(ship.x, 18 * S), W - 18 * S);
+
+                // asteroitler
+                spawnT -= dt;
+                while (spawnT <= 0) { spawnRock(d); spawnT += d.interval * (0.6 + Math.random() * 0.8); }
+                const shipR = 11 * S;
+                rocks.forEach(o => {
+                    o.t += dt; o.y += o.vy * dt; o.rot += o.vr * dt;
+                    if (o.type === 'zig') o.x = Math.min(Math.max(o.bx + Math.sin(o.t * o.fq + o.ph) * o.amp, o.r), W - o.r);
+                    if (o.type === 'home') { o.vx += Math.sign(ship.x - o.x) * o.acc * dt; o.vx = Math.max(-260 * S, Math.min(260 * S, o.vx)); o.x += o.vx * dt; }
+                    if (!o.dead && Math.hypot(o.x - ship.x, o.y - ship.y) < o.r * 0.82 + shipR) { o.dead = true; burst(o.x, o.y, '#aaa', 12); hit(); }
+                });
+                rocks = rocks.filter(o => !o.dead && o.y - o.r < H + 10);
+
+                // lazerler
+                laserT -= dt;
+                if (laserT <= 0 && isFinite(d.laserEvery)) {
+                    const lx = Math.min(Math.max(ship.x + (Math.random() * 2 - 1) * W * 0.25, 20), W - 20);
+                    lasers.push({ x: lx, w: (26 + 10 * d.t) * S, warn: d.laserWarn, t: 0 });
+                    laserT = d.laserEvery * (0.8 + Math.random() * 0.4);
+                }
+                lasers.forEach(l => {
+                    l.t += dt;
+                    if (l.t > l.warn && l.t < l.warn + 0.45 && Math.abs(ship.x - l.x) < l.w / 2 + shipR * 0.6) hit();
+                });
+                lasers = lasers.filter(l => l.t < l.warn + 0.5);
+
+                // ödüller
+                pickupT -= dt;
+                if (pickupT <= 0) {
+                    pickups.push({ type: lives < 3 && Math.random() < 0.45 ? 'heart' : 'shield', x: 30 * S + Math.random() * (W - 60 * S), y: -20, vy: 150 * S });
+                    pickupT = 14 + Math.random() * 8;
+                }
+                pickups.forEach(pk => {
+                    pk.y += pk.vy * dt;
+                    if (Math.hypot(pk.x - ship.x, pk.y - ship.y) < 26 * S) {
+                        pk.got = true;
+                        if (pk.type === 'heart') lives = Math.min(3, lives + 1); else shield = true;
+                        burst(pk.x, pk.y, pk.type === 'heart' ? '#ff3b6b' : `rgb(${TC.p})`, 10); sfx.blip();
+                    }
+                });
+                pickups = pickups.filter(pk => !pk.got && pk.y < H + 30);
+
+                parts.forEach(q => { q.x += q.vx * dt; q.y += q.vy * dt; q.vx *= 0.96; q.vy *= 0.96; q.life -= dt; });
+                parts = parts.filter(q => q.life > 0);
+                invul = Math.max(0, invul - dt); flash = Math.max(0, flash - dt); shake = Math.max(0, shake - 40 * dt);
+            }
+
+            function draw() {
+                if (!W) return;
+                g.save();
+                g.clearRect(0, 0, W, H);
+                const bg = g.createLinearGradient(0, 0, 0, H);
+                bg.addColorStop(0, '#02020a'); bg.addColorStop(1, `rgba(${TC.s}, 0.08)`);
+                g.fillStyle = bg; g.fillRect(0, 0, W, H);
+                if (shake) g.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
+                const lvl = level || 1, sp = diff(lvl).speed * S;
+                (bgStars || []).forEach(st => {
+                    if (state === 'play') { st.y += sp * (0.05 + st.z * 0.15) / 60; if (st.y > H) { st.y = 0; st.x = Math.random() * W; } }
+                    g.fillStyle = `rgba(255, 255, 255, ${0.2 + st.z * 0.5})`;
+                    g.fillRect(st.x, st.y, 1 + st.z, 1 + st.z * (state === 'play' ? 4 : 1));
+                });
+
+                if (ship) {
+                    (lasers || []).forEach(l => {
+                        if (l.t < l.warn) {
+                            const blink = Math.floor(l.t * 12) % 2 ? 0.22 : 0.1;
+                            g.fillStyle = `rgba(255, 40, 40, ${blink})`; g.fillRect(l.x - l.w / 2, 0, l.w, H);
+                            g.strokeStyle = 'rgba(255, 60, 60, 0.7)'; g.setLineDash([8, 8]); g.lineWidth = 1;
+                            g.strokeRect(l.x - l.w / 2, 0, l.w, H); g.setLineDash([]);
+                        } else {
+                            g.shadowColor = '#ff2020'; g.shadowBlur = 25;
+                            g.fillStyle = 'rgba(255, 50, 50, 0.85)'; g.fillRect(l.x - l.w / 2, 0, l.w, H);
+                            g.fillStyle = '#fff'; g.fillRect(l.x - l.w / 6, 0, l.w / 3, H);
+                            g.shadowBlur = 0;
+                        }
+                    });
+
+                    rocks.forEach(o => {
+                        g.save(); g.translate(o.x, o.y); g.rotate(o.rot);
+                        const col = { rock: ['#5d6275', '#9aa0b5'], shard: ['#ff6a3d', '#ffc07a'], zig: ['#8a3dff', '#d1a8ff'], home: ['#1fbf3a', '#9dff8a'] }[o.type];
+                        if (o.type !== 'rock') { g.shadowColor = col[1]; g.shadowBlur = 12; }
+                        g.beginPath(); o.pts.forEach(([px, py], i) => i ? g.lineTo(px, py) : g.moveTo(px, py)); g.closePath();
+                        g.fillStyle = col[0]; g.fill(); g.lineWidth = 2; g.strokeStyle = col[1]; g.stroke();
+                        if (o.type === 'rock') { g.fillStyle = 'rgba(0, 0, 0, 0.25)'; g.beginPath(); g.arc(o.r * 0.25, -o.r * 0.2, o.r * 0.22, 0, 7); g.arc(-o.r * 0.3, o.r * 0.25, o.r * 0.15, 0, 7); g.fill(); }
+                        g.restore();
+                    });
+
+                    g.font = `${Math.round(24 * S)}px sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
+                    pickups.forEach(pk => g.fillText(pk.type === 'heart' ? '❤️' : '🛡️', pk.x, pk.y));
+
+                    // gemi
+                    if (!(invul > 0 && Math.floor(invul * 10) % 2) && state !== 'over') {
+                        g.save(); g.translate(ship.x, ship.y);
+                        const fl = 10 + Math.random() * 10;
+                        g.fillStyle = `rgba(${TC.s}, 0.9)`; g.beginPath(); g.moveTo(-7 * S, 14 * S); g.lineTo(0, (14 + fl) * S); g.lineTo(7 * S, 14 * S); g.fill();
+                        g.shadowColor = `rgb(${TC.p})`; g.shadowBlur = 18;
+                        g.fillStyle = `rgb(${TC.p})`; g.beginPath(); g.moveTo(0, -20 * S); g.lineTo(16 * S, 16 * S); g.lineTo(0, 9 * S); g.lineTo(-16 * S, 16 * S); g.closePath(); g.fill();
+                        g.shadowBlur = 0; g.fillStyle = '#fff'; g.beginPath(); g.ellipse(0, -2 * S, 3.5 * S, 6 * S, 0, 0, 7); g.fill();
+                        if (shield) { g.strokeStyle = `rgba(${TC.p}, 0.8)`; g.lineWidth = 2.5; g.beginPath(); g.arc(0, 0, 28 * S, 0, 7); g.stroke(); }
+                        g.restore();
+                    }
+                    parts.forEach(q => { g.globalAlpha = Math.max(0, q.life * 1.6); g.fillStyle = q.col; g.fillRect(q.x - 2, q.y - 2, 4, 4); });
+                    g.globalAlpha = 1;
+                }
+                g.restore();
+
+                // HUD
+                if (ship && state !== 'menu') {
+                    const fs = Math.max(12, Math.round(17 * S));
+                    g.fillStyle = 'rgba(255, 255, 255, 0.12)'; g.fillRect(0, 0, W, 4);
+                    g.fillStyle = `rgb(${TC.p})`; g.fillRect(0, 0, W * Math.min(1, levelTime / LEVEL_DUR), 4);
+                    g.textAlign = 'left'; g.textBaseline = 'top';
+                    g.font = `700 ${fs}px Orbitron, sans-serif`; g.fillStyle = '#fff';
+                    g.fillText(`SEVİYE ${level}`, 14, 14);
+                    const [tn, tcol] = tier(level);
+                    g.font = `${Math.round(fs * 0.7)}px Orbitron, sans-serif`; g.fillStyle = tcol;
+                    g.fillText(tn, 14, 16 + fs);
+                    g.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                    g.fillText(`EN İYİ: ${Math.max(save.best, level)}`, 14, 20 + fs * 1.7);
+                    g.textAlign = 'right'; g.font = `${fs}px sans-serif`;
+                    g.fillText('❤️'.repeat(Math.max(0, lives)) + (shield ? ' 🛡️' : ''), W - 60, 14);
+                    if (flash > 0) {
+                        g.globalAlpha = Math.min(1, flash);
+                        g.textAlign = 'center'; g.textBaseline = 'middle';
+                        g.font = `900 ${Math.round(46 * S)}px Orbitron, sans-serif`;
+                        g.fillStyle = tcol; g.shadowColor = tcol; g.shadowBlur = 20;
+                        g.fillText(`SEVİYE ${level}`, W / 2, H * 0.38);
+                        g.shadowBlur = 0; g.globalAlpha = 1;
+                    }
+                }
+            }
+
+            function loop(ts) {
+                raf = requestAnimationFrame(loop);
+                const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0);
+                lastTs = ts;
+                if (state === 'play') update(dt);
+                else if (state === 'over') { parts.forEach(q => { q.x += q.vx * dt; q.y += q.vy * dt; q.life -= dt; }); parts = parts.filter(q => q.life > 0); shake = Math.max(0, shake - 40 * dt); }
+                draw();
+            }
+
+            function showOverlay(kind, opt = {}) {
+                overlay.classList.remove('hidden');
+                const stats = `<div class="game-stats"><span>En iyi: <b>Lv ${save.best || 0}</b></span><span>Deneme: <b>${save.runs || 0}</b></span></div>`;
+                if (kind === 'menu') overlay.innerHTML = `<h3>☄️ ASTEROİT KAÇIŞI</h3><p>Asteroitlerden kaç, her 10 saniyede bir seviye atla. 10. seviye normal, 100. seviye kaos. Ölürsen her şey 1. seviyeden başlar. 1000'e ulaşan <b>Hayatsız</b> rozetini alır.</p>${stats}<div class="game-btns"><button class="game-btn" data-start="1">▶ OYUNA BAŞLA</button></div><p class="game-help">⬅ ➡ / A D · fare ya da parmakla sürükle · P duraklat</p>`;
+                else if (kind === 'pause') overlay.innerHTML = `<h3>⏸ DURAKLATILDI</h3><p class="big">Seviye ${level}</p><div class="game-btns"><button class="game-btn" data-resume>▶ DEVAM ET</button><button class="game-btn alt" data-menu>MENÜ</button></div>`;
+                else overlay.innerHTML = `<h3>💥 GEMİ PARÇALANDI</h3><p class="big">Ulaştığın seviye: ${level}</p>${opt.record && level > 1 ? '<p class="record">★ YENİ REKOR ★</p>' : ''}${stats}<div class="game-btns"><button class="game-btn" data-start="1">↻ 1. SEVİYEDEN TEKRAR</button><button class="game-btn alt" data-menu>MENÜ</button></div>`;
+            }
+
+            function start(L) {
+                if (!W) resize();
+                bestAtStart = save.best || 0;
+                reset(L);
+                state = 'play';
+                overlay.classList.add('hidden');
+                pauseBtn.classList.add('show');
+                keys = { l: false, r: false };
+                reach(L);
+                trackEvent('oyun/basla', `Seviye ${L}'den başladı`);
+            }
+
+            function pause() {
+                if (state !== 'play') return;
+                state = 'pause'; pauseBtn.classList.remove('show');
+                showOverlay('pause');
+            }
+
+            function resume() {
+                if (state !== 'pause') return;
+                state = 'play'; overlay.classList.add('hidden'); pauseBtn.classList.add('show');
+                lastTs = performance.now();
+            }
+
+            overlay.addEventListener('click', e => {
+                const b = e.target.closest('button');
+                if (!b) return;
+                if (b.dataset.start) start(parseInt(b.dataset.start, 10));
+                else if ('resume' in b.dataset) resume();
+                else if ('menu' in b.dataset) { state = 'menu'; showOverlay('menu'); draw(); }
+            });
+            pauseBtn.addEventListener('click', pause);
+
+            const setPointer = e => { const r = cv.getBoundingClientRect(); pointerX = e.clientX - r.left; };
+            cv.addEventListener('pointerdown', e => { setPointer(e); cv.setPointerCapture?.(e.pointerId); });
+            cv.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' || e.buttons) setPointer(e); });
+            cv.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') pointerX = null; });
+            cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') pointerX = null; });
+
+            window.addEventListener('keydown', e => {
+                if (!isOpenNow) return;
+                const k = e.key.toLowerCase();
+                if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown', ' '].includes(k)) e.preventDefault();
+                if (k === 'arrowleft' || k === 'a') { keys.l = true; pointerX = null; }
+                if (k === 'arrowright' || k === 'd') { keys.r = true; pointerX = null; }
+                if (k === 'p' || k === 'escape') { state === 'play' ? pause() : resume(); }
+                if ((k === 'enter' || k === ' ') && state !== 'play') {
+                    if (state === 'pause') resume(); else start(1);
+                }
+            });
+            window.addEventListener('keyup', e => {
+                const k = e.key.toLowerCase();
+                if (k === 'arrowleft' || k === 'a') keys.l = false;
+                if (k === 'arrowright' || k === 'd') keys.r = false;
+            });
+            window.addEventListener('resize', () => { if (isOpenNow) resize(); }, { passive: true });
+            document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+
+            return {
+                isOpen: () => isOpenNow,
+                open() {
+                    if (isOpenNow) return;
+                    isOpenNow = true;
+                    requestAnimationFrame(() => {
+                        resize();
+                        if (state === 'menu') showOverlay('menu');
+                        lastTs = performance.now();
+                        if (!raf) raf = requestAnimationFrame(loop);
+                    });
+                },
+                close() {
+                    if (!isOpenNow) return;
+                    isOpenNow = false;
+                    pause();
+                    if (raf) { cancelAnimationFrame(raf); raf = null; }
+                },
+                _debug: { diff, get level() { return level; }, set level(v) { level = v; }, get state() { return state; }, get save() { return save; }, levelUp, hit, get lives() { return lives; } }
+            };
+        })();
+
         window.onload = () => {
             const grid = document.getElementById('video-grid');
             grid.addEventListener('click', handleGridAction);
@@ -2312,6 +2920,7 @@
             window.addEventListener('resize', resizeCanvas, { passive: true });
             resizeCanvas();
             if (!reduceMotion) requestAnimationFrame(animateStars);
+            applyTheme(store.get('vt_theme', 'klasik'), false);
             planet.start();
             initSound();
             initAchievements();
