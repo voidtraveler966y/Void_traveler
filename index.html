@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Void Traveler | Uzay İletişim Ağı</title>
-    <meta name="description" content="Void Traveler YouTube kanalının galaktik video arşivi: oyun serileri, oynatma listeleri, ColoredBlocks Minecraft modu ve MC Bot.">
+    <meta name="description" content="Void Traveler YouTube kanalının galaktik video arşivi: oyun serileri, oynatma listeleri, ColoredBlocks ve Horse Stats Minecraft modları ve MC Bot.">
     <meta name="theme-color" content="#050510">
     <link rel="canonical" href="https://voidtraveler966y.github.io/Void_traveler/">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -33,6 +33,7 @@
                     "https://www.youtube.com/@void_traveler966",
                     "https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder",
                     "https://voidtraveler966y.github.io/mcbotwebsite/",
+                    "https://voidtraveler966y.github.io/horsestatswebsite/",
                     "https://github.com/voidtraveler966y"
                 ]
             }
@@ -419,6 +420,22 @@
         .mcbot-gh-btn { background: rgba(255, 255, 255, 0.06); color: #fff; border: 1px solid rgba(255, 255, 255, 0.5); }
         .mcbot-gh-btn:hover { background: #fff; color: #000; transform: translateY(-2px); }
         .mcbot-site-btn, .mcbot-gh-btn { padding: 0.7rem 1.2rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; }
+        .horse-card { border-color: #d9a05b; }
+        .horse-card h3 { color: #f0b96b; }
+        .horse-btn { padding: 0.7rem 1.2rem; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; border-radius: 4px; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; background: #f0b96b; color: #1a0f00; border: 1px solid #f0b96b; }
+        .horse-btn:hover { box-shadow: 0 0 18px #f0b96b; transform: translateY(-2px); }
+        .horse-preview { background: rgba(0, 0, 0, 0.55); border: 2px solid #3a2a14; border-radius: 6px; padding: 0.8rem 1rem; font-family: monospace; font-size: 1rem; max-width: 300px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); margin-bottom: 1rem; }
+        .hp-title { color: #fff; font-weight: bold; margin-bottom: 0.4rem; }
+        .hp-row { display: flex; justify-content: space-between; gap: 1rem; color: #ddd; padding: 2px 0; }
+        .hp-good { color: #5dff6a; } .hp-mid { color: #ffd24a; } .hp-bad { color: #ff5a5a; }
+        .horse-features { list-style: none; color: #ccc; font-size: 0.95rem; line-height: 1.5; display: grid; gap: 0.4rem; margin-bottom: 1rem; }
+        .horse-features li { padding-left: 1.2rem; position: relative; }
+        .horse-features li::before { content: '▸'; position: absolute; left: 0; color: #f0b96b; }
+        .horse-features b { color: #f0b96b; font-weight: 600; }
+        .horse-versions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .hv { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; padding: 4px 9px; border-radius: 3px; letter-spacing: 1px; }
+        .hv.ok { background: rgba(93, 255, 106, 0.15); color: #5dff6a; border: 1px solid rgba(93, 255, 106, 0.5); }
+        .hv.beta { background: rgba(255, 210, 74, 0.12); color: #ffd24a; border: 1px solid rgba(255, 210, 74, 0.5); }
         .release-notes { color: #ccc; font-size: 0.95rem; line-height: 1.6; max-height: 300px; overflow-y: auto; padding-right: 6px; }
         .release-notes h4 { font-family: 'Orbitron', sans-serif; color: #39ff14; font-size: 0.85rem; margin: 0.8rem 0 0.3rem; letter-spacing: 1px; }
         .release-notes ul { list-style: none; }
@@ -719,7 +736,7 @@
         <!-- 2. Projelerim -->
         <div id="page-mode" class="page-content">
             <h2 class="section-title">Proje<span>lerim</span></h2>
-            <h3 class="project-heading">🧱 ColoredBlocks <small>Minecraft Modu</small></h3>
+            <h3 class="project-heading">🧱 ColoredBlocks <small>MINECRAFT Modu</small></h3>
             <div class="mode-grid">
                 <div class="hud-card mod-card">
                     <h3>🧱 ColoredBlocks By McModder</h3>
@@ -769,7 +786,7 @@
             <div class="project-sep"></div>
 
             <!-- MC Bot: sürüm bilgileri GitHub'dan otomatik gelir -->
-            <h3 class="project-heading">🤖 MC Bot <small>Minecraft Botu · Windows & Android</small></h3>
+            <h3 class="project-heading">🤖 MC Bot <small>MINECRAFT Botu · Windows & Android</small></h3>
             <div class="mode-grid">
                 <div class="hud-card mcbot-card">
                     <h3>🤖 MC Bot</h3>
@@ -794,6 +811,55 @@
                     <h3>📜 Sürüm Notları <span class="cl-version" id="mcbot-notes-version"></span></h3>
                     <div class="release-notes" id="mcbot-notes"></div>
                     <ul class="release-history" id="mcbot-history"></ul>
+                </div>
+            </div>
+
+            <div class="project-sep"></div>
+
+            <!-- Horse Stats -->
+            <h3 class="project-heading">🐎 Horse Stats <small>MINECRAFT Modu · Java & Bedrock</small></h3>
+            <div class="mode-grid">
+                <div class="hud-card horse-card">
+                    <h3>🐎 Horse Stats</h3>
+                    <p class="hud-text">
+                        Ata bak ya da bin; hızını, zıplama yüksekliğini ve canını anında gör.
+                        Artık iyi atı bulmak için tahmin yürütmene gerek yok.
+                        At, eşek, katır, lama ve deve için çalışır.
+                    </p>
+                    <div class="mod-specs">
+                        <div><span>Java</span>Fabric 1.20 – 26.3</div>
+                        <div><span>Bedrock</span>1.21.90+</div>
+                        <div><span>Çalışma</span>Sadece istemci</div>
+                        <div><span>Dil</span>Türkçe · English</div>
+                    </div>
+                    <div class="mod-actions">
+                        <a href="https://voidtraveler966y.github.io/horsestatswebsite/#indir" target="_blank" rel="noopener" class="horse-btn">⬇ Horse Stats'ı İndir</a>
+                        <a href="https://voidtraveler966y.github.io/horsestatswebsite/" target="_blank" rel="noopener" class="mcbot-gh-btn">🌐 Site</a>
+                        <a href="https://voidtraveler966y.github.io/horsestatswebsite/#kurulum" target="_blank" rel="noopener" class="mcbot-gh-btn">📖 Kurulum</a>
+                    </div>
+                    <div class="hud-footer">
+                        <span class="hud-badge">Yapımcı: McModder</span>
+                    </div>
+                </div>
+
+                <div class="hud-card horse-card">
+                    <h3>🎯 Oyunda Nasıl Görünür?</h3>
+                    <div class="horse-preview" aria-label="Oyun içi panel örneği">
+                        <div class="hp-title">🐎 At</div>
+                        <div class="hp-row"><span>⚡ Hız</span><b class="hp-good">13.12 blok/sn</b></div>
+                        <div class="hp-row"><span>⤴ Zıplama</span><b class="hp-mid">3.71 blok</b></div>
+                        <div class="hp-row"><span>❤ Can</span><b class="hp-mid">11.00 kalp</b></div>
+                    </div>
+                    <ul class="horse-features">
+                        <li><b>16 blok menzil:</b> uzaktaki ata bakman yeter, duvar arkasındakileri göstermez.</li>
+                        <li><b>Renkli derecelendirme:</b> yeşil çok iyi, kırmızı zayıf; bir bakışta karar ver.</li>
+                        <li><b>Gerçek değerler:</b> en hızlı atlar ~14 blok/sn, en iyi zıplayanlar ~5.3 blok.</li>
+                    </ul>
+                    <div class="horse-versions">
+                        <span class="hv ok">1.20 – 1.21.5 ✓</span>
+                        <span class="hv beta">1.21.6 – 26.3 BETA</span>
+                        <span class="hv ok">Bedrock ✓</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -876,6 +942,7 @@
                 <a href="https://www.youtube.com/@void_traveler966" target="_blank" rel="noopener">▶ YouTube</a>
                 <a href="https://voidtraveler966y.github.io/mcbotwebsite/" target="_blank" rel="noopener">🤖 MC Bot</a>
                 <a href="https://www.curseforge.com/minecraft/mc-mods/coloredblocks-by-mcmodder" target="_blank" rel="noopener">🧱 ColoredBlocks</a>
+                <a href="https://voidtraveler966y.github.io/horsestatswebsite/" target="_blank" rel="noopener">🐎 Horse Stats</a>
                 <button onclick="toggleHelp(true)">⌨️ Kısayollar <kbd>?</kbd></button>
                 <button id="install-btn" onclick="installApp()">📲 Uygulamayı Yükle</button>
             </div>
